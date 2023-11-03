@@ -19,5 +19,12 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
+typedef struct s_cmd t_cmd;
+
+struct s_cmd
+{
+    char	**cmds;
+	char	**sep;
+};
 
 #endif
