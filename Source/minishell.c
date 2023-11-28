@@ -27,10 +27,10 @@ t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep)
 {
 	char	**strs;
 
-	// if (id == 1 || id == 2 || id == 3)
-	// 	printf("Malloc error during parsing\n");
-	// if (id == 4)
-	// 	printf("Invalid separators within command \n");
+	if (id == 1 || id == 2 || id == 3)
+		printf("Malloc error during parsing\n");
+	if (id == 4)
+		printf("Invalid separators within command \n");
 	strs = sep;
 	if (sep)
 	{
