@@ -53,7 +53,7 @@ typedef struct	s_data
 t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
 int	exec_1(t_cmd *cmd, char **env, int cmd_i);
 int	cmd_exec(t_cmd *cmd, char **env);
-int	redir_in(t_data *d, char **env);
+int	redir_in(t_cmd *cmd, char **env);
 int	shell_loop(t_data *d, char **env);
 int	pathfinder(t_cmd *cmd, char **env);
 int ft_pipe(t_cmd *d, char **env);
