@@ -20,6 +20,7 @@
 #include <readline/readline.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 extern int	g_sig;
 
@@ -51,9 +52,15 @@ typedef struct	s_data
 }	t_data;
 
 t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
-int	cmd_exec(t_cmd *cmd, char **env);
-int	redir_in(t_data *d, char **env);
-int	shell_loop(t_data *d, char **env);
-int	pathfinder(t_cmd *cmd, char **env);
+int		cmd_exec(t_cmd *cmd, char **env);
+int		redir_in(t_data *d, char **env);
+int		shell_loop(t_data *d, char **env);
+int		pathfinder(t_cmd *cmd, char **env);
+void	ic_sigs(int sig);
+int		is_charset(char c);
+int		cmd_count(char const *s);
+int		sep_count(char const *s);
+char	**ms_split(char *s);
+char	**rev_ms_split(char *s);
 
 #endif

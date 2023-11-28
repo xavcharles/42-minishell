@@ -1,4 +1,8 @@
-SRC = Source/main.c Source/minishell.c Source/execution.c 
+SRC = Source/main.c \
+		Source/minishell.c \
+		Source/execution.c \
+		Source/parse_utils.c \
+		Source/ic_signal.c
 
 NAME = minishell
 

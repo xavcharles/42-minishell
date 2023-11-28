@@ -1,24 +1,13 @@
 #include "../minishell.h"
 
-int	pathfinder(t_cmd *cmd, char **env)
-{
-	while (ft_strncmp("PATH", *env, 4))
-		env++;
-	cmd->path = *env + 5;
-	cmd->cmd_path = ft_split(cmd->path, ':');
-	// printf("path[0] = %s\n", cmd->cmd_path[0]);
-	return (0);
-}
-
 int	exec_1(t_cmd *cmd, char **env)
 {
-	int	i;
+	int		i;
 	char	**scmd;
 	char	*tmp;
 	char 	*vcmd;
 
 	i = 0;
-	pathfinder(cmd, env);
 	scmd = ft_split(cmd->cmds[0], ' ');
 	while (cmd->cmd_path[i])
 	{
@@ -38,7 +27,7 @@ int	exec_1(t_cmd *cmd, char **env)
 		free(vcmd);
 		i++;
 	}
-	clean_strs(0, 0, scmd, cmd->cmd_path);
+	clean_strs(0, 0, scmd, 0);
 	return (0);
 }
 
@@ -63,7 +52,6 @@ int	cmd_exec(t_cmd *cmd, char **env)
 	pid_t	pid;
 
 	pid = fork();
-	// printf("sep ? %s\n", cmd->sep[0]);
 	if (pid == 0)
 	{
 		if (cmd->sep)
