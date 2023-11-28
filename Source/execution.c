@@ -10,7 +10,7 @@ int	pathfinder(t_cmd *cmd, char **env)
 	return (0);
 }
 
-int	exec_1(t_cmd *cmd, char **env)
+int	exec_1(t_cmd *cmd, char **env, int cmd_i)
 {
 	int	i;
 	char	**scmd;
@@ -19,7 +19,7 @@ int	exec_1(t_cmd *cmd, char **env)
 
 	i = 0;
 	pathfinder(cmd, env);
-	scmd = ft_split(cmd->cmds[0], ' ');
+	scmd = ft_split(cmd->cmds[cmd_i], ' ');
 	while (cmd->cmd_path[i])
 	{
 		tmp = ft_strjoin(cmd->cmd_path[i], "/");
@@ -51,10 +51,15 @@ int	ref_sep(t_cmd *cmd, char **env)
 	while (cmd->sep[++i])
 	{
 		if (!ft_strncmp(cmd->sep[i], "|", 1))
-			printf("pipe \n");
-		else if (!ft_strncmp(cmd->sep[i], "<", 1))
-			printf("< \n");
+		{
+			ft_pipe(cmd, env);
+		}
+	/*	if (!ft_strncmp(cmd->sep[i], "<", 1) || !ft_strncmp(cmd->sep[i], "<<", 2))
+			redir_in();
+		if (!ft_strncmp(cmd->sep[i], ">", 1) || !ft_strncmp(cmd->sep[i], ">>", 2))
+			redir_out();*/
 	}
+
 	return (0);
 }
 
@@ -62,13 +67,13 @@ int	cmd_exec(t_cmd *cmd, char **env)
 {
 	pid_t	pid;
 
+
 	pid = fork();
-	// printf("sep ? %s\n", cmd->sep[0]);
 	if (pid == 0)
 	{
 		if (cmd->sep)
 			ref_sep(cmd, env);
-		if (exec_1(cmd, env))
+		else if (exec_1(cmd, env, 0))
 			return(1);
 	}
 	wait(NULL);
