@@ -54,23 +54,23 @@ int	clean_cmd(t_cmd *cmd)
 {
 	char	**strs;
 
-	strs = cmd->sep;
 	if (cmd->sep)
 	{
+		strs = cmd->sep;
 		while (*strs)
 			free(*(strs++));
 		free(cmd->sep);
 	}
-	strs = cmd->cmds;
 	if (cmd->cmds)
 	{
+		strs = cmd->cmds;
 		while (*strs)
 			free(*(strs++));
 		free(cmd->cmds);
 	}
-	strs = cmd->cmd_path;
 	if (cmd->cmd_path)
 	{
+		strs = cmd->cmd_path;
 		while (*strs)
 			free(*(strs++));
 		free(cmd->cmd_path);
@@ -113,9 +113,17 @@ int	shell_loop(t_data *d, char **env)
 	{
 		ic_sigs(1);
 		input = readline(prompt);
-		if (!ft_strncmp(input, "exit", ft_strlen(input)))
+		if (!input)
+		{
+			printf("break 1\n");
 			break ;
-		if (input)
+		}
+		if (!ft_strncmp(input, "exit", ft_strlen(input)) && ft_strlen(input))
+		{	
+			printf("break 2\n");
+			break ;
+		}
+		if (ft_strlen(input))
 		{
 			add_history(input);
 			if (ca_parse(d, input, env))
@@ -133,11 +141,13 @@ int	shell_loop(t_data *d, char **env)
 				printf("Error during execution\n");
 				return (1);
 			}
+			clean_cmd(d->cmd);
 		}
 		free(input);
-		clean_cmd(d->cmd);
+		usleep(10);
 	}
 	free(input);
 	rl_clear_history();
+	printf("exitted\n");
 	return (0);
 }

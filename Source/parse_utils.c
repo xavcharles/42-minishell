@@ -6,7 +6,7 @@ int		is_charset(char c)
 	int	i;
 	char	*set;
 
-	set = "&|<>";
+	set = " &|<>";
 	i = 0;
 	while (set[i])
 	{
@@ -105,12 +105,12 @@ char	**rev_ms_split(char *s)
 	w = 0;
 	while (s && s[i])
 	{
-		if (!is_charset(s[i]))
+		if (!is_charset(s[i]) || s[i] == ' ')
 			i++;
 		else
 		{
 			start = i;
-			while (s[i] && is_charset(s[i]))
+			while (s[i] && is_charset(s[i]) && s[i] != ' ')
 				i++;
 			strs[w] = ft_substr(s, start, i - start);
 			w++;
