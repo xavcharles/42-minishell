@@ -1,12 +1,12 @@
 
 #include "../minishell.h"
 
-int		is_charset(char c)
+int		is_charset(char c, char *set)
 {
 	int	i;
-	char	*set;
+	// char	*set;
 
-	set = " &|<>";
+	// set = set;
 	i = 0;
 	while (set[i])
 	{
@@ -16,7 +16,7 @@ int		is_charset(char c)
 	return (0);
 }
 
-int	cmd_count(char const *s)
+int	cmd_count(char const *s, char *set)
 {
 	int	i;
 	int	w;
@@ -27,11 +27,11 @@ int	cmd_count(char const *s)
 		return (0);
 	while (s[i])
 	{
-		if (is_charset(s[i]))
+		if (is_charset(s[i], set))
 			i++;
 		else
 		{
-			while (s[i] && !is_charset(s[i]))
+			while (s[i] && !is_charset(s[i], set))
 				i++;
 			w++;
 		}
@@ -39,7 +39,7 @@ int	cmd_count(char const *s)
 	return (w);
 }
 
-int	sep_count(char const *s)
+int	sep_count(char const *s, char *set)
 {
 	int	i;
 	int	w;
@@ -50,11 +50,11 @@ int	sep_count(char const *s)
 		return (0);
 	while (s[i])
 	{
-		if (!is_charset(s[i]))
+		if (!is_charset(s[i], set))
 			i++;
 		else
 		{
-			while (s[i] && is_charset(s[i]))
+			while (s[i] && is_charset(s[i], set))
 				i++;
 			w++;
 		}
@@ -62,7 +62,7 @@ int	sep_count(char const *s)
 	return (w);
 }
 
-char	**ms_split(char *s)
+char	**ms_split(char *s, char *set)
 {
 	int		w;
 	int		i;
@@ -76,12 +76,12 @@ char	**ms_split(char *s)
 	w = 0;
 	while (s && s[i])
 	{
-		if (is_charset(s[i]))
+		if (is_charset(s[i], set))
 			i++;
 		else
 		{
 			start = i;
-			while (s[i] && !is_charset(s[i]))
+			while (s[i] && !is_charset(s[i], set))
 				i++;
 			strs[w] = ft_substr(s, start, i - start);
 			w++;
@@ -91,7 +91,7 @@ char	**ms_split(char *s)
 	return (strs);
 }
 
-char	**rev_ms_split(char *s)
+char	**rev_ms_split(char *s, char *set)
 {
 	int		w;
 	int		i;
@@ -105,12 +105,12 @@ char	**rev_ms_split(char *s)
 	w = 0;
 	while (s && s[i])
 	{
-		if (!is_charset(s[i]) || s[i] == ' ')
+		if (!is_charset(s[i], set))
 			i++;
 		else
 		{
 			start = i;
-			while (s[i] && is_charset(s[i]) && s[i] != ' ')
+			while (s[i] && is_charset(s[i], set))
 				i++;
 			strs[w] = ft_substr(s, start, i - start);
 			w++;

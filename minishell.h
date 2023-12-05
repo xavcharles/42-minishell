@@ -41,7 +41,7 @@ typedef struct	s_ccmd
 	char	**in;
 	char	**out;
 	char	*next_op;
-}
+}	t_ccmd;
 
 typedef struct	s_pipe
 {
@@ -54,8 +54,13 @@ typedef struct	s_pipe
 
 typedef struct	s_data
 {
-	t_cmd	*cmd;
-	char 	**cmd_path;
+	t_ccmd	*cmd;
+	char	**cmds;
+	char	**seps;
+	char 	**paths;
+	char	**env;
+	int		cmd_count;
+	int		sep_count;
 	int		err;
 	t_pipe	*p;
 }	t_data;
@@ -66,10 +71,11 @@ int		redir_in(t_data *d, char **env);
 int		shell_loop(t_data *d, char **env);
 int		pathfinder(t_cmd *cmd, char **env);
 void	ic_sigs(int sig);
-int		is_charset(char c);
-int		cmd_count(char const *s);
-int		sep_count(char const *s);
-char	**ms_split(char *s);
-char	**rev_ms_split(char *s);
+int		is_charset(char c, char *set);
+int		cmd_count(char const *s, char *set);
+int		sep_count(char const *s, char *set);
+char	**ms_split(char *s, char *set);
+char	**rev_ms_split(char *s, char *set);
+int	sep_check(char **seps);
 
 #endif

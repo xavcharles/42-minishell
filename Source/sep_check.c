@@ -63,11 +63,21 @@ int	check_esp(char *sep)
 
 int	sep_check(char **seps)
 {
-	char **strs;
+	int	i;
+	int	len;
 
-	strs = seps;
-	while (*strs)
+	i = 0;
+	if (!seps)
+		return (0);
+	while (seps[i])
 	{
-
+		len = ft_strlen(seps[i]);
+		if (!ft_strncmp(seps[i], "|", len) || !ft_strncmp(seps[i], "||", len))
+			i++;
+		else if (!ft_strncmp(seps[i], "&&", len))
+			i++;
+		else
+			return (1); //err msg a implement
 	}
+	return (0);
 }
