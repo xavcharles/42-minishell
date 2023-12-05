@@ -14,9 +14,12 @@
 
 int	pathfinder(t_cmd *cmd, char **env)
 {
-	while (ft_strncmp("PATH", *env, 4))
+	char	**strs;
+
+	strs = env;
+	while (ft_strncmp("PATH", *strs, 4))
 		env++;
-	cmd->path = *env + 5;
+	cmd->path = *strs + 5;
 	cmd->cmd_path = ft_split(cmd->path, ':');
 	if (!cmd->cmd_path)
 		return (1);
