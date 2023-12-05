@@ -6,15 +6,36 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2023/12/05 15:10:46 by maderuel         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:02:43 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_export(t_cmd *cmd, char **n_env)
+int	ft_unset(t_cmd *cmd, char **n_env)
 {
 
+}
+
+int	ft_export(t_cmd *cmd, char **o_env)
+{
+	int		i;
+	char	**n_env;
+
+	i = 0;
+	while (o_env[i])
+		i++;
+	n_env = malloc(sizeof(char *) * (i + 1));
+	if (!n_env)
+		return (1);
+	i = 0;
+	while (o_env[i])
+	{
+		n_env[i] = ft_strdup(o_env[i]);
+		i++;
+	}
+	n_env[i + 1] = ft_strdup(cmd->cmds[1]);
+	return (0);
 }
 
 char	**env_alloc(char **env)
