@@ -1,4 +1,4 @@
-SRC = Source/pipe.c Source/redirections.c Source/main.c Source/minishell.c Source/execution.c 
+SRC = Source/env.c Source/pipe.c Source/redirections.c Source/main.c Source/minishell.c Source/execution.c 
 
 NAME = minishell
 

@@ -50,10 +50,10 @@ int	ref_sep(t_cmd *cmd, char **env)
 	(void) env;
 	while (cmd->sep[++i])
 	{
-		if (!ft_strncmp(cmd->sep[i], "<", 1) || !ft_strncmp(cmd->sep[i], "<<", 2))
+		/*if (!ft_strncmp(cmd->sep[i], "<", 1) || !ft_strncmp(cmd->sep[i], "<<", 2))
 			redir_in(cmd, env);
 		if (!ft_strncmp(cmd->sep[i], ">", 1) || !ft_strncmp(cmd->sep[i], ">>", 2))
-			redir_out();
+			redir_out();*/
 		if (!ft_strncmp(cmd->sep[i], "|", 1))
 		{
 			ft_pipe(cmd, env);

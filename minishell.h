@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2023/10/24 15:44:18 by xacharle         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:41:08 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int	redir_in(t_cmd *cmd, char **env);
 int	shell_loop(t_data *d, char **env);
 int	pathfinder(t_cmd *cmd, char **env);
 int ft_pipe(t_cmd *d, char **env);
+char **env_alloc(char **env);
 
 #endif
