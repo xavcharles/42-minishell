@@ -34,6 +34,15 @@ typedef	struct s_cmd
 	void	*next;
 }	t_cmd;
 
+typedef struct	s_ccmd
+{
+	char	*cmd;
+	char	**cmd_arg;
+	char	**in;
+	char	**out;
+	char	*next_op;
+}
+
 typedef struct	s_pipe
 {
 	pid_t	pid1;
