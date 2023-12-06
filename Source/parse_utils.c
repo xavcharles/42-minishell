@@ -4,9 +4,7 @@
 int		is_charset(char c, char *set)
 {
 	int	i;
-	// char	*set;
 
-	// set = set;
 	i = 0;
 	while (set[i])
 	{

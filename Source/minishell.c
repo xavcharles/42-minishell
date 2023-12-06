@@ -109,23 +109,27 @@ int	init_ccmd(t_data *d, t_ccmd *cmd)
 {
 	int		i;
 	int		j;
-	char	*cmd;
+	char	*cmd_args;
 	char	**strs;
 
 	i = 0;
-	cmd = NULL;
+	cmd_args = NULL;
 	while (d->cmds[i])
 	{
 		strs = ms_split(d->cmds[i], " \t");
 		if (!strs)
 			return (1) //implement free error
-		j = 0;
-		while (strs[j] && !ft_strchr(strs[j], "<") && ft_strchr(strs[j], ">"))
+		if (strs[0] && !ft_strchr(strs[0], "<") && ft_strchr(strs[0], ">"))
 		{
 			cmd->cmd = ft_strdup(strs[j]);
 			if (!cmd->cmd)
 				return (1); //implement 
-			
+			j = 0;
+			while (strs[j] && !ft_strchr(strs[j], "<") && ft_strchr(strs[j], ">"))
+				cmd_args = join_w_space(cmd_args, strs[j++]);
+			if (!cmd_args)
+				return (1); //implement err
+			cmd->cmd_arg = ms_split(cmd_args, " ");
 		}
 	}
 }
