@@ -1,14 +1,6 @@
 
 #include "../minishell.h"
 
-// int	get_env(t_data *d, char **env)
-// {
-// 	if (d->cmd == NULL)
-// 		return (1);
-// 	pathfinder(d->cmd, env);
-// 	return (0);
-// }
-
 int	pathfinder(t_data *d)
 {
 	char	**strs;
@@ -26,9 +18,6 @@ int	pathfinder(t_data *d)
 
 int	init_data(t_data *d, char **env)
 {
-	d = malloc(sizeof(t_data));
-	if (d == NULL)
-		return (1); //malloc error a implement
 	d->cmd = NULL;
 	d->cmds = NULL;
 	d->seps = NULL;
@@ -47,6 +36,9 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
+	data = malloc(sizeof(t_data));
+	if (data == NULL)
+		return (1); //malloc error a implement
 	if (init_data(data, env))
 		return (1);
 	(void) av;

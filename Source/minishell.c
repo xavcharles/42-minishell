@@ -53,68 +53,56 @@ t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep)
 	return (0);
 }
 
-int	clean_cmd(t_cmd *cmd)
+int	clean_cmd(t_data *d)
 {
 	char	**strs;
-
-	if (cmd->sep)
-	{
-		strs = cmd->sep;
-		while (*strs)
-			free(*(strs++));
-		free(cmd->sep);
-	}
-	if (cmd->cmds)
-	{
-		strs = cmd->cmds;
-		while (*strs)
-			free(*(strs++));
-		free(cmd->cmds);
-	}
-	if (cmd->cmd_path)
-	{
-		strs = cmd->cmd_path;
-		while (*strs)
-			free(*(strs++));
-		free(cmd->cmd_path);
-	}
-	free(cmd);
-	return (1);
-}
-
-int	init_ccmd(t_data *d, t_ccmd *cmd)
-{
-	int		i;
-	int		j;
-	char	*cmd_args;
-	char	**strs;
+	int	i;
 
 	i = 0;
-	cmd_args = NULL;
-	while (d->cmds[i])
+	while (i < d->cmd_count)
 	{
-		strs = ms_split(d->cmds[i], " \t");
-		if (!strs)
-			return (1) //implement free error
-		if (strs[0] && !ft_strchr(strs[0], "<") && ft_strchr(strs[0], ">"))
+		if (d->cmd[i].cmd_arg)
 		{
-			cmd->cmd = ft_strdup(strs[0]);
-			if (!cmd->cmd)
-				return (1); //implement 
-			j = 0;
-			while (strs[j] && !ft_strchr(strs[j], "<") && ft_strchr(strs[j], ">"))
-				cmd_args = join_w_space(cmd_args, strs[j++]);
-			if (!cmd_args)
-				return (1); //implement err
-			cmd->cmd_arg = ms_split(cmd_args, " ");
-			if (!cmd->cmd_arg)
-				return (1); //err
+			strs = d->cmd[i].cmd_arg;
+			while (*strs)
+				free(*(strs++));
+			free(d->cmd[i].cmd_arg);
 		}
-		else if (strs[0])
+		if (d->cmd[i].in)
 		{
-			
+			strs = d->cmd[i].in;
+			while (*strs)
+				free(*(strs++));
+			free(d->cmd[i].in);
 		}
+		if (d->cmd[i].out)
+		{
+			strs = d->cmd[i].out;
+			while (*strs)
+				free(*(strs++));
+			free(d->cmd[i].out);
+		}
+		free(d->cmd[i].cmd);
+		free(d->cmd[i].prev_op);
+		free(d->cmd[i].next_op);
+		free(d->cmd);
+		i++;
 	}
+	if (d->seps)
+	{
+		strs = d->seps;
+		while (*strs)
+			free(*(strs++));
+		free(d->seps);
+	}
+	if (d->cmds)
+	{
+		strs = d->cmds;
+		while (*strs)
+			free(*(strs++));
+		free(d->cmds);
+	}
+	return (1);
 }
 
 int	init_ccmd(t_data *d, t_ccmd *ccmd)
@@ -127,10 +115,11 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 	char	**strs;
 
 	i = 0;
-	cmd_args = NULL;
 	while (d->cmds[i])
 	{
-		strs = md_split(d->cmds[i], "\t ");
+		ccmd[i].in = NULL;
+		ccmd[i].out = NULL;
+		strs = ms_split(d->cmds[i], "\t ");
 		if (!strs)
 			return (1);
 		j = 0;
@@ -138,23 +127,24 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 		out = NULL;
 		while (strs[j])
 		{
-			if (!ft_strchr(strs[j], "<") && !ft_strchr(strs[j], ">"))
+			if (!ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
 			{
-				ccmd[i]->cmd = ft_strdup(strs[j]);
-				if (!ccmd[i]->cmd)
+				cmd_args = NULL;
+				ccmd[i].cmd = ft_strdup(strs[j]);
+				if (!ccmd[i].cmd)
 					return (1); //implement
-				while (strs[j] && !ft_strchr(strs[j], "<") && !ft_strchr(strs[j], ">"))
+				while (strs[j] && !ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
 					cmd_args = join_w_space(cmd_args, strs[j++]);
 				if (!cmd_args)
 					return (1);
-				ccmd[i]->cmd_arg = ms_split(cmd_args, " ");
-				if (!ccmd[i]->cmd_arg)
+				ccmd[i].cmd_arg = ms_split(cmd_args, " ");
+				if (!ccmd[i].cmd_arg)
 					return (1);
 				free(cmd_args);
 			}
 			else
 			{
-				while (!ft_strncmp(strs[j], ">", ft_strlen(strs[j])) || !ft_strncmp(strs[j], ">>", ft_strlen(strs[j])))
+				while (strs[j] && (!ft_strncmp(strs[j], ">", ft_strlen(strs[j])) || !ft_strncmp(strs[j], ">>", ft_strlen(strs[j]))))
 				{
 					j++;
 					if (!strs[j])
@@ -167,7 +157,7 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 						return (1); //malloc error
 					j++;
 				}
-				while (!ft_strncmp(strs[j], "<", ft_strlen(strs[j])))
+				while (strs[j] && !ft_strncmp(strs[j], "<", ft_strlen(strs[j])))
 				{
 					j++;
 					if (!strs[j])
@@ -184,24 +174,25 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 		}
 		if (in)
 		{
-			ccmd[i]->in = ms_split(in, "\t");
-			if (!ccmd[i]->in)
+			ccmd[i].in = ms_split(in, "\t");
+			if (!ccmd[i].in)
 				return (1); //malloc error
 			free(in);
 		}
 		if (out)
 		{
-			ccmd[i]->out = ms_split(out, "\t");
-			if (!ccmd[i]->out)
+			ccmd[i].out = ms_split(out, "\t");
+			if (!ccmd[i].out)
 				return (1); //malloc error
 			free(out);
 		}
 		clean_strs(0, 0, 0, strs);
 		i++;
 	}
+	return (0);
 }
 
-int	set_op_pipe(int j, t_ccmd ccmd, char *input)
+int	set_op_pipe(int j, t_ccmd *ccmd, char *input)
 {
 	if (!ft_strncmp(input + j, "|", 1))
 	{
@@ -218,7 +209,7 @@ int	set_op_pipe(int j, t_ccmd ccmd, char *input)
 	return (0);
 }
 
-int	set_op_and(int j, t_ccmd ccmd, char *input)
+int	set_op_and(int j, t_ccmd *ccmd, char *input)
 {
 	if (!ft_strncmp(input + j, "&", 1))
 	{
@@ -226,10 +217,39 @@ int	set_op_and(int j, t_ccmd ccmd, char *input)
 		if (!ccmd->next_op)
 			return (1); //malloc error
 	}
-	else if (!ft_strncmp(input + j, "&&", 1))
+	else if (!ft_strncmp(input + j, "&&", 2))
 	{
 		ccmd->next_op = ft_strdup("&&");
 		if (!ccmd->next_op)
+			return (1); //malloc error
+	}
+	return (0);
+}
+
+int	set_prev_op(int j, t_ccmd *ccmd, char *input)
+{
+	if (!ft_strncmp(input + j, "|", 1))
+	{
+		ccmd->prev_op = ft_strdup("|");
+		if (!ccmd->prev_op)
+			return (1); //malloc error
+	}
+	else if (!ft_strncmp(input + j, "||", 2))
+	{
+		ccmd->prev_op = ft_strdup("||");
+		if (!ccmd->prev_op)
+			return (1); //malloc error
+	}
+	if (!ft_strncmp(input + j, "&", 1))
+	{
+		ccmd->prev_op = ft_strdup("&");
+		if (!ccmd->prev_op)
+			return (1); //malloc error
+	}
+	else if (!ft_strncmp(input + j, "&&", 2))
+	{
+		ccmd->prev_op = ft_strdup("&&");
+		if (!ccmd->prev_op)
 			return (1); //malloc error
 	}
 	return (0);
@@ -241,31 +261,40 @@ int	set_next_op(t_data *d, char *input)
 	int	j;
 
 	i = 0;
+	j = -1;
+	d->cmd[i].prev_op = NULL;
 	while (d->cmds[i + 1])
 	{
-		j = ft_strlen(d->cdms[i]);
-		while (input[j] == ' ' || input[j] == '\t')
-			j++;
-		if (set_op_pipe(j, d->cmd[i], input))
+		d->cmd[i].next_op = NULL;
+		if (j > 0)
+			if (set_prev_op(j, d->cmd + i, input))
+				return (1);
+		j += ft_strlen(d->cmds[i]) + 1;
+		if (set_op_pipe(j, d->cmd + i, input))
 			return(1); //maloc error
-		if (set_op_and(j, d->cmd[i], input))
+		if (set_op_and(j, d->cmd + i, input))
 			return(1); //maloc error
 		i++;
 	}
+	if (i > 0)
+		if (set_prev_op(j, d->cmd + i, input))
+			return (1);
+	d->cmd[i].next_op = NULL;
 	return (0);
 }
 
 int	ca_parse(t_data *d, char *input)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	while (input[i] == ' ' || input[i] == '\t')
 		i++;
-	if (ft_strchr(input[i], "&") || ft_strchr(input[i], "|"))
+	if (input [i] == '&' || input[i] == '|')
 		return (1); //parse error 1st char == & ou && ou | ou ||
-	d->cmd_count = cmd_count(input);
-	d->sep_count = sep_count(input);
+	d->cmd_count = cmd_count(input, "|&");
+	d->sep_count = sep_count(input, "|&");
 	d->seps = rev_ms_split(input, "&|");
 	if (!d->seps && d->sep_count)
 		return (1); // free a implement
@@ -281,6 +310,40 @@ int	ca_parse(t_data *d, char *input)
 		return (1); //malloc error
 	if (init_ccmd(d, d->cmd))
 		return (1); //free a iplement
+	i = 0;
+	printf("\n\nDans la fonction ca_parse : \n\n");
+	while (i < d->cmd_count)
+	{
+		printf("cmd = %s\n", d->cmd[i].cmd);
+		j = 0;
+		printf("cmd with arg : ");
+		while (d->cmd[i].cmd_arg && d->cmd[i].cmd_arg[j])
+		{
+			printf("%s ", d->cmd[i].cmd_arg[j]);
+			j++;
+		}
+		printf("\n");
+		j = 0;
+		printf("in : ");
+		while (d->cmd[i].in && d->cmd[i].in[j])
+		{
+			printf("%s ", d->cmd[i].in[j]);
+			j++;
+		}
+		printf("\n");
+		j = 0;
+		printf("out : ");
+		while (d->cmd[i].out && d->cmd[i].out[j])
+		{
+			printf("%s ", d->cmd[i].out[j]);
+			j++;
+		}
+		printf("\n");
+		printf("prev op = %s\n", d->cmd[i].prev_op);
+		printf("next op = %s\n", d->cmd[i].next_op);
+		i++;
+	}
+	return (0);
 }
 
 int	shell_loop(t_data *d, char **env)
@@ -309,23 +372,25 @@ int	shell_loop(t_data *d, char **env)
 			if (ca_parse(d, input))
 			{
 				free(input);
+				clean_cmd(d);
 				rl_clear_history();
 				printf("Error during parsing\n");
 				return (1);
 			}
-			if (cmd_exec(d->cmd, env))
+			if (cmd_exec(d))
 			{
 				free(input);
-				clean_cmd(d->cmd);
+				clean_cmd(d);
 				rl_clear_history();
 				printf("Error during execution\n");
 				return (1);
 			}
-			clean_cmd(d->cmd);
+			clean_cmd(d);
 		}
 		free(input);
 		usleep(10);
 	}
+	(void) env;
 	free(input);
 	rl_clear_history();
 	printf("exitted\n");

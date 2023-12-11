@@ -67,7 +67,7 @@ char	**ms_split(char *s, char *set)
 	int		start;
 	char	**strs;
 
-	strs = malloc(sizeof(char *) * (cmd_count(s) + 1));
+	strs = malloc(sizeof(char *) * (cmd_count(s, set) + 1));
 	if (!strs)
 		return (NULL);
 	i = 0;
@@ -96,7 +96,7 @@ char	**rev_ms_split(char *s, char *set)
 	int		start;
 	char	**strs;
 
-	strs = malloc(sizeof(char *) * (sep_count(s) + 1));
+	strs = malloc(sizeof(char *) * (sep_count(s, set) + 1));
 	if (!strs)
 		return (NULL);
 	i = 0;

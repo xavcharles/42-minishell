@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	strs_len(char **strs)
 {
@@ -23,7 +23,8 @@ int	env_cpy(t_data *data, char **env)
 		return (1);
 	while (env[i])
 	{
-		if (!ft_strdup(data->env[i], env[i]))
+		data->env[i] = ft_strdup(env[i]);
+		if (!data->env[i])
 		{
 			clean_strs(0, 0, 0, data->env);
 			return (1);
@@ -34,18 +35,18 @@ int	env_cpy(t_data *data, char **env)
 	return (0);
 }
 
-int get_pwd(t_cmd *cmd, char **env)
-{
-	int	i;
+// int get_pwd(t_cmd *cmd, char **env)
+// {
+// 	int	i;
 
-    i = 0;
-	cmd->pwd = NULL;
-	cmd->old_pwd = NULL;
-    while (env[i])
-	{
-		if (!ft_strncmp(env[i], "PWD", 3))
-		{
+//     i = 0;
+// 	cmd->pwd = NULL;
+// 	cmd->old_pwd = NULL;
+//     while (env[i])
+// 	{
+// 		if (!ft_strncmp(env[i], "PWD", 3))
+// 		{
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
