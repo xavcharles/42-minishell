@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+<<<<<<< HEAD
 int	pathfinder(t_cmd *cmd, char **env)
 {
 	while (ft_strncmp("PATH", *env, 4))
@@ -11,15 +12,22 @@ int	pathfinder(t_cmd *cmd, char **env)
 }
 
 int	exec_1(t_cmd *cmd, char **env, int cmd_i)
+=======
+int	exec_1(t_cmd *cmd, char **env)
+>>>>>>> xavrestart
 {
-	int	i;
+	int		i;
 	char	**scmd;
 	char	*tmp;
 	char 	*vcmd;
 
 	i = 0;
+<<<<<<< HEAD
 	pathfinder(cmd, env);
 	scmd = ft_split(cmd->cmds[cmd_i], ' ');
+=======
+	scmd = ft_split(cmd->cmds[0], ' ');
+>>>>>>> xavrestart
 	while (cmd->cmd_path[i])
 	{
 		tmp = ft_strjoin(cmd->cmd_path[i], "/");
@@ -38,7 +46,7 @@ int	exec_1(t_cmd *cmd, char **env, int cmd_i)
 		free(vcmd);
 		i++;
 	}
-	clean_strs(0, 0, scmd, cmd->cmd_path);
+	clean_strs(0, 0, scmd, 0);
 	return (0);
 }
 
