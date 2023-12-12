@@ -26,84 +26,172 @@
 // 	return (0);
 // }
 
-t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep)
+void	clean_strs(char **strs1, char **strs2, char **strs3)
 {
 	char	**strs;
 
-	if (id == 1 || id == 2 || id == 3)
-		printf("Malloc error during parsing\n");
-	if (id == 4)
-		printf("Invalid separators within command \n");
-	strs = sep;
-	if (sep)
+	if (strs1)
 	{
+		strs = strs1;
 		while (*strs)
 			free(*(strs++));
-		free(sep);
+		free(strs1);
 	}
-	strs = cmds;
-	if (cmds)
+	if (strs2)
 	{
+		strs = strs2;
 		while (*strs)
 			free(*(strs++));
-		free(cmds);
+		free(strs2);
 	}
-	if (cmd)
-		free(cmd);
-	return (0);
+	if (strs3)
+	{
+		strs = strs3;
+		while (*strs)
+			free(*(strs++));
+		free(strs3);
+	}
 }
 
-int	clean_cmd(t_data *d)
+int	clean_ccmd(t_ccmd *ccmd)
 {
-	char	**strs;
+	clean_strs(ccmd->cmd_arg, ccmd->in, ccmd->out);
+	if (ccmd->cmd)
+		free(ccmd->cmd);
+	if (ccmd->prev_op)
+		free(ccmd->prev_op);
+	if (ccmd->next_op)
+		free(ccmd->next_op);
+	free(ccmd);
+}
+
+int	clean_data(t_data *d)
+{
 	int	i;
 
 	i = 0;
 	while (i < d->cmd_count)
 	{
-		if (d->cmd[i].cmd_arg)
-		{
-			strs = d->cmd[i].cmd_arg;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].cmd_arg);
-		}
-		if (d->cmd[i].in)
-		{
-			strs = d->cmd[i].in;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].in);
-		}
-		if (d->cmd[i].out)
-		{
-			strs = d->cmd[i].out;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].out);
-		}
-		free(d->cmd[i].cmd);
-		free(d->cmd[i].prev_op);
-		free(d->cmd[i].next_op);
-		free(d->cmd);
+		clean_ccmd(d->cmd + i);
 		i++;
 	}
-	if (d->seps)
-	{
-		strs = d->seps;
-		while (*strs)
-			free(*(strs++));
-		free(d->seps);
-	}
-	if (d->cmds)
-	{
-		strs = d->cmds;
-		while (*strs)
-			free(*(strs++));
-		free(d->cmds);
-	}
-	return (1);
+	clean_strs(d->seps, d->cmds, 0);
+	return (0);
 }
+
+// int	set_cmd(t_ccmd *ccmd, char **strs, int *j)
+// {
+
+// }
+
+// int	loop_cmd(t_ccmd *ccmd, char **strs)
+// {
+// 	int		j;
+
+// 	j = 0;
+// 	while (strs[j])
+// 	{
+// 		if (!ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
+// 		{
+// 			cmd_args = NULL;
+// 			ccmd->cmd = ft_strdup(strs[j]);
+// 			if (!ccmd->cmd)
+// 				return (1); //implement
+// 			while (strs[j] && !ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
+// 				cmd_args = join_w_space(cmd_args, strs[j++]);
+// 			if (!cmd_args)
+// 				return (1);
+// 			ccmd->cmd_arg = ms_split(cmd_args, " ");
+// 			if (!ccmd->cmd_arg)
+// 				return (1);
+// 			free(cmd_args);
+// 		}
+// 		else
+// 			j++;
+// 	}
+// 	return (0);
+// }
+
+// int	set_redirs(char **strs, char **in, char **out, int *j)
+// {
+// 	while (strs[*j] && (!ft_strncmp(strs[*j], ">", ft_strlen(strs[*j])) || !ft_strncmp(strs[*j], ">>", ft_strlen(strs[*j]))))
+// 	{
+// 		if (!strs[*j + 1])
+// 			return (1); //parse error
+// 		*out = join_w_space(*out, strs[*j]);
+// 		if (!*out)
+// 			return (1); //malloc error
+// 		*out = join_w_tab(*out, strs[*j + 1]);
+// 		if (!*out)
+// 			return (1); //malloc error
+// 		*j += 2;
+// 	}
+// 	while (strs[*j] && (!ft_strncmp(strs[*j], ">", ft_strlen(strs[*j])) || !ft_strncmp(strs[*j], ">>", ft_strlen(strs[*j]))))
+// 	{
+// 		if (!strs[*j + 1])
+// 			return (1); //parse error
+// 		*in = join_w_space(*in, strs[*j]);
+// 		if (!*in)
+// 			return (1); //malloc error
+// 		*in = join_w_tab(*in, strs[*j + 1]);
+// 		if (!*in)
+// 			return (1); //malloc error
+// 		*j += 2;
+// 	}
+// 	return (0);
+// }
+
+// int	init_ccmd(t_data *d, t_ccmd *ccmd)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*in;
+// 	char	*out;
+// 	char	**strs;
+
+// 	i = 0;
+// 	while (d->cmds[i])
+// 	{
+// 		ccmd[i].in = NULL;
+// 		ccmd[i].out = NULL;
+// 		strs = ms_split(d->cmds[i], "\t ");
+// 		if (!strs)
+// 			return (1);
+// 		j = 0;
+// 		in = NULL;
+// 		out = NULL;
+// 		while (strs[j])
+// 		{
+// 			if (!ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
+// 			{
+// 				if (set_cmd(ccmd + i, strs, &j))
+// 					return (1);
+// 			}
+// 			else
+// 			{
+// 				if (set_redirs(strs, &in, &out, &j))
+// 					return (1);
+// 			}
+// 		}
+// 		if (in)
+// 		{
+// 			ccmd[i].in = ms_split(in, "\t");
+// 			if (!ccmd[i].in)
+// 				return (1); //malloc error
+// 			free(in);
+// 		}
+// 		if (out)
+// 		{
+// 			ccmd[i].out = ms_split(out, "\t");
+// 			if (!ccmd[i].out)
+// 				return (1); //malloc error
+// 			free(out);
+// 		}
+// 		clean_strs(0, 0, 0, strs);
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 int	init_ccmd(t_data *d, t_ccmd *ccmd)
 {
@@ -186,7 +274,7 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 				return (1); //malloc error
 			free(out);
 		}
-		clean_strs(0, 0, 0, strs);
+		clean_strs(strs, 0, 0);
 		i++;
 	}
 	return (0);
@@ -372,7 +460,7 @@ int	shell_loop(t_data *d, char **env)
 			if (ca_parse(d, input))
 			{
 				free(input);
-				clean_cmd(d);
+				clean_data(d);
 				rl_clear_history();
 				printf("Error during parsing\n");
 				return (1);
@@ -380,12 +468,12 @@ int	shell_loop(t_data *d, char **env)
 			if (cmd_exec(d))
 			{
 				free(input);
-				clean_cmd(d);
+				clean_data(d);
 				rl_clear_history();
 				printf("Error during execution\n");
 				return (1);
 			}
-			clean_cmd(d);
+			clean_data(d);
 		}
 		free(input);
 		usleep(10);
