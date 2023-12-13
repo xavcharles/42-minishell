@@ -32,6 +32,21 @@ int	init_data(t_data *d, char **env)
 	return (0);
 }
 
+int	clean_data(t_data *d)
+{
+	int	i;
+
+	i = -1;
+	while (d->paths[++i])
+		free(d->paths[i]);
+	i = -1;
+	while (d->env[++i])
+		free(d->env[i]);
+	free(d->paths);
+	free(d->env);
+	return (0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
@@ -48,6 +63,7 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	}
 	shell_loop(data, env);
+	clean_data(data);
 	free(data);
 	return (0);
 }

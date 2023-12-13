@@ -80,6 +80,7 @@ int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
+int		clean_cmd(t_data *d);
 
 int	exec_1(t_data *d, int cc);
 int		redir_in(t_data *d);

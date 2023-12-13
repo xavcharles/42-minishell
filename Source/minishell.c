@@ -55,51 +55,52 @@ t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep)
 
 int	clean_cmd(t_data *d)
 {
-	char	**strs;
 	int	i;
+	int j;
 
 	i = 0;
+	j = -1;
 	while (i < d->cmd_count)
 	{
 		if (d->cmd[i].cmd_arg)
 		{
-			strs = d->cmd[i].cmd_arg;
-			while (*strs)
-				free(*(strs++));
+			j = -1;
+			while (d->cmd[i].cmd_arg[++j])
+				free(d->cmd[i].cmd_arg[j]);
 			free(d->cmd[i].cmd_arg);
 		}
 		if (d->cmd[i].in)
 		{
-			strs = d->cmd[i].in;
-			while (*strs)
-				free(*(strs++));
+			j = -1;
+			while (d->cmd[i].in[++j])
+				free(d->cmd[i].in[j]);
 			free(d->cmd[i].in);
 		}
 		if (d->cmd[i].out)
-		{
-			strs = d->cmd[i].out;
-			while (*strs)
-				free(*(strs++));
+		{	
+			j = -1;
+			while (d->cmd[i].out[++j])
+				free(d->cmd[i].out[j]);
 			free(d->cmd[i].out);
 		}
 		free(d->cmd[i].cmd);
 		free(d->cmd[i].prev_op);
 		free(d->cmd[i].next_op);
-		free(d->cmd);
 		i++;
 	}
+	free(d->cmd);
 	if (d->seps)
 	{
-		strs = d->seps;
-		while (*strs)
-			free(*(strs++));
+		j = -1;
+		while (d->seps[++j])
+			free(d->seps[j]);
 		free(d->seps);
 	}
 	if (d->cmds)
 	{
-		strs = d->cmds;
-		while (*strs)
-			free(*(strs++));
+		j = -1;
+		while (d->cmds[++j])
+			free(d->cmds[j]);
 		free(d->cmds);
 	}
 	return (1);
@@ -388,7 +389,6 @@ int	shell_loop(t_data *d, char **env)
 			clean_cmd(d);
 		}
 		free(input);
-		usleep(10);
 	}
 	(void) env;
 	free(input);

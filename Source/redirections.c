@@ -23,7 +23,6 @@ int	redir_out(t_data *d)
 	}
 	dup2(p.f2, 1);
 	close(p.f2);
-	exec_1(d);
 	return (0);
 }
 
@@ -90,6 +89,5 @@ int	redir_in(t_data *d)
 	}
 	dup2(p.f1, 0); 
 	close(p.f1);
-	exec_1(d);
 	return(0);
 }

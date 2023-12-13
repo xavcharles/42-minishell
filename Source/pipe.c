@@ -28,8 +28,16 @@ int	ft_pipe(t_data *d, int cc)
 	if (pid < 0)
 		return (printf("fork err") * 0);
 	if (pid == 0)
-		kido(p, d, cc);
-	daron(p, d, 1);
-	wait(NULL);
+	{
+		close(p.end[0]);
+		dup2(p.end[1], 1);
+		exec_1(d, cc);
+	}
+	else
+	{
+		wait(NULL);
+		close(p.end[1]);
+		dup2(p.end[0], 0);
+	}
 	return (0);
 }

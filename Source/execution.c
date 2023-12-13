@@ -26,39 +26,52 @@ int	exec_1(t_data *d, int cc)
 	}
 	return (0);
 }
-
+/*
 int	multiexec(t_data *d)
 {
-	pid_t	pid;
+	int	i;
 
-	pid = fork();
-	if (pid == 0)
+	i = 0;
+	while (i < d->cmd_count)
 	{
 		if (d->cmd->in)
 			redir_in(d);
 		if (d->cmd->out)
 			redir_out(d);
-		ft_pipe(d, 0);
+		ft_pipe(d, i + (i > 0));
+		i++;
 	}
-	wait(NULL);
+	exec_1(d, i);
 	return (0);
 }
+*/
 
 int	cmd_exec(t_data *d)
 {
+	int	i;
 	pid_t	pid;
 
-	if (d->cmd_count > 1)
-		return (multiexec(d));
+	i = 0;
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("cmd_count = %d\n", d->cmd_count);
-		if (d->cmd->in)
-			redir_in(d);
-		if (d->cmd->out)
-			redir_out(d);
-		exec_1(d, 0);
+		if (d->cmd_count > 1)
+		{
+			while (i < d->cmd_count - 1)
+			{
+				if (d->cmd->in)
+					redir_in(d);
+				ft_pipe(d, i);
+				i++;
+			}
+			if (d->cmd->out)
+				redir_out(d);
+			exec_1(d, i);
+		}
+		else if (d->cmd_count == 1)
+			exec_1(d, i);
+		else
+			return (printf("cmd error\n"), 1);
 	}
 	wait(NULL);
 	return (0);
