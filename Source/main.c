@@ -47,7 +47,7 @@ int	main(int ac, char **av, char **env)
 		free(data);
 		return (0);
 	}
-	shell_loop(data, env);
+	shell_loop(data);
 	free(data);
 	return (0);
 }

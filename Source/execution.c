@@ -19,7 +19,7 @@ int	exec_1(t_cmd *cmd, char **env)
 			if (execve(vcmd, scmd, env) == -1)
 			{
 				perror("Minishell");
-				clean_strs(0, 0, scmd, 0);
+				clean_strs(scmd, 0, 0);
 				free(vcmd);
 				return (1);
 			}
@@ -27,7 +27,7 @@ int	exec_1(t_cmd *cmd, char **env)
 		free(vcmd);
 		i++;
 	}
-	clean_strs(0, 0, scmd, 0);
+	clean_strs(scmd, 0, 0);
 	return (0);
 }
 

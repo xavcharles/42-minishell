@@ -24,6 +24,16 @@
 
 extern int	g_sig;
 
+typedef	struct s_cmd
+{
+	char 	**cmds;
+	char	**sep;
+	char 	**cmd_path;
+	char 	*path;
+	struct	s_data *data;
+	void	*next;
+}	t_cmd;
+
 typedef struct	s_ccmd
 {
 	char	*cmd;
@@ -56,10 +66,14 @@ typedef struct	s_data
 	t_pipe	*p;
 }	t_data;
 
-// t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
+void	clean_strs(char	**strs1, char **strs2, char **strs3);
+int		clean_data(t_data *d);
+void	clean_ccmd(t_ccmd *ccmd);
+int	init_ccmd(t_data *d, t_ccmd *ccmd);
+int	set_next_op(t_data *d, char *input);
 int		cmd_exec(t_cmd *cmd, char **env);
 int		redir_in(t_data *d, char **env);
-int		shell_loop(t_data *d, char **env);
+int		shell_loop(t_data *d);
 int		pathfinder(t_data *d);
 int	env_cpy(t_data *data, char **env);
 int	sep_check(char **seps);

@@ -5,7 +5,10 @@ SRC = Source/main.c \
 		Source/ic_signal.c \
 		Source/pwd.c \
 		Source/parse_utils2.c \
-		Source/sep_check.c
+		Source/sep_check.c \
+		Source/clean.c \
+		Source/init_cmd.c \
+		Source/set_op.c \
 
 NAME = minishell
 
