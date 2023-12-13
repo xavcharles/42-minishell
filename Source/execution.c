@@ -1,63 +1,64 @@
 #include "../minishell.h"
 
-int	exec_1(t_cmd *cmd, char **env)
+int	exec_1(t_data *d, int cc)
 {
 	int		i;
-	char	**scmd;
-	char	*tmp;
-	char 	*vcmd;
+	char 	*tmp;
+	char	*cwp;
 
 	i = 0;
-	scmd = ft_split(cmd->cmds[0], ' ');
-	while (cmd->cmd_path[i])
+	while (d->paths[i])
 	{
-		tmp = ft_strjoin(cmd->cmd_path[i], "/");
-		vcmd = ft_strjoin(tmp, scmd[0]);
+		tmp = ft_strjoin(d->paths[i], "/");
+		cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
 		free(tmp);
-		if (!access(vcmd, X_OK))
+		if (!access(cwp, X_OK))
 		{
-			if (execve(vcmd, scmd, env) == -1)
+			if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
 				perror("Minishell");
-				clean_strs(0, 0, scmd, 0);
-				free(vcmd);
+				free(cwp);
 				return (1);
 			}
 		}
-		free(vcmd);
+		free(cwp);
 		i++;
 	}
-	clean_strs(0, 0, scmd, 0);
 	return (0);
 }
 
-int	ref_sep(t_cmd *cmd, char **env)
-{
-	int	i;
-
-	i = -1;
-	(void) env;
-	while (cmd->sep[++i])
-	{
-		if (!ft_strncmp(cmd->sep[i], "|", 1))
-			printf("pipe \n");
-		else if (!ft_strncmp(cmd->sep[i], "<", 1))
-			printf("< \n");
-	}
-	return (0);
-}
-
-int	cmd_exec(t_cmd *cmd, char **env)
+int	multiexec(t_data *d)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		if (cmd->sep)
-			ref_sep(cmd, env);
-		if (exec_1(cmd, env))
-			return(1);
+		if (d->cmd->in)
+			redir_in(d);
+		if (d->cmd->out)
+			redir_out(d);
+		ft_pipe(d, 0);
+	}
+	wait(NULL);
+	return (0);
+}
+
+int	cmd_exec(t_data *d)
+{
+	pid_t	pid;
+
+	if (d->cmd_count > 1)
+		return (multiexec(d));
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("cmd_count = %d\n", d->cmd_count);
+		if (d->cmd->in)
+			redir_in(d);
+		if (d->cmd->out)
+			redir_out(d);
+		exec_1(d, 0);
 	}
 	wait(NULL);
 	return (0);

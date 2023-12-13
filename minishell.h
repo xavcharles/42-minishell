@@ -67,8 +67,6 @@ typedef struct	s_data
 }	t_data;
 
 t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
-int		cmd_exec(t_cmd *cmd, char **env);
-int		redir_in(t_data *d, char **env);
 int		shell_loop(t_data *d, char **env);
 int		pathfinder(t_data *d);
 int	env_cpy(t_data *data, char **env);
@@ -83,4 +81,9 @@ char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
 
+int	exec_1(t_data *d, int cc);
+int		redir_in(t_data *d);
+int		cmd_exec(t_data *d);
+int		redir_out(t_data *d);
+int		ft_pipe(t_data *d, int cc);
 #endif
