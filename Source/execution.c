@@ -59,19 +59,25 @@ int	cmd_exec(t_data *d)
 		{
 			while (i < d->cmd_count - 1)
 			{
-				if (d->cmd->in)
-					redir_in(d);
+				if (d->cmd[i].in)
+					redir_in(&d->cmd[i]);
 				ft_pipe(d, i);
 				i++;
 			}
-			if (d->cmd->out)
-				redir_out(d);
+			if (d->cmd[i].out)
+				redir_out(&d->cmd[i]);
 			exec_1(d, i);
 		}
-		else if (d->cmd_count == 1)
-			exec_1(d, i);
 		else
-			return (printf("cmd error\n"), 1);
+		{
+			if (d->cmd->in)
+				if(redir_in(d->cmd))
+					return (1);
+			if (d->cmd->out)
+				redir_out(d->cmd);
+			if (exec_1(d, 0))
+				return (printf("cmd error\n"), 1);
+		}
 	}
 	wait(NULL);
 	return (0);

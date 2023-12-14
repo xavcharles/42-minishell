@@ -34,7 +34,7 @@ int	set_redirs(char **strs, char **in, char **out, int *j)
 			return (1); //malloc error
 		*j += 2;
 	}
-	while (strs[*j] && (!ft_strncmp(strs[*j], ">", ft_strlen(strs[*j])) || !ft_strncmp(strs[*j], ">>", ft_strlen(strs[*j]))))
+	while (strs[*j] && (!ft_strncmp(strs[*j], "<", ft_strlen(strs[*j])) || !ft_strncmp(strs[*j], "<<", ft_strlen(strs[*j]))))
 	{
 		if (!strs[*j + 1])
 			return (1); //parse error
