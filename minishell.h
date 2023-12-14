@@ -66,11 +66,14 @@ typedef struct	s_data
 	t_pipe	*p;
 }	t_data;
 
-t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
-int		shell_loop(t_data *d, char **env);
+void	clean_strs(char	**strs1, char **strs2, char **strs3);
+int		clean_data(t_data *d);
+void	clean_ccmd(t_ccmd *ccmd);
+int	init_ccmd(t_data *d, t_ccmd *ccmd);
+int	set_next_op(t_data *d, char *input);
+int		shell_loop(t_data *d);
 int		pathfinder(t_data *d);
 int	env_cpy(t_data *data, char **env);
-int	sep_check(char **seps);
 char	*join_w_space(char *s1, char *s2);
 char	*join_w_tab(char *s1, char *s2);
 void	ic_sigs(int sig);
@@ -80,8 +83,6 @@ int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
-int		clean_cmd(t_data *d);
-
 int	exec_1(t_data *d, int cc);
 int		redir_in(t_data *d);
 int		cmd_exec(t_data *d);

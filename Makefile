@@ -8,6 +8,9 @@ SRC = Source/main.c \
 		Source/sep_check.c \
 		Source/redirections.c \
 		Source/pipe.c \
+		Source/clean.c \
+		Source/init_cmd.c \
+		Source/set_op.c \
 
 NAME = minishell
 

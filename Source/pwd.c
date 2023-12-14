@@ -26,7 +26,7 @@ int	env_cpy(t_data *data, char **env)
 		data->env[i] = ft_strdup(env[i]);
 		if (!data->env[i])
 		{
-			clean_strs(0, 0, 0, data->env);
+			clean_strs(data->env, 0, 0);
 			return (1);
 		}
 		i++;
