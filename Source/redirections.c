@@ -14,7 +14,7 @@ int	redir_out(t_data *d)
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_APPEND, 0777);
 		else
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_TRUNC, 0777);
-		free(tmp);
+		clean_strs(tmp, 0, 0);
 	}
 	if (p.f2 < 0)
 	{
@@ -80,7 +80,7 @@ int	redir_in(t_data *d)
 			p.f1 = open(tmp[1], O_RDONLY);
 		else
 			here_doc(tmp[1]);
-		free(tmp);
+		clean_strs(tmp, 0, 0);
 	}
 	if (p.f1 < 0)
 	{
