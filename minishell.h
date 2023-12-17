@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <errno.h>
 
 extern int	g_sig;
 
@@ -82,10 +83,10 @@ int		cmd_count(char const *s, char *set);
 int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
-int	sep_check(char **seps);
-int	exec_1(t_data *d, int cc);
-int		redir_in(t_data *d);
+int		sep_check(char **seps);
+int		exec_1(t_data *d, int cc);
+int		redir_in(t_ccmd *cmd);
 int		cmd_exec(t_data *d);
-int		redir_out(t_data *d);
+int		redir_out(t_ccmd *cmd);
 int		ft_pipe(t_data *d, int cc);
 #endif

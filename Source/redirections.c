@@ -1,20 +1,19 @@
 #include "../minishell.h"
 
-int	redir_out(t_data *d)
+int	redir_out(t_ccmd *cmd)
 {
 	t_pipe	p;
 	int	i;
 	char	**tmp;
 
 	i = -1;
-	while (d->cmd->out[++i])
+	while (cmd->out[++i])
 	{
-		tmp = ft_split(d->cmd->out[i], ' ');
+		tmp = ft_split(cmd->out[i], ' ');
 		if (ft_strlen(tmp[0]) == 2)
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_APPEND, 0777);
 		else
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_TRUNC, 0777);
-		clean_strs(tmp, 0, 0);
 	}
 	if (p.f2 < 0)
 	{
@@ -66,26 +65,27 @@ int	here_doc(char *end)
 	return (0);
 }
 
-int	redir_in(t_data *d)
+int	redir_in(t_ccmd *cmd)
 {
 	t_pipe	p;
 	char	**tmp;
 	int		i;
 
 	i = -1;
-	while (d->cmd->in[++i])
+	while (cmd->in[++i])
 	{
-		tmp = ft_split(d->cmd->in[i], ' ');
+		tmp = ft_split(cmd->in[i], ' ');
 		if (ft_strlen(tmp[0]) == 1)
+		{
 			p.f1 = open(tmp[1], O_RDONLY);
+			if (p.f1 == -1)
+			{
+				perror("file not found\n");
+				return (1);
+			}
+		}
 		else
-			here_doc(tmp[1]);
-		clean_strs(tmp, 0, 0);
-	}
-	if (p.f1 < 0)
-	{
-		printf("file not found\n");
-		return (1);
+			printf("here dpc \n");
 	}
 	dup2(p.f1, 0); 
 	close(p.f1);
