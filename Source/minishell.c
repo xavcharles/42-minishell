@@ -106,14 +106,14 @@ int	shell_loop(t_data *d)
 				printf("Error during parsing\n");
 				return (1);
 			}
-			if (cmd_exec(d))
-			{
-				free(input);
-				clean_data(d);
-				rl_clear_history();
-				printf("Error during execution\n");
-				return (1);
-			}
+			// if (cmd_exec(d))
+			// {
+			// 	free(input);
+			// 	clean_data(d);
+			// 	rl_clear_history();
+			// 	printf("Error during execution\n");
+			// 	return (1);
+			// }
 			clean_data(d);
 		}
 		free(input);
