@@ -1,9 +1,6 @@
 #include "../minishell.h"
 
-
-
-
-int	ft_echo(t_echo *sp)
+int	ft_echo(t_data *d)
 {
 
 }

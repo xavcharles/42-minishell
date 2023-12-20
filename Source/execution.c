@@ -1,5 +1,22 @@
 #include "../minishell.h"
 
+int	built_in(t_data *d, int cc)
+{
+	if (!ft_strncmp(d->cmd[cc].cmd, "env", 3))
+		return (print_env(d), 1);
+	else if (!ft_strncmp(d->cmd[cc].cmd, "export", 6))
+		return (ft_export(d), 1);
+	else if (!ft_strncmp(d->cmd[cc].cmd, "unset", 5))
+		return (ft_unset(d), 1);
+	else if (!ft_strncmp(d->cmd[cc].cmd, "pwd", 3))
+		return (printf("pwd\n"), 1);
+	else if (!ft_strncmp(d->cmd[cc].cmd, "cd", 2))
+		return (printf("cd\n"), 1);
+	else if (!ft_strncmp(d->cmd[cc].cmd, "echo", 4))
+		return (printf("echo\n"), 1);
+	return (0);
+}
+
 int	exec_1(t_data *d, int cc)
 {
 	int		i;
@@ -7,22 +24,27 @@ int	exec_1(t_data *d, int cc)
 	char	*cwp;
 
 	i = 0;
-	while (d->paths[i])
+	if (built_in(d, cc))
+		return (0);
+	else
 	{
-		tmp = ft_strjoin(d->paths[i], "/");
-		cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
-		free(tmp);
-		if (!access(cwp, X_OK))
+		while (d->paths[i])
 		{
-			if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
+			tmp = ft_strjoin(d->paths[i], "/");
+			cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
+			free(tmp);
+			if (!access(cwp, X_OK))
 			{
-				perror("Minishell");
-				free(cwp);
-				return (1);
+				if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
+				{
+					perror("Minishell");
+					free(cwp);
+					return (1);
+				}
 			}
+			free(cwp);
+			i++;
 		}
-		free(cwp);
-		i++;
 	}
 	return (0);
 }
@@ -49,11 +71,12 @@ int	multiexec(t_data *d)
 int	cmd_exec(t_data *d)
 {
 	int	i;
-	pid_t	pid;
+	t_pipe p;
 
 	i = 0;
-	pid = fork();
-	if (pid == 0)
+	p.pid1 = fork();
+	d->p = &p;
+	if (p.pid1 == 0)
 	{
 		if (d->cmd_count > 1)
 		{
