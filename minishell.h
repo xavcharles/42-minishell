@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <unistd.h>
 #include <errno.h>
 
 extern int	g_sig;
@@ -89,4 +90,7 @@ int		redir_in(t_ccmd *cmd);
 int		cmd_exec(t_data *d);
 int		redir_out(t_ccmd *cmd);
 int		ft_pipe(t_data *d, int cc);
+int		print_env(t_data *d);
+int		ft_export(t_data *d);
+int		ft_unset(t_data *d);
 #endif
