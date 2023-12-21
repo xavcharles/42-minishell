@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	built_in(t_data *d, int cc)
+int	is_builtin(t_data *d, int cc)
 {
 	if (!ft_strncmp(d->cmd[cc].cmd, "env", 3))
 		return (print_env(d), 1);
@@ -24,8 +24,8 @@ int	exec_1(t_data *d, int cc)
 	char	*cwp;
 
 	i = 0;
-	if (built_in(d, cc))
-		return (0);
+	if (is_builtin(d, cc))
+		exit(0);
 	else
 	{
 		while (d->paths[i])
@@ -33,14 +33,11 @@ int	exec_1(t_data *d, int cc)
 			tmp = ft_strjoin(d->paths[i], "/");
 			cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
 			free(tmp);
-			if (!access(cwp, X_OK))
+			if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
-				if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
-				{
-					perror("Minishell");
-					free(cwp);
-					return (1);
-				}
+				perror("Minishell");
+				free(cwp);
+				exit (1);
 			}
 			free(cwp);
 			i++;
