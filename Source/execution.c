@@ -1,5 +1,25 @@
 #include "../minishell.h"
 
+char	*cmd_with_path(t_data *d, int cc)
+{
+	int	i;
+	char	*testcmd;
+	char	*testpath;
+
+	i = -1;
+	while(d->paths[++i])
+	{
+		testpath = ft_strjoin(d->paths[i], "/");
+		testcmd = ft_strjoin(testpath, d->cmd[cc].cmd);
+		free(testpath);
+		if (access(testcmd, F_OK | X_OK) == 0)
+			return (testcmd);
+		free(testcmd);
+	}
+	testcmd = ft_strdup(d->cmd[cc].cmd);
+	return (testcmd);
+}
+
 int	is_builtin(t_data *d, int cc)
 {
 	if (!ft_strncmp(d->cmd[cc].cmd, "env", 3))
@@ -19,32 +39,23 @@ int	is_builtin(t_data *d, int cc)
 
 int	exec_1(t_data *d, int cc)
 {
-	int		i;
-	char 	*tmp;
 	char	*cwp;
 
-	i = 0;
 	if (is_builtin(d, cc))
 		exit(0);
 	else
 	{
-		while (d->paths[i])
+		cwp = cmd_with_path(d, cc);
+		if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
 		{
-			tmp = ft_strjoin(d->paths[i], "/");
-			cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
-			free(tmp);
-			if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
-			{
-				perror("Minishell");
-				free(cwp);
-				exit (1);
-			}
+			perror("Minishell");
 			free(cwp);
-			i++;
+			exit (1);
 		}
 	}
 	return (0);
 }
+
 /*
 int	multiexec(t_data *d)
 {
