@@ -24,6 +24,8 @@
 #include <unistd.h>
 #include <errno.h>
 
+# define BUF_ENV 1000
+
 extern int	g_sig;
 
 typedef	struct s_cmd

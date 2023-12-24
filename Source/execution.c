@@ -48,33 +48,64 @@ int	exec_1(t_data *d, int cc)
 		cwp = cmd_with_path(d, cc);
 		if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
 		{
+<<<<<<< HEAD
 			perror("Minishell");
+=======
+			tmp = ft_strjoin(d->paths[i], "/");
+			cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
+			free(tmp);
+			if (!access(cwp, X_OK))
+			{
+				if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
+				{
+					perror("Minishell");
+					free(cwp);
+					exit (1);
+				}
+			}
+>>>>>>> a89cff3 (exec a verif, built in a refaire)
 			free(cwp);
 			exit (1);
 		}
 	}
-	return (0);
+	perror(d->cmd[cc].cmd);
+	exit (0);
 }
 
+<<<<<<< HEAD
 /*
 int	multiexec(t_data *d)
+=======
+int	tab_len(char **tab)
+>>>>>>> a89cff3 (exec a verif, built in a refaire)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	while (i < d->cmd_count)
-	{
-		if (d->cmd->in)
-			redir_in(d);
-		if (d->cmd->out)
-			redir_out(d);
-		ft_pipe(d, i + (i > 0));
+	while (tab[i])
 		i++;
-	}
-	exec_1(d, i);
-	return (0);
+	return i;
 }
-*/
+
+char	**env_read(int fd)
+{
+	int		i;
+	char	buf[BUF_ENV]; 	
+	char	**tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (1)
+	{
+		if (read(fd, buf, sizeof(buf)) == 0)
+			break ;
+		tmp = realloc(tmp, (i + 2) * sizeof(char *));
+		tmp[i] = ft_strdup(buf);
+		tmp[++i] = NULL;
+	}
+	close(fd);
+	return (tmp);
+}
 
 int	cmd_exec(t_data *d)
 {
@@ -83,9 +114,12 @@ int	cmd_exec(t_data *d)
 
 	i = 0;
 	p.pid1 = fork();
+	if (pipe(p.end))
+		return (perror("pipe"), 1);
 	d->p = &p;
 	if (p.pid1 == 0)
 	{
+		close(p.end[0]);
 		if (d->cmd_count > 1)
 		{
 			while (i < d->cmd_count - 1)
@@ -110,6 +144,9 @@ int	cmd_exec(t_data *d)
 				return (printf("cmd error\n"), 1);
 		}
 	}
+	close(p.end[1]);
 	wait(NULL);
+	if (!ft_strncmp(d->cmd->cmd, "export", 6))
+		d->env = env_read(p.end[0]);
 	return (0);
 }

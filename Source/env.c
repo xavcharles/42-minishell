@@ -47,6 +47,21 @@ char **ft_tabjoin(char **tab, char *s)
 	return (n_tab);
 }
 
+void	write_data_fd(t_data *d)
+{
+	int	i;
+	int	l;
+
+	i = 0;
+	l = 0;
+	while (d->env[i])
+	{
+		l = ft_strlen(d->env[i]) + 1;
+		write(d->p->end[1], d->env[i], l);
+	}
+	write(d->p->end[1], "", 1);
+}
+
 int	ft_export(t_data *d)
 {
 	int		i;
@@ -66,6 +81,7 @@ int	ft_export(t_data *d)
 		d->env = ft_tabjoin(d->env, d->cmd->cmd_arg[1]);
 	else
 		d->env[j] = ft_strjoin(d->env[j], tmp[1]);
+	write_data_fd(d);
 	return (0);
 }
 
