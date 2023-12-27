@@ -103,6 +103,8 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 		ccmd[i].cmd_arg = NULL;
 		ccmd[i].in = NULL;
 		ccmd[i].out = NULL;
+		if (input_check(d))
+			return (1);
 		strs = ms_split(d->cmds[i], "\t ");
 		if (!strs)
 			return (1);

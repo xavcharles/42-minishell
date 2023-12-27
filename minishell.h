@@ -86,5 +86,6 @@ int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
+int	input_check(t_data *strs);
 
 #endif

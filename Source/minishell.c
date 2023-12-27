@@ -100,11 +100,11 @@ int	shell_loop(t_data *d)
 			add_history(input);
 			if (ca_parse(d, input))
 			{
-				free(input);
-				clean_data(d);
-				rl_clear_history();
+				// free(input);
+				// clean_data(d);
+				// rl_clear_history();
 				printf("Error during parsing\n");
-				return (1);
+				// return (1);
 			}
 			// if (cmd_exec(d))
 			// {

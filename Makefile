@@ -9,7 +9,8 @@ SRC = Source/main.c \
 		Source/clean.c \
 		Source/init_cmd.c \
 		Source/set_op.c \
-
+		Source/input_check.c \
+		
 NAME = minishell
 
 OBJ = $(SRC:.c=.o)
