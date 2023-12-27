@@ -1,25 +1,5 @@
 #include "../minishell.h"
 
-char	*cmd_with_path(t_data *d, int cc)
-{
-	int	i;
-	char	*testcmd;
-	char	*testpath;
-
-	i = -1;
-	while(d->paths[++i])
-	{
-		testpath = ft_strjoin(d->paths[i], "/");
-		testcmd = ft_strjoin(testpath, d->cmd[cc].cmd);
-		free(testpath);
-		if (access(testcmd, F_OK | X_OK) == 0)
-			return (testcmd);
-		free(testcmd);
-	}
-	testcmd = ft_strdup(d->cmd[cc].cmd);
-	return (testcmd);
-}
-
 int	is_builtin(t_data *d, int cc)
 {
 	if (!ft_strncmp(d->cmd[cc].cmd, "env", 3))
@@ -39,45 +19,31 @@ int	is_builtin(t_data *d, int cc)
 
 int	exec_1(t_data *d, int cc)
 {
-	char	*cwp;
+	int	i;
+	char *tmp;
 
-	if (is_builtin(d, cc))
-		exit(0);
-	else
+	i = 0;
+	while (d->paths[i])
 	{
-		cwp = cmd_with_path(d, cc);
-		if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
+		tmp = ft_strjoin(d->paths[i], "/");
+		tmp = ft_strjoin(tmp, d->cmd[cc].cmd);
+		if (!access(tmp, X_OK))
 		{
-<<<<<<< HEAD
-			perror("Minishell");
-=======
-			tmp = ft_strjoin(d->paths[i], "/");
-			cwp = ft_strjoin(tmp, d->cmd[cc].cmd);
-			free(tmp);
-			if (!access(cwp, X_OK))
+			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
-				if (execve(cwp, d->cmd[cc].cmd_arg, d->env) == -1)
-				{
-					perror("Minishell");
-					free(cwp);
-					exit (1);
-				}
+				free(tmp);
+				perror("Minishell");
+				exit (1);
 			}
->>>>>>> a89cff3 (exec a verif, built in a refaire)
-			free(cwp);
-			exit (1);
 		}
+		free(tmp);
+		i++;
 	}
 	perror(d->cmd[cc].cmd);
 	exit (0);
 }
 
-<<<<<<< HEAD
-/*
-int	multiexec(t_data *d)
-=======
 int	tab_len(char **tab)
->>>>>>> a89cff3 (exec a verif, built in a refaire)
 {
 	int i;
 
