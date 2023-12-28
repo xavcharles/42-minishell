@@ -7,13 +7,13 @@ int	is_builtin(t_data *d, int cc)
 	else if (!ft_strncmp(d->cmd[cc].cmd, "export", 6))
 		return (ft_export(d), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "unset", 5))
-		return (ft_unset(d), 1);
+		return (ft_unset(d, cc), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "pwd", 3))
 		return (printf("pwd\n"), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "cd", 2))
 		return (printf("cd\n"), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "echo", 4))
-		return (printf("echo\n"), 1);
+		return (ft_echo(d, 0), 1);
 	return (0);
 }
 
@@ -43,16 +43,7 @@ int	exec_1(t_data *d, int cc)
 	exit (0);
 }
 
-int	tab_len(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return i;
-}
-
+/*
 char	**env_read(int fd)
 {
 	int		i;
@@ -72,6 +63,7 @@ char	**env_read(int fd)
 	close(fd);
 	return (tmp);
 }
+*/
 
 int	cmd_exec(t_data *d)
 {
@@ -79,13 +71,11 @@ int	cmd_exec(t_data *d)
 	t_pipe p;
 
 	i = 0;
+	if (is_builtin(d, 0))
+		return (0);
 	p.pid1 = fork();
-	if (pipe(p.end))
-		return (perror("pipe"), 1);
-	d->p = &p;
 	if (p.pid1 == 0)
 	{
-		close(p.end[0]);
 		if (d->cmd_count > 1)
 		{
 			while (i < d->cmd_count - 1)
@@ -110,9 +100,9 @@ int	cmd_exec(t_data *d)
 				return (printf("cmd error\n"), 1);
 		}
 	}
-	close(p.end[1]);
-	wait(NULL);
-	if (!ft_strncmp(d->cmd->cmd, "export", 6))
-		d->env = env_read(p.end[0]);
+	else
+	{
+		wait(NULL);
+	}
 	return (0);
 }

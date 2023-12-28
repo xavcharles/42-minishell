@@ -11,7 +11,8 @@ SRC = Source/main.c \
 		Source/clean.c \
 		Source/init_cmd.c \
 		Source/set_op.c \
-		Source/env.c
+		Source/env.c \
+		Source/echo.c
 
 NAME = minishell
 
