@@ -60,6 +60,7 @@ typedef struct	s_data
 	char	**seps;
 	char 	**paths;
 	char	**env;
+	char	*input;
 	int		cmd_count;
 	int		sep_count;
 	int		err;

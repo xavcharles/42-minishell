@@ -22,6 +22,7 @@ int	ca_parse(t_data *d, char *input)
 		i++;
 	if (input [i] == '&' || input[i] == '|')
 		return (1); //parse error 1st char == & ou && ou | ou ||
+	d->input = input;
 	d->cmd_count = cmd_count(input, "|&");
 	d->sep_count = sep_count(input, "|&");
 	d->seps = rev_ms_split(input, "&|");
