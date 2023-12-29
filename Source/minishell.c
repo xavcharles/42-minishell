@@ -28,8 +28,8 @@ int	ca_parse(t_data *d, char *input)
 	d->seps = rev_ms_split(input, "&|");
 	if (!d->seps && d->sep_count)
 		return (1); // free a implement
-	if (sep_check(d->seps))
-		return (1); // free a implement
+	// if (sep_check(d->seps))
+	// 	return (1); // free a implement
 	d->cmds = ms_split(input, "&|");
 	if (!d->cmds)
 		return (1);	//free a implement

@@ -99,10 +99,10 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 	i = 0;
 	while (d->cmds[i])
 	{
-		ccmd[i].cmd = NULL;
-		ccmd[i].cmd_arg = NULL;
-		ccmd[i].in = NULL;
-		ccmd[i].out = NULL;
+		d->cmd[i].cmd = NULL;
+		d->cmd[i].cmd_arg = NULL;
+		d->cmd[i].in = NULL;
+		d->cmd[i].out = NULL;
 		if (input_check(d))
 			return (1);
 		strs = ms_split(d->cmds[i], "\t ");

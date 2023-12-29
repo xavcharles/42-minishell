@@ -88,5 +88,7 @@ char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
 int	input_check(t_data *strs);
+int	check_esp(char *str, int *i);
+int	check_pipe(char *str, int *i);
 
 #endif

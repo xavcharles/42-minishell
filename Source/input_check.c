@@ -167,9 +167,28 @@ int	input_check(t_data *d)
 {
 	int	i;
 	char	*str;
+	char	**strs;
 
 	i = 0;
 	str = d->input;
+	strs = ms_split(d->cmds[i], "\t ");
+		if (!strs)
+			return (1);
+	while (strs[i])
+	{
+		if (!ft_strncmp(strs[i], "<<<", ft_strlen(strs[i])))
+		{
+			if ((i < 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
+				&& (!ft_strchr(strs[i + 1], '<') || !ft_strchr(strs[i + 1], '>')))
+			{
+				clean_strs(strs, 0, 0);
+				return (printf("minishell: syntax error near unexpected token `>'\n"));
+			}
+		}
+		i++;
+	}
+	clean_strs(strs, 0, 0);
+	i = 0;
 	while (*str)
 	{
 		if (!is_charset(*str, "&|><"))
@@ -178,7 +197,6 @@ int	input_check(t_data *d)
 		{
 			if (*str == '<')
 			{
-				i = 0;
 				str = ft_strchr(str, '<');
 				if (check_lessthan(str, &i))
 				{
@@ -188,9 +206,26 @@ int	input_check(t_data *d)
 			}
 			else if (*str == '>')
 			{
-				i = 0;
 				str = ft_strchr(str, '>');
 				if (check_morethan(str, &i))
+				{
+					return (1);
+				}
+				str += i;
+			}
+			else if (*str == '&')
+			{
+				str = ft_strchr(str, '&');
+				if (check_esp(str, &i))
+				{
+					return (1);
+				}
+				str += i;
+			}
+			else if (*str == '|')
+			{
+				str = ft_strchr(str, '|');
+				if (check_pipe(str, &i))
 				{
 					return (1);
 				}
