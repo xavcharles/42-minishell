@@ -8,14 +8,14 @@ int	set_cmd(t_ccmd *ccmd, char **strs, int *j)
 	cmd_args = NULL;
 	ccmd->cmd = ft_strdup(strs[*j]);
 	if (!ccmd->cmd)
-		return (1); //implement
+		return (1); //malloc error
 	while (strs[*j] && !ft_strchr(strs[*j], '<') && !ft_strchr(strs[*j], '>'))
 		cmd_args = join_w_space(cmd_args, strs[(*j)++]);
 	if (!cmd_args)
-		return (1);
+		return (1); //malloc error
 	ccmd->cmd_arg = ms_split(cmd_args, " ");
 	if (!ccmd->cmd_arg)
-		return (1);
+		return (free(cmd_args), 1); //malloc error
 	free(cmd_args);
 	return (0);
 }
@@ -96,13 +96,10 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 	char	*out;
 	char	**strs;
 
+	init_zero(d);
 	i = 0;
 	while (d->cmds[i])
 	{
-		d->cmd[i].cmd = NULL;
-		d->cmd[i].cmd_arg = NULL;
-		d->cmd[i].in = NULL;
-		d->cmd[i].out = NULL;
 		if (input_check(d))
 			return (1);
 		strs = ms_split(d->cmds[i], "\t ");
@@ -111,9 +108,9 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 		in = NULL;
 		out = NULL;
 		if (loop_cmd(ccmd + i, strs, &in, &out))
-			return (1);
+			return (clean_strs(strs, 0, 0), 1);
 		if (set_in_out(ccmd + i, &in, &out))
-			return (1);
+			return (clean_strs(strs, 0, 0) ,1);
 		clean_strs(strs, 0, 0);
 		i++;
 	}
