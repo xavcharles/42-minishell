@@ -24,8 +24,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-# define BUF_ENV 1000
-
 extern int	g_sig;
 
 typedef	struct s_cmd
@@ -96,5 +94,7 @@ int		print_env(t_data *d);
 int		ft_export(t_data *d);
 int		ft_unset(t_data *d, int cc);
 int		ft_echo(t_data *d, int cc);
+int		cd_builtin(t_data *d, int cc);
+int		pwd_builtin(t_data *d, int cc);
 
 #endif

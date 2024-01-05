@@ -9,9 +9,9 @@ int	is_builtin(t_data *d, int cc)
 	else if (!ft_strncmp(d->cmd[cc].cmd, "unset", 5))
 		return (ft_unset(d, cc), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "pwd", 3))
-		return (printf("pwd\n"), 1);
+		return (pwd_builtin(d, cc), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "cd", 2))
-		return (printf("cd\n"), 1);
+		return (cd_builtin(d, cc), 1);
 	else if (!ft_strncmp(d->cmd[cc].cmd, "echo", 4))
 		return (ft_echo(d, 0), 1);
 	return (0);
