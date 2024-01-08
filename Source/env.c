@@ -17,7 +17,7 @@ int	print_env(t_data *d)
 	int i;
 
 	i = -1;
-	while (d->env[++i])
+	while (d->env[++i] != NULL)
 		printf("%s\n", d->env[i]);
 	return (0);
 }
@@ -77,20 +77,28 @@ char	**ft_subtab(char **tab, char *s)
 
 	i = 0;
 	j = 0;
-	while (tab[i])
+	while (tab[i] != NULL)
 		i++;
 	n_tab = malloc(sizeof(char *) * i);
 	i = 0;
-	while (tab[j + 1])
+	while (tab[i] != NULL)
 	{
-		if (!ft_strncmp(s, tab[i], ft_strlen(s)))
+		if (!ft_strncmp(tab[i], s, ft_strlen(s)))
+		{
 			i++;
-		n_tab[j] = ft_strdup(tab[i]);
-		free(tab[i]);
+			if (tab[i] == NULL)
+			{
+				n_tab[j] = NULL;
+				break;
+			}
+		}
+		if (tab[i] != NULL && tab[j] != NULL)
+		{
+			n_tab[j] = ft_strdup(tab[i]);
+			j++;
+		}
 		i++;
-		j++;
 	}
-	free(tab);
 	return (n_tab);
 }
 
@@ -104,7 +112,10 @@ int	ft_unset(t_data *d, int cc)
 	while (d->env[i] != NULL)
 	{
 		if (!ft_strncmp(d->env[i], d->cmd[cc].cmd_arg[j], ft_strlen(d->cmd[cc].cmd_arg[j])))
+		{
 			d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
+			break ;
+		}
 		i++;
 	}
 	return (0);
