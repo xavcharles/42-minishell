@@ -29,19 +29,24 @@ int	cmd_count(char const *s, char *set)
 		return (0);
 	while (s[i])
 	{
-		if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		{
-			open_quote = s[i];
-			in_quote = 1;
-			// i++;
-		}
+		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+		// {
+		// 	open_quote = s[i];
+		// 	in_quote = 1;
+		// 	// i++;
+		// }
 		if (is_charset(s[i], set) && !in_quote)
 			i++;
 		else
 		{
 			while (s[i] && (!is_charset(s[i], set) || in_quote))
 			{
-				if (s[i] == open_quote)
+				if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+				{
+					open_quote = s[i];
+					in_quote = 1;
+				}
+				else if (in_quote == 1 && s[i] == open_quote)
 				{
 					open_quote = 0;
 					in_quote = 0;
@@ -69,15 +74,14 @@ int	sep_count(char const *s, char *set)
 		return (0);
 	while (s[i])
 	{
-		if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		{
-			open_quote = s[i];
-			in_quote = 1;
-			// i++;
-		}
 		if (s[i] && (!is_charset(s[i], set) || in_quote))
 		{
-			if (s[i] == open_quote)
+			if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+			{
+				open_quote = s[i];
+				in_quote = 1;
+			}
+			else if (s[i] == open_quote)
 			{
 				open_quote = 0;
 				in_quote = 0;
@@ -112,12 +116,12 @@ char	**ms_split(char *s, char *set)
 	open_quote = 0;
 	while (s && s[i])
 	{
-		if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		{
-			open_quote = s[i];
-			in_quote = 1;
-			// i++;
-		}
+		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+		// {
+		// 	open_quote = s[i];
+		// 	in_quote = 1;
+		// 	// i++;
+		// }
 		if (is_charset(s[i], set) && !in_quote)
 			i++;
 		else
@@ -125,7 +129,12 @@ char	**ms_split(char *s, char *set)
 			start = i;
 			while (s[i] && (!is_charset(s[i], set) || in_quote))
 			{
-				if (open_quote != 0 && s[i] == open_quote)
+				if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+				{
+					open_quote = s[i];
+					in_quote = 1;
+				}
+				else if (in_quote == 1 && s[i] == open_quote && i != start)
 				{
 					open_quote = 0;
 					in_quote = 0;
@@ -164,15 +173,20 @@ char	**rev_ms_split(char *s, char *set)
 	open_quote = 0;
 	while (s && s[i])
 	{
-		if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		{
-			open_quote = s[i];
-			in_quote = 1;
-			// i++;
-		}
+		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+		// {
+		// 	open_quote = s[i];
+		// 	in_quote = 1;
+		// 	// i++;
+		// }
 		if (s[i] && (!is_charset(s[i], set) || in_quote))
 		{
-			if (s[i] == open_quote)
+			if ((s[i] == '\'' || s[i] == '"') && !in_quote)
+			{
+				open_quote = s[i];
+				in_quote = 1;
+			}
+			else if (s[i] == open_quote)
 			{
 				open_quote = 0;
 				in_quote = 0;

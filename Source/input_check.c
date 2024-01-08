@@ -173,12 +173,12 @@ int	input_check(t_data *d)
 	str = d->input;
 	strs = ms_split(d->cmds[i], "\t ");
 		if (!strs)
-			return (1);
+			return (printf("c'est ici \n"));
 	while (strs[i])
 	{
 		if (!ft_strncmp(strs[i], "<<<", ft_strlen(strs[i])))
 		{
-			if ((i < 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
+			if ((i > 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
 				&& (!ft_strchr(strs[i + 1], '<') || !ft_strchr(strs[i + 1], '>')))
 			{
 				clean_strs(strs, 0, 0);
