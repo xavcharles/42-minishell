@@ -1,28 +1,52 @@
 
 #include "../minishell.h"
 
+int	check_first(char *input)
+{
+	int	i;
 
-// int check_redir(char *sep)
-// {
-// 	if (ft_strlen(sep) < 3)
-// 	{
-// 		if (!ft_strncmp(sep, "<", ft_strlen(sep)))
-// 			return (0);
-// 		if (!ft_strncmp(sep, ">", ft_strlen(sep)))
-// 			return (0);
-// 		if (!ft_strncmp(sep, ">>", 2))
-// 			return (0);
-// 		if (!ft_strncmp(sep, "<<", 2))
-// 			return (0);
-// 		if (!ft_strncmp(sep, "<>", 2))
-// 			return (0);
-// 	}
-// 	while (sep[i])
-// 	{
-// 		if (sep([i]) == '>')
-// 	}
+	i = 0;
+	if (input[0] == '|')
+	{
+		while (input[i] && input[i] == '|' && i < 2)
+			i++;
+		if (i == 2)
+			return (printf("minishell: syntax error near unexpected token `||'\n"));
+		if (i == 1 && input[i] == '&')
+			return (printf("minishell: syntax error near unexpected token `|&'\n"));
+		else
+			return (printf("minishell: syntax error near unexpected token `|'\n"));
+	}
+	else if (input[0] == '&')
+	{
+		while (input[i] && input[i] == '&' && i < 2)
+			i++;
+		if (i == 2)
+			return (printf("minishell: syntax error near unexpected token `&&'\n"));
+		else
+			return (printf("minishell: syntax error near unexpected token `&'\n"));
+	}
+	return (0);
+}
 
-// }
+int	check_firstbis(char *input)
+{
+	int	i;
+
+	i = 0;
+	if (input[0] == ';')
+	{
+		while (input[i] && input[i] == ';' && i < 2)
+			i++;
+		if (i == 2)
+			return (printf("minishell: syntax error near unexpected token `;;'\n"));
+		if (i == 1 && input[i] == '&')
+			return (printf("minishell: syntax error near unexpected token `;&'\n"));
+		else
+			return (printf("minishell: syntax error near unexpected token `;'\n"));
+	}
+	return (0);
+}
 
 int	check_pipe(char *str, int *i)
 {
@@ -101,25 +125,3 @@ int	check_esp(char *str, int *i)
 		return (printf("minishell: syntax error near unexpected token `;'\n"));
 	return (0);
 }
-
-
-// int	sep_check(char **seps)
-// {
-// 	int	i;
-// 	int	len;
-
-// 	i = 0;
-// 	if (!seps)
-// 		return (0);
-// 	while (seps[i])
-// 	{
-// 		len = ft_strlen(seps[i]);
-// 		if (!ft_strncmp(seps[i], "|", len) || !ft_strncmp(seps[i], "||", len))
-// 			i++;
-// 		else if (!ft_strncmp(seps[i], "&&", len))
-// 			i++;
-// 		else
-// 			return (1); //err msg a implement
-// 	}
-// 	return (0);
-// }

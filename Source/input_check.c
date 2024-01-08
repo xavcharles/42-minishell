@@ -3,7 +3,6 @@
 
 int	check_morethan(char *str, int *i)
 {
-	// int	i;
 	int	n;
 
 	*i = 0;
@@ -84,7 +83,6 @@ int	check_morethan(char *str, int *i)
 
 int	check_lessthan(char *str, int *i)
 {
-	// int	i;
 	int	n;
 
 	*i = 0;
@@ -167,28 +165,28 @@ int	input_check(t_data *d)
 {
 	int	i;
 	char	*str;
-	char	**strs;
+	// char	**strs;
 
+	// i = 0;
+	// strs = ms_split(d->cmds[i], "\t ");
+	// 	if (!strs)
+	// 		return (1);
+	// while (strs[i])
+	// {
+	// 	if (!ft_strncmp(strs[i], "<<<", ft_strlen(strs[i])))
+	// 	{
+	// 		if ((i > 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
+	// 			&& (!ft_strchr(strs[i + 1], '<') || !ft_strchr(strs[i + 1], '>')))
+	// 		{
+	// 			clean_strs(strs, 0, 0);
+	// 			return (printf("minishell: syntax error near unexpected token `>'\n"));
+	// 		}
+	// 	}
+	// 	i++;
+	// }
+	// clean_strs(strs, 0, 0);
 	i = 0;
 	str = d->input;
-	strs = ms_split(d->cmds[i], "\t ");
-		if (!strs)
-			return (printf("c'est ici \n"));
-	while (strs[i])
-	{
-		if (!ft_strncmp(strs[i], "<<<", ft_strlen(strs[i])))
-		{
-			if ((i > 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
-				&& (!ft_strchr(strs[i + 1], '<') || !ft_strchr(strs[i + 1], '>')))
-			{
-				clean_strs(strs, 0, 0);
-				return (printf("minishell: syntax error near unexpected token `>'\n"));
-			}
-		}
-		i++;
-	}
-	clean_strs(strs, 0, 0);
-	i = 0;
 	while (*str)
 	{
 		if (!is_charset(*str, "&|><"))
@@ -235,37 +233,3 @@ int	input_check(t_data *d)
 	}
 	return (0);
 }
-
-// int	input_check(char **strs)
-// {
-// 	int	i;
-// 	char	*str;
-
-// 	i = 0;
-// 	while (strs[i])
-// 	{
-// 		// if (ft_strchr(strs[i], '<') && ft_strchr(strs[i], '>'))
-// 		// {
-// 		// 	if (ft_strchr(strs[i], '<') < ft_strchr(strs[i], '>'))
-// 		// 	{
-// 		// 		str = ft_strchr(strs[i], '<');
-// 		// 		if (check_lessthan(str))
-// 		// 		{
-// 		// 			free(str);
-// 		// 			return (1);
-// 		// 		}
-// 		// 	}
-// 		// 	i++;
-// 		// }
-// 		if (ft_strchr(strs[i], '<'))
-// 		{
-// 			str = ft_strchr(strs[i], '<');
-// 			if (check_lessthan(str))
-// 				return (1);
-// 			i++;
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	return (0);
-// }

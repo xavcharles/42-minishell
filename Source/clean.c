@@ -46,10 +46,12 @@ int	clean_data(t_data *d)
 	i = 0;
 	while (i < d->cmd_count)
 	{
-		clean_ccmd(d->cmd + i);
+		if (d->cmd + i)
+			clean_ccmd(d->cmd + i);
 		i++;
 	}
-	free(d->cmd);
+	if (d->cmd)
+		free(d->cmd);
 	clean_strs(d->seps, d->cmds, 0);
 	return (0);
 }
