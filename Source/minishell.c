@@ -12,277 +12,6 @@
 
 #include "../minishell.h"
 
-// int	pathfinder(t_cmd *cmd, char **env)
-// {
-// 	char	**strs;
-
-// 	strs = env;
-// 	while (ft_strncmp("PATH", *strs, 4))
-// 		env++;
-// 	cmd->path = *strs + 5;
-// 	cmd->cmd_path = ft_split(cmd->path, ':');
-// 	if (!cmd->cmd_path)
-// 		return (1);
-// 	return (0);
-// }
-
-t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep)
-{
-	char	**strs;
-
-	if (id == 1 || id == 2 || id == 3)
-		printf("Malloc error during parsing\n");
-	if (id == 4)
-		printf("Invalid separators within command \n");
-	strs = sep;
-	if (sep)
-	{
-		while (*strs)
-			free(*(strs++));
-		free(sep);
-	}
-	strs = cmds;
-	if (cmds)
-	{
-		while (*strs)
-			free(*(strs++));
-		free(cmds);
-	}
-	if (cmd)
-		free(cmd);
-	return (0);
-}
-
-int	clean_cmd(t_data *d)
-{
-	char	**strs;
-	int	i;
-
-	i = 0;
-	while (i < d->cmd_count)
-	{
-		if (d->cmd[i].cmd_arg)
-		{
-			strs = d->cmd[i].cmd_arg;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].cmd_arg);
-		}
-		if (d->cmd[i].in)
-		{
-			strs = d->cmd[i].in;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].in);
-		}
-		if (d->cmd[i].out)
-		{
-			strs = d->cmd[i].out;
-			while (*strs)
-				free(*(strs++));
-			free(d->cmd[i].out);
-		}
-		free(d->cmd[i].cmd);
-		free(d->cmd[i].prev_op);
-		free(d->cmd[i].next_op);
-		free(d->cmd);
-		i++;
-	}
-	if (d->seps)
-	{
-		strs = d->seps;
-		while (*strs)
-			free(*(strs++));
-		free(d->seps);
-	}
-	if (d->cmds)
-	{
-		strs = d->cmds;
-		while (*strs)
-			free(*(strs++));
-		free(d->cmds);
-	}
-	return (1);
-}
-
-int	init_ccmd(t_data *d, t_ccmd *ccmd)
-{
-	int	i;
-	int	j;
-	char	*cmd_args;
-	char	*in;
-	char	*out;
-	char	**strs;
-
-	i = 0;
-	while (d->cmds[i])
-	{
-		ccmd[i].in = NULL;
-		ccmd[i].out = NULL;
-		strs = ms_split(d->cmds[i], "\t ");
-		if (!strs)
-			return (1);
-		j = 0;
-		in = NULL;
-		out = NULL;
-		while (strs[j])
-		{
-			if (!ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
-			{
-				cmd_args = NULL;
-				ccmd[i].cmd = ft_strdup(strs[j]);
-				if (!ccmd[i].cmd)
-					return (1); //implement
-				while (strs[j] && !ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
-					cmd_args = join_w_space(cmd_args, strs[j++]);
-				if (!cmd_args)
-					return (1);
-				ccmd[i].cmd_arg = ms_split(cmd_args, " ");
-				if (!ccmd[i].cmd_arg)
-					return (1);
-				free(cmd_args);
-			}
-			else
-			{
-				while (strs[j] && (!ft_strncmp(strs[j], ">", ft_strlen(strs[j])) || !ft_strncmp(strs[j], ">>", ft_strlen(strs[j]))))
-				{
-					j++;
-					if (!strs[j])
-						return (1); //parse error
-					out = join_w_space(out, strs[j - 1]);
-					if (!out)
-						return (1); //malloc error
-					out = join_w_tab(out, strs[j]);
-					if (!out)
-						return (1); //malloc error
-					j++;
-				}
-				while (strs[j] && !ft_strncmp(strs[j], "<", ft_strlen(strs[j])))
-				{
-					j++;
-					if (!strs[j])
-						return (1); //parse error
-					in = join_w_space(in, strs[j - 1]);
-					if (!in)
-						return (1); //malloc error
-					in = join_w_tab(in, strs[j]);
-					if (!in)
-						return (1); //malloc error
-					j++;
-				}
-			}
-		}
-		if (in)
-		{
-			ccmd[i].in = ms_split(in, "\t");
-			if (!ccmd[i].in)
-				return (1); //malloc error
-			free(in);
-		}
-		if (out)
-		{
-			ccmd[i].out = ms_split(out, "\t");
-			if (!ccmd[i].out)
-				return (1); //malloc error
-			free(out);
-		}
-		clean_strs(0, 0, 0, strs);
-		i++;
-	}
-	return (0);
-}
-
-int	set_op_pipe(int j, t_ccmd *ccmd, char *input)
-{
-	if (!ft_strncmp(input + j, "|", 1))
-	{
-		ccmd->next_op = ft_strdup("|");
-		if (!ccmd->next_op)
-			return (1); //malloc error
-	}
-	else if (!ft_strncmp(input + j, "||", 2))
-	{
-		ccmd->next_op = ft_strdup("||");
-		if (!ccmd->next_op)
-			return (1); //malloc error
-	}
-	return (0);
-}
-
-int	set_op_and(int j, t_ccmd *ccmd, char *input)
-{
-	if (!ft_strncmp(input + j, "&", 1))
-	{
-		ccmd->next_op = ft_strdup("&");
-		if (!ccmd->next_op)
-			return (1); //malloc error
-	}
-	else if (!ft_strncmp(input + j, "&&", 2))
-	{
-		ccmd->next_op = ft_strdup("&&");
-		if (!ccmd->next_op)
-			return (1); //malloc error
-	}
-	return (0);
-}
-
-int	set_prev_op(int j, t_ccmd *ccmd, char *input)
-{
-	if (!ft_strncmp(input + j, "|", 1))
-	{
-		ccmd->prev_op = ft_strdup("|");
-		if (!ccmd->prev_op)
-			return (1); //malloc error
-	}
-	else if (!ft_strncmp(input + j, "||", 2))
-	{
-		ccmd->prev_op = ft_strdup("||");
-		if (!ccmd->prev_op)
-			return (1); //malloc error
-	}
-	if (!ft_strncmp(input + j, "&", 1))
-	{
-		ccmd->prev_op = ft_strdup("&");
-		if (!ccmd->prev_op)
-			return (1); //malloc error
-	}
-	else if (!ft_strncmp(input + j, "&&", 2))
-	{
-		ccmd->prev_op = ft_strdup("&&");
-		if (!ccmd->prev_op)
-			return (1); //malloc error
-	}
-	return (0);
-}
-
-int	set_next_op(t_data *d, char *input)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = -1;
-	d->cmd[i].prev_op = NULL;
-	while (d->cmds[i + 1])
-	{
-		d->cmd[i].next_op = NULL;
-		if (j > 0)
-			if (set_prev_op(j, d->cmd + i, input))
-				return (1);
-		j += ft_strlen(d->cmds[i]) + 1;
-		if (set_op_pipe(j, d->cmd + i, input))
-			return(1); //maloc error
-		if (set_op_and(j, d->cmd + i, input))
-			return(1); //maloc error
-		i++;
-	}
-	if (i > 0)
-		if (set_prev_op(j, d->cmd + i, input))
-			return (1);
-	d->cmd[i].next_op = NULL;
-	return (0);
-}
-
 int	ca_parse(t_data *d, char *input)
 {
 	int	i;
@@ -346,7 +75,7 @@ int	ca_parse(t_data *d, char *input)
 	return (0);
 }
 
-int	shell_loop(t_data *d, char **env)
+int	shell_loop(t_data *d)
 {
 	const char	*prompt;
 	char	*input;
@@ -372,7 +101,7 @@ int	shell_loop(t_data *d, char **env)
 			if (ca_parse(d, input))
 			{
 				free(input);
-				clean_cmd(d);
+				clean_data(d);
 				rl_clear_history();
 				printf("Error during parsing\n");
 				return (1);
@@ -380,17 +109,16 @@ int	shell_loop(t_data *d, char **env)
 			if (cmd_exec(d))
 			{
 				free(input);
-				clean_cmd(d);
+				clean_data(d);
 				rl_clear_history();
 				printf("Error during execution\n");
 				return (1);
 			}
-			clean_cmd(d);
+			clean_data(d);
 		}
 		free(input);
 		usleep(10);
 	}
-	(void) env;
 	free(input);
 	rl_clear_history();
 	printf("exitted\n");

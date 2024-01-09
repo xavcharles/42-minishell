@@ -26,7 +26,7 @@ int	env_cpy(t_data *data, char **env)
 		data->env[i] = ft_strdup(env[i]);
 		if (!data->env[i])
 		{
-			clean_strs(0, 0, 0, data->env);
+			clean_strs(data->env, 0, 0);
 			return (1);
 		}
 		i++;
@@ -35,18 +35,22 @@ int	env_cpy(t_data *data, char **env)
 	return (0);
 }
 
-// int get_pwd(t_cmd *cmd, char **env)
-// {
-// 	int	i;
+int	pwd_builtin(t_data *d, int cc)
+{
+	int	i;
+	char **tmp;
 
-//     i = 0;
-// 	cmd->pwd = NULL;
-// 	cmd->old_pwd = NULL;
-//     while (env[i])
-// 	{
-// 		if (!ft_strncmp(env[i], "PWD", 3))
-// 		{
-
-// 		}
-// 	}
-// }
+	i = -1;
+	(void) cc;
+	while (d->env[++i])
+	{
+		if (!ft_strncmp(d->env[i], "PWD", 3))
+		{
+			tmp = ft_split(d->env[i], '=');
+			write(1, tmp[1], ft_strlen(tmp[1]));
+			write(1, "\n", 1);
+			return (EXIT_SUCCESS);
+		}
+	}
+	return (EXIT_FAILURE);
+}

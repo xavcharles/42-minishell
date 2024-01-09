@@ -1,21 +1,19 @@
-<<<<<<< HEAD
-SRC = Source/env.c Source/pipe.c Source/redirections.c Source/main.c Source/minishell.c Source/execution.c 
-=======
 SRC = Source/main.c \
 		Source/minishell.c \
 		Source/execution.c \
 		Source/parse_utils.c \
-<<<<<<< HEAD
-		Source/ic_signal.c
->>>>>>> xavrestart
-=======
 		Source/ic_signal.c \
 		Source/pwd.c \
 		Source/parse_utils2.c \
 		Source/sep_check.c \
 		Source/redirections.c \
 		Source/pipe.c \
->>>>>>> xavrestart
+		Source/clean.c \
+		Source/init_cmd.c \
+		Source/set_op.c \
+		Source/env.c \
+		Source/echo.c \
+		Source/changedir.c
 
 NAME = minishell
 
