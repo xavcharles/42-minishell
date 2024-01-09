@@ -94,7 +94,7 @@ int	ca_parse(t_data *d, char *input)
 		printf("next op = %s\n", d->cmd[i].next_op);
 		i++;
 	}
-	clean_data(d);
+	//clean_data(d);
 	return (0);
 }
 
