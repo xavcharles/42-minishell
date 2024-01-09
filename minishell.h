@@ -41,6 +41,7 @@ typedef struct	s_ccmd
 	char	**in;
 	char	**out;
 	char	*next_op;
+	char	*prev_op;
 }	t_ccmd;
 
 typedef struct	s_pipe
@@ -67,6 +68,7 @@ typedef struct	s_data
 
 t_cmd	*clean_strs(int id, t_cmd *cmd, char **cmds, char **sep);
 <<<<<<< HEAD
+<<<<<<< HEAD
 int	exec_1(t_cmd *cmd, char **env, int cmd_i);
 int	cmd_exec(t_cmd *cmd, char **env);
 int	redir_in(t_cmd *cmd, char **env);
@@ -77,8 +79,14 @@ char **env_alloc(char **env);
 =======
 int		cmd_exec(t_cmd *cmd, char **env);
 int		redir_in(t_data *d, char **env);
+=======
+>>>>>>> xavrestart
 int		shell_loop(t_data *d, char **env);
-int		pathfinder(t_cmd *cmd, char **env);
+int		pathfinder(t_data *d);
+int	env_cpy(t_data *data, char **env);
+int	sep_check(char **seps);
+char	*join_w_space(char *s1, char *s2);
+char	*join_w_tab(char *s1, char *s2);
 void	ic_sigs(int sig);
 int		is_charset(char c, char *set);
 int		cmd_count(char const *s, char *set);
@@ -88,4 +96,9 @@ char	**rev_ms_split(char *s, char *set);
 int	sep_check(char **seps);
 >>>>>>> xavrestart
 
+int	exec_1(t_data *d, int cc);
+int		redir_in(t_data *d);
+int		cmd_exec(t_data *d);
+int		redir_out(t_data *d);
+int		ft_pipe(t_data *d, int cc);
 #endif

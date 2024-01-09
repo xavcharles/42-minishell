@@ -12,6 +12,7 @@
 #include "../minishell.h"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // int	get_env(t_data *d, char **env)
 // {
@@ -21,6 +22,8 @@
 // 	return (0);
 // }
 
+=======
+>>>>>>> xavrestart
 int	pathfinder(t_data *d)
 {
 	char	**strs;
@@ -38,9 +41,6 @@ int	pathfinder(t_data *d)
 
 int	init_data(t_data *d, char **env)
 {
-	d = malloc(sizeof(t_data));
-	if (d == NULL)
-		return (1); //malloc error a implement
 	d->cmd = NULL;
 	d->cmds = NULL;
 	d->seps = NULL;
@@ -55,36 +55,3 @@ int	init_data(t_data *d, char **env)
 	return (0);
 }
 
->>>>>>> xavrestart
-int	main(int ac, char **av, char **env)
-{
-	t_data	*data;
-	char	**new_env;
-	int i;
-
-<<<<<<< HEAD
-	i = 0;
-	data = malloc(sizeof(t_data));
-	if (data == NULL)
-		return (0);
-=======
-	if (init_data(data, env))
-		return (1);
->>>>>>> xavrestart
-	(void) av;
-	if (ac != 1)
-	{
-		free(data);
-		return (0);
-	}
-	new_env = env_alloc(env);
-	while (new_env[i])
-	{
-		printf("%s\n", new_env[i]);
-		i++;
-	}
-	shell_loop(data, env);
-	free(data);
-	free(new_env);
-	return (0);
-}
