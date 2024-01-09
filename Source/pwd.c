@@ -20,14 +20,14 @@ int	env_cpy(t_data *data, char **env)
 	i = 0;
 	data->env = malloc(sizeof(char **) * (strs_len(env) + 1));
 	if (!data->env)
-		return (1);
+		return (printf("Minishell: failed to malloc in env_cpy\n"));
 	while (env[i])
 	{
 		data->env[i] = ft_strdup(env[i]);
 		if (!data->env[i])
 		{
 			clean_strs(data->env, 0, 0);
-			return (1);
+			return (printf("Minishell: failed to malloc in env_cpy\n"));
 		}
 		i++;
 	}

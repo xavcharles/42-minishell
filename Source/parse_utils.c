@@ -29,12 +29,6 @@ int	cmd_count(char const *s, char *set)
 		return (0);
 	while (s[i])
 	{
-		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		// {
-		// 	open_quote = s[i];
-		// 	in_quote = 1;
-		// 	// i++;
-		// }
 		if (is_charset(s[i], set) && !in_quote)
 			i++;
 		else
@@ -116,12 +110,6 @@ char	**ms_split(char *s, char *set)
 	open_quote = 0;
 	while (s && s[i])
 	{
-		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		// {
-		// 	open_quote = s[i];
-		// 	in_quote = 1;
-		// 	// i++;
-		// }
 		if (is_charset(s[i], set) && !in_quote)
 			i++;
 		else
@@ -173,12 +161,6 @@ char	**rev_ms_split(char *s, char *set)
 	open_quote = 0;
 	while (s && s[i])
 	{
-		// if ((s[i] == '\'' || s[i] == '"') && !in_quote)
-		// {
-		// 	open_quote = s[i];
-		// 	in_quote = 1;
-		// 	// i++;
-		// }
 		if (s[i] && (!is_charset(s[i], set) || in_quote))
 		{
 			if ((s[i] == '\'' || s[i] == '"') && !in_quote)
