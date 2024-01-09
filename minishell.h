@@ -85,7 +85,7 @@ int		cmd_count(char const *s, char *set);
 int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
-int		redir_in(t_data *d);
+int		redir_in(t_ccmd *cmd);
 int		sep_check(char **seps);
 int		exec_1(t_data *d, int cc);
 int		cmd_exec(t_data *d);
