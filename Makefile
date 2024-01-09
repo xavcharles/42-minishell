@@ -8,13 +8,14 @@ SRC = Source/main.c \
 		Source/sep_check.c \
 		Source/redirections.c \
 		Source/pipe.c \
-		Source/clean.c \
 		Source/init_cmd.c \
 		Source/set_op.c \
 		Source/env.c \
 		Source/echo.c \
-		Source/changedir.c
-
+		Source/changedir.c \
+		Source/clean.c \
+		Source/input_check.c \
+		
 NAME = minishell
 
 OBJ = $(SRC:.c=.o)

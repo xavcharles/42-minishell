@@ -62,21 +62,21 @@ typedef struct	s_data
 	char	**seps;
 	char 	**paths;
 	char	**env;
+	char	*input;
 	int		cmd_count;
 	int		sep_count;
 	int		err;
 	t_pipe	*p;
 }	t_data;
 
-char **env_alloc(char **env);
 void	clean_strs(char	**strs1, char **strs2, char **strs3);
 int		clean_data(t_data *d);
 void	clean_ccmd(t_ccmd *ccmd);
-int	init_ccmd(t_data *d, t_ccmd *ccmd);
-int	set_next_op(t_data *d, char *input);
+int		init_ccmd(t_data *d, t_ccmd *ccmd);
+int		set_next_op(t_data *d, char *input);
 int		shell_loop(t_data *d);
 int		pathfinder(t_data *d);
-int	env_cpy(t_data *data, char **env);
+int		env_cpy(t_data *data, char **env);
 char	*join_w_space(char *s1, char *s2);
 char	*join_w_tab(char *s1, char *s2);
 void	ic_sigs(int sig);
@@ -97,5 +97,12 @@ int		ft_unset(t_data *d, int cc);
 int		ft_echo(t_data *d, int cc);
 int		cd_builtin(t_data *d, int cc);
 int		pwd_builtin(t_data *d, int cc);
+int		sep_check(char **seps);
+int		input_check(t_data *strs);
+int		check_esp(char *str, int *i);
+int		check_pipe(char *str, int *i);
+void	init_zero(t_data *d);
+int		check_first(char *input);
+int		check_firstbis(char *input);
 
 #endif

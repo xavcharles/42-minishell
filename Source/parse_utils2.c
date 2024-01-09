@@ -48,3 +48,18 @@ char	*join_w_tab(char *s1, char *s2)
 		free(s1);
 	return (str);
 }
+
+void	init_zero(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	while (i < d->cmd_count)
+	{
+		d->cmd[i].cmd = NULL;
+		d->cmd[i].cmd_arg = NULL;
+		d->cmd[i].in = NULL;
+		d->cmd[i].out = NULL;
+		i++;
+	}
+}
