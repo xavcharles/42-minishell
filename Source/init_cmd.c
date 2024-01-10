@@ -65,12 +65,14 @@ int	set_in_out(t_ccmd *ccmd, char **in, char **out)
 	{
 		ccmd->out = ms_split(*out, "\t");
 		if (!ccmd->out)
+		{
 			if (*in)
 			{
 				printf("Minishell: Failed Malloc in set_in_out\n");
 				return (free(*in), 1); //malloc error
 			}
 			return (printf("Minishell: Failed Malloc in set_in_out\n")); //malloc error
+		}
 		free(*out);
 	}
 	return (0);

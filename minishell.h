@@ -104,6 +104,6 @@ int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
 int	check_first(char *input);
 int	check_firstbis(char *input);
-void    exit(t_data *d);
+void    ft_exit(t_data *d);
 
 #endif

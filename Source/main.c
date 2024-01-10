@@ -66,10 +66,10 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	}
 	shell_loop(data);
-	if (d->paths)
-        clean_strs(d->paths, 0, 0);
-    if (d->env)
-        clean_strs(d->env, 0, 0);
+	if (data->paths)
+		clean_strs(data->paths, 0, 0);
+	if (data->env)
+		clean_strs(data->env, 0, 0);
 	free(data);
 	return (0);
 }

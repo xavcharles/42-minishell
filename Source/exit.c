@@ -1,7 +1,7 @@
 
 #include "../minishell.h"
 
-void    exit(t_data *d)
+void    ft_exit(t_data *d)
 {
     if (d)
         clean_data(d);
