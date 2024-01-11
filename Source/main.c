@@ -11,14 +11,6 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-// int	get_env(t_data *d, char **env)
-// {
-// 	if (d->cmd == NULL)
-// 		return (1);
-// 	pathfinder(d->cmd, env);
-// 	return (0);
-// }
-
 int	pathfinder(t_data *d)
 {
 	char	**strs;
@@ -54,7 +46,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	if (isatty(SDTIN_FILENO) == 0)
+	if (isatty(STDIN_FILENO) == 0)
 		return (1);
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
