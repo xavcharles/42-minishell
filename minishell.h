@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-extern int	g_sig;
+extern int	g_ret;
 
 typedef	struct s_cmd
 {

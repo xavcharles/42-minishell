@@ -11,6 +11,11 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
+<<<<<<< HEAD
+=======
+int	g_ret;
+
+>>>>>>> xavrestart
 int	pathfinder(t_data *d)
 {
 	char	**strs;

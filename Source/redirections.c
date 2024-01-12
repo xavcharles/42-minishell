@@ -85,7 +85,11 @@ int	redir_in(t_ccmd *cmd)
 			}
 		}
 		else
+<<<<<<< HEAD
 			here_doc(cmd->in[1]);
+=======
+			printf("here doc \n");
+>>>>>>> xavrestart
 	}
 	dup2(p.f1, 0); 
 	close(p.f1);
