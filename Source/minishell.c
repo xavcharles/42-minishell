@@ -12,17 +12,6 @@
 
 #include "../minishell.h"
 
-// void	data_zero(t_data *d)
-// {
-// 	d->cmd = NULL;
-// 	d->cmds = NULL;
-// 	d->seps = NULL;
-// 	d->cmd_count = 0;
-// 	d->sep_count = 0;
-// 	d->err = 0;
-// 	d->p = 0;
-// }
-
 int	first_char(char	*input)
 {
 	int	i;
@@ -75,12 +64,10 @@ void	print_contenu(t_data *d)
 		printf("next op = %s\n", d->cmd[i].next_op);
 		i++;
 	}
-	//clean_data(d);
 }
 
 int	ca_parse(t_data *d, char *input)
 {
-	// data_zero(d);
 	if (first_char(input))
 		return (1);
 	d->input = input;
@@ -111,6 +98,7 @@ int	shell_loop(t_data *d)
 	while (1)
 	{
 		ic_sigs(1);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline(prompt);
 		if (!input)
 		{

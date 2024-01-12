@@ -85,7 +85,7 @@ int	redir_in(t_ccmd *cmd)
 			}
 		}
 		else
-			printf("here dpc \n");
+			printf("here doc \n");
 	}
 	dup2(p.f1, 0); 
 	close(p.f1);
