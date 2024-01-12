@@ -9,13 +9,11 @@
 /*   Updated: 2023/12/05 13:46:35 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../minishell.h"
 
-<<<<<<< HEAD
-=======
 int	g_ret;
 
->>>>>>> xavrestart
 int	pathfinder(t_data *d)
 {
 	char	**strs;
