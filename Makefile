@@ -15,6 +15,7 @@ SRC = Source/main.c \
 		Source/clean.c \
 		Source/input_check.c \
 		Source/ic_signal.c \
+		Source/ft_exit.c \
 		
 NAME = minishell
 

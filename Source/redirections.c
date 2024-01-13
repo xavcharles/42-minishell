@@ -14,6 +14,7 @@ int	redir_out(t_ccmd *cmd)
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_APPEND, 0777);
 		else
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_TRUNC, 0777);
+		clean_strs(tmp, 0, 0);
 	}
 	if (p.f2 < 0)
 	{
@@ -80,6 +81,7 @@ int	redir_in(t_ccmd *cmd)
 			p.f1 = open(tmp[1], O_RDONLY);
 			if (p.f1 == -1)
 			{
+				clean_strs(tmp, 0, 0);
 				perror("file not found\n");
 				return (1);
 			}

@@ -30,15 +30,26 @@ int	exec_1(t_data *d, int cc)
 	i = 0;
 	while (d->paths[i])
 	{
+		if (!ft_strncmp(d->cmd[cc].cmd, "./minishell", ft_strlen(d->cmd[cc].cmd)))
+		{
+			if (!access(d->cmd[cc].cmd, F_OK | X_OK))
+			{
+				if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+				{
+					perror(d->cmd[cc].cmd);
+					return (ft_exit(d, 1), 1);
+				}
+			}
+		}
 		tmp = ft_strjoin(d->paths[i], "/");
-		tmp = ft_strjoin(tmp, d->cmd[cc].cmd);
+		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
 		if (!access(tmp, F_OK | X_OK))
 		{
 			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
 				free(tmp);
-				perror("Minishell");
-				exit (1);
+				perror(d->cmd[cc].cmd);
+				exit(1);
 			}
 		}
 		free(tmp);
@@ -46,7 +57,7 @@ int	exec_1(t_data *d, int cc)
 	}
 	printf("cest la\n");
 	perror(d->cmd[cc].cmd);
-	exit (0);
+	return (ft_exit(d, 1), 1);
 }
 
 /*
@@ -78,8 +89,9 @@ int	cmd_exec(t_data *d)
 	t_pipe p;
 
 	i = 0;
-	if (is_builtin(d, 0))
-		return (0);
+	// if (is_builtin(d, 0))
+	// 	return (0);
+	printf("cmd count = %d\n", d->cmd_count);
 	p.pid1 = fork();
 	if (p.pid1 == 0)
 	{
@@ -95,17 +107,22 @@ int	cmd_exec(t_data *d)
 			}
 			if (d->cmd[i].out)
 				redir_out(&d->cmd[i]);
-			exec_1(d, i);
+			if (!is_builtin(d, i))
+				if (exec_1(d, i))
+					return (printf("cmd error\n"), 1);
 		}
 		else
 		{
 			if (d->cmd->in)
+			{
 				if(redir_in(d->cmd))
 					return (1);
+			}
 			if (d->cmd->out)
 				redir_out(d->cmd);
-			if (exec_1(d, 0))
-				return (printf("cmd error\n"), 1);
+			if (!is_builtin(d, 0))
+				if (exec_1(d, 0))
+					return (printf("cmd error\n"), 1);
 		}
 	}
 	else

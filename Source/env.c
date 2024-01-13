@@ -19,7 +19,7 @@ int	print_env(t_data *d)
 	i = -1;
 	while (d->env[++i] != NULL)
 		printf("%s\n", d->env[i]);
-	return (0);
+	return (ft_exit(d, 0), 0);
 }
 
 char **ft_tabjoin(char **tab, char *s)

@@ -32,7 +32,7 @@ void	print_contenu(t_data *d)
 	int	j;
 
 	i = 0;
-	printf("\n\nDans la fonction ca_parse : \n\n");
+	printf("\n       ************      \nDans la fonction ca_parse : \n\n");
 	while (i < d->cmd_count)
 	{
 		printf("cmd = %s\n", d->cmd[i].cmd);
@@ -62,6 +62,7 @@ void	print_contenu(t_data *d)
 		printf("\n");
 		printf("prev op = %s\n", d->cmd[i].prev_op);
 		printf("next op = %s\n", d->cmd[i].next_op);
+		printf("\n       ************      \n\n");
 		i++;
 	}
 }
@@ -86,7 +87,7 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (init_ccmd(d, d->cmd))
 		return (clean_data(d), 1);
-	print_contenu(d);
+	print_contenu(d);    // ne pas oublier de retirer
 	return (0);
 }
 

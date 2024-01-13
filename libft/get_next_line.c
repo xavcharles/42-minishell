@@ -26,7 +26,8 @@ char	*gnl_strjoin(char *s1, char *s2)
 		ft_strlcat(str, s1, size + 1);
 	if (s2)
 		ft_strlcat(str, s2, size + 1);
-	free(s1);
+	if (s1)
+		free(s1);
 	return (str);
 }
 
