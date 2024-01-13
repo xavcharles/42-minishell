@@ -41,18 +41,21 @@ int	exec_1(t_data *d, int cc)
 				}
 			}
 		}
-		tmp = ft_strjoin(d->paths[i], "/");
-		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
-		if (!access(tmp, F_OK | X_OK))
+		else
 		{
-			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
+			tmp = ft_strjoin(d->paths[i], "/");
+			tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
+			if (!access(tmp, F_OK | X_OK))
 			{
-				free(tmp);
-				perror(d->cmd[cc].cmd);
-				exit(1);
+				if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
+				{
+					free(tmp);
+					perror(d->cmd[cc].cmd);
+					exit(1);
+				}
 			}
+			free(tmp);
 		}
-		free(tmp);
 		i++;
 	}
 	printf("cest la\n");
