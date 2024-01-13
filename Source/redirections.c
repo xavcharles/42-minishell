@@ -37,11 +37,12 @@ int	get_doc(char *end, int *p_fd)
 		if (ft_strncmp(str, end, ft_strlen(end)) == 0)
 		{
 			free(str);
-			return (0);
+			return (1);
 		}
 		ft_putstr_fd(str, p_fd[1]);
 		free(str);
 	}
+	return (0);
 }
 
 int	here_doc(char *end)
@@ -55,7 +56,7 @@ int	here_doc(char *end)
 	if (pid < 0)
 		return (2);
 	if (pid == 0)
-		get_doc(end, p_fd);
+		exit(get_doc(end, p_fd));
 	else
 	{
 		close(p_fd[1]);
