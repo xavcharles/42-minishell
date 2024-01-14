@@ -40,6 +40,7 @@ int	get_doc(char *end, int *p_fd)
 			return (1);
 		}
 		ft_putstr_fd(str, p_fd[1]);
+		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
 	}
 	return (0);
@@ -86,14 +87,12 @@ int	redir_in(t_ccmd *cmd)
 				perror("file not found\n");
 				return (1);
 			}
+			dup2(p.f1, 0); 
+			close(p.f1);
 		}
 		else
-		{
 			here_doc(tmp[1]);
-		}
 		clean_strs(tmp, 0, 0);
 	}
-	dup2(p.f1, 0); 
-	close(p.f1);
 	return(0);
 }
