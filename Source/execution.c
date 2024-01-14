@@ -82,6 +82,22 @@ char	**env_read(int fd)
 }
 */
 
+int	is_builtin1(t_data *d, int i)
+{
+	char	*cmd;
+
+	cmd = d->cmd[cc].cmd;
+	if (!cmd)
+		return (0);
+	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+		return (1);
+	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+		return (1);
+	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+		return (ft_export(d));
+	return (0);
+}
+
 int	cmd_exec(t_data *d)
 {
 	int	i;
@@ -128,6 +144,7 @@ int	cmd_exec(t_data *d)
 	else
 	{
 		// wait(NULL);
+		printf("parent process, i = ? %d\n", i);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(p.pid1, &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)

@@ -42,6 +42,7 @@ char **ft_tabjoin(char **tab, char *s)
 		free(tab[j]);
 		j++;
 	}
+	free(tab);
 	n_tab[j] = ft_strdup(s);
 	n_tab[j + 1] = NULL;
 	return (n_tab);
@@ -66,7 +67,45 @@ int	ft_export(t_data *d)
 		d->env = ft_tabjoin(d->env, d->cmd->cmd_arg[1]);
 	else
 		d->env[j] = ft_strjoin(d->env[j], tmp[1]);
-	return (0);
+	return (ft_exit(d, 1), 0);
+}
+
+int	ft_export(t_data *d, int cc)
+{
+	int		i;
+	int		j;
+	char	**tmp;
+
+	i = 0;
+	while (d->cmd[cc].cmd_arg[++i])
+	{
+		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
+		{
+			tmp = ft_split(d->cmd[cc].cmd_arg[i], "=");
+			if (find_var(d->env, tmp[0]))
+			{
+				j = -1;
+				while (d->env[++j])
+				{
+					if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
+					{
+						free(d->env[j]);
+						d->env[j] = ft_strdup(d->d->cmd[cc].cmd_arg[i]);
+					}
+				}
+			}
+			else
+			{
+				d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
+				if (!d->env)
+					return(ft_exit(d, 1), printf("Failed to malloc env after export\n"));
+			}
+		}
+		else
+		{
+			
+		}
+	}
 }
 
 char	**ft_subtab(char **tab, char *s)
