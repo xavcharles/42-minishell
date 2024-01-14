@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2023/10/24 15:44:18 by xacharle         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:41:08 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-extern int	g_sig;
+extern int	g_ret;
 
 typedef	struct s_cmd
 {
@@ -62,6 +62,7 @@ typedef struct	s_data
 	char	**seps;
 	char 	**paths;
 	char	**env;
+	char	*input;
 	int		cmd_count;
 	int		sep_count;
 	int		err;
@@ -71,11 +72,11 @@ typedef struct	s_data
 void	clean_strs(char	**strs1, char **strs2, char **strs3);
 int		clean_data(t_data *d);
 void	clean_ccmd(t_ccmd *ccmd);
-int	init_ccmd(t_data *d, t_ccmd *ccmd);
-int	set_next_op(t_data *d, char *input);
+int		init_ccmd(t_data *d, t_ccmd *ccmd);
+int		set_next_op(t_data *d, char *input);
 int		shell_loop(t_data *d);
 int		pathfinder(t_data *d);
-int	env_cpy(t_data *data, char **env);
+int		env_cpy(t_data *data, char **env);
 char	*join_w_space(char *s1, char *s2);
 char	*join_w_tab(char *s1, char *s2);
 void	ic_sigs(int sig);
@@ -84,13 +85,26 @@ int		cmd_count(char const *s, char *set);
 int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
+int		redir_in(t_ccmd *cmd);
 int		sep_check(char **seps);
 int		exec_1(t_data *d, int cc);
-int		redir_in(t_ccmd *cmd);
 int		cmd_exec(t_data *d);
 int		redir_out(t_ccmd *cmd);
 int		ft_pipe(t_data *d, int cc);
 int		print_env(t_data *d);
 int		ft_export(t_data *d);
-int		ft_unset(t_data *d);
+int		ft_unset(t_data *d, int cc);
+int		ft_echo(t_data *d, int cc);
+int		cd_builtin(t_data *d, int cc);
+int		pwd_builtin(t_data *d, int cc);
+int		sep_check(char **seps);
+int		input_check(t_data *strs);
+int		check_esp(char *str, int *i);
+int		check_pipe(char *str, int *i);
+void	init_zero(t_data *d);
+int	check_first(char *input);
+int	check_firstbis(char *input);
+void    ft_exit(t_data *d, int n);
+int	is_builtin(t_data *d, int cc);
+
 #endif

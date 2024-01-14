@@ -2,17 +2,21 @@ SRC = Source/main.c \
 		Source/minishell.c \
 		Source/execution.c \
 		Source/parse_utils.c \
-		Source/ic_signal.c \
 		Source/pwd.c \
 		Source/parse_utils2.c \
 		Source/sep_check.c \
 		Source/redirections.c \
 		Source/pipe.c \
-		Source/clean.c \
 		Source/init_cmd.c \
 		Source/set_op.c \
-		Source/env.c
-
+		Source/env.c \
+		Source/echo.c \
+		Source/changedir.c \
+		Source/clean.c \
+		Source/input_check.c \
+		Source/ic_signal.c \
+		Source/ft_exit.c \
+		
 NAME = minishell
 
 OBJ = $(SRC:.c=.o)

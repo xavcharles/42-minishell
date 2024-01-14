@@ -12,35 +12,27 @@
 
 #include "../minishell.h"
 
-int	ca_parse(t_data *d, char *input)
+int	first_char(char	*input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] == ' ' || input[i] == '\t')
+		i++;
+	if (input[i] == '&' || input[i] == '|')
+		return (check_first(input + i), 1);
+	else if (input[i] == ';')
+		return (check_firstbis(input + i), 1);
+	return (0);
+}
+
+void	print_contenu(t_data *d)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (input[i] == ' ' || input[i] == '\t')
-		i++;
-	if (input [i] == '&' || input[i] == '|')
-		return (1); //parse error 1st char == & ou && ou | ou ||
-	d->cmd_count = cmd_count(input, "|&");
-	d->sep_count = sep_count(input, "|&");
-	d->seps = rev_ms_split(input, "&|");
-	if (!d->seps && d->sep_count)
-		return (1); // free a implement
-	if (sep_check(d->seps))
-		return (1); // free a implement
-	d->cmds = ms_split(input, "&|");
-	if (!d->cmds)
-		return (1);	//free a implement
-	d->cmd = malloc(sizeof(t_ccmd) * d->cmd_count);
-	if (!d->cmd)
-		return (1); //free a implement
-	if (set_next_op(d, input))
-		return (1); //malloc error
-	if (init_ccmd(d, d->cmd))
-		return (1); //free a iplement
-	i = 0;
-	printf("\n\nDans la fonction ca_parse : \n\n");
+	printf("\n       ************      \nDans la fonction ca_parse : \n\n");
 	while (i < d->cmd_count)
 	{
 		printf("cmd = %s\n", d->cmd[i].cmd);
@@ -70,8 +62,32 @@ int	ca_parse(t_data *d, char *input)
 		printf("\n");
 		printf("prev op = %s\n", d->cmd[i].prev_op);
 		printf("next op = %s\n", d->cmd[i].next_op);
+		printf("\n       ************      \n\n");
 		i++;
 	}
+}
+
+int	ca_parse(t_data *d, char *input)
+{
+	if (first_char(input))
+		return (1);
+	d->input = input;
+	d->cmd_count = cmd_count(input, "|&");
+	d->sep_count = sep_count(input, "|&");
+	d->seps = rev_ms_split(input, "&|");
+	if (!d->seps && d->sep_count)
+		return (printf("Minishell: Failed Malloc in ca_parse\n"), 1);
+	d->cmds = ms_split(input, "&|");
+	if (!d->cmds)
+		return (clean_data(d), 1);
+	d->cmd = malloc(sizeof(t_ccmd) * d->cmd_count);
+	if (!d->cmd)
+		return (clean_data(d), 1);
+	if (set_next_op(d, input))
+		return (clean_data(d), 1);
+	if (init_ccmd(d, d->cmd))
+		return (clean_data(d), 1);
+	print_contenu(d);    // ne pas oublier de retirer
 	return (0);
 }
 
@@ -84,6 +100,7 @@ int	shell_loop(t_data *d)
 	while (1)
 	{
 		ic_sigs(1);
+		signal(SIGQUIT, SIG_IGN);
 		input = readline(prompt);
 		if (!input)
 		{
@@ -98,23 +115,14 @@ int	shell_loop(t_data *d)
 		if (ft_strlen(input))
 		{
 			add_history(input);
-			if (ca_parse(d, input))
+			if (!ca_parse(d, input))
 			{
-				free(input);
+				if (cmd_exec(d))
+					printf("Error during execution\n");
 				clean_data(d);
-				rl_clear_history();
-				printf("Error during parsing\n");
-				return (1);
 			}
-			if (cmd_exec(d))
-			{
-				free(input);
-				clean_data(d);
-				rl_clear_history();
-				printf("Error during execution\n");
-				return (1);
-			}
-			clean_data(d);
+			else
+				printf("Error during parsing\n");		
 		}
 		free(input);
 		usleep(10);

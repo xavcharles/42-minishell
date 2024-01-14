@@ -17,9 +17,9 @@ int	print_env(t_data *d)
 	int i;
 
 	i = -1;
-	while (d->env[++i])
+	while (d->env[++i] != NULL)
 		printf("%s\n", d->env[i]);
-	return (0);
+	return (ft_exit(d, 0), 0);
 }
 
 char **ft_tabjoin(char **tab, char *s)
@@ -56,7 +56,7 @@ int	ft_export(t_data *d)
 	i = 0;
 	j = 0;
 	tmp = ft_split(d->cmd->cmd_arg[1], '=');
-	while (d->env[i])
+	while (d->env[i] != NULL)
 	{
 		if (!ft_strncmp(tmp[0], d->env[i], ft_strlen(tmp[0])))
 			j = i;
@@ -77,63 +77,46 @@ char	**ft_subtab(char **tab, char *s)
 
 	i = 0;
 	j = 0;
-	while (tab[i])
+	while (tab[i] != NULL)
 		i++;
 	n_tab = malloc(sizeof(char *) * i);
 	i = 0;
-	while (tab[j + 1])
+	while (tab[i] != NULL)
 	{
-		if (!ft_strncmp(s, tab[i], ft_strlen(s)))
+		if (!ft_strncmp(tab[i], s, ft_strlen(s)))
+		{
 			i++;
-		n_tab[j] = ft_strdup(tab[i]);
-		free(tab[i]);
+			if (tab[i] == NULL)
+			{
+				n_tab[j] = NULL;
+				break;
+			}
+		}
+		if (tab[i] != NULL && tab[j] != NULL)
+		{
+			n_tab[j] = ft_strdup(tab[i]);
+			j++;
+		}
 		i++;
-		j++;
 	}
-	free(tab);
 	return (n_tab);
 }
 
-int	ft_unset(t_data *d)
+int	ft_unset(t_data *d, int cc)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	j = 0;
-	while (d->env[i])
+	j = 1;
+	while (d->env[i] != NULL)
 	{
-		while (d->cmd->cmd_arg[++j])
+		if (!ft_strncmp(d->env[i], d->cmd[cc].cmd_arg[j], ft_strlen(d->cmd[cc].cmd_arg[j])))
 		{
-			if (!ft_strncmp(d->env[i], d->cmd->cmd_arg[j], ft_strlen(d->cmd->cmd_arg[j])))
-			{
-				d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
-				return (0);
-			}
+			d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
+			break ;
 		}
 		i++;
 	}
 	return (0);
 }
-/*
-char	**env_alloc(char **env)
-{
-	int		i;
-	char	**new_env;
-
-	i = 0;
-	while (env[i])
-		i++;
-	new_env = malloc(sizeof(char *) * i);
-	if (!new_env)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		if (!new_env[i])
-			return (NULL);
-		i++;
-	}
-	return (new_env);
-}*/

@@ -1,4 +1,0 @@
-void acvtd(void *d)
-{
-
-}
