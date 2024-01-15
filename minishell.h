@@ -105,6 +105,14 @@ void	init_zero(t_data *d);
 int	check_first(char *input);
 int	check_firstbis(char *input);
 void    ft_exit(t_data *d, int n);
+int	strs_len(char **strs);
+int	find_var(char **env, char *var);
 int	is_builtin(t_data *d, int cc);
+int par_cd(t_data *d, int cc);
+int par_export(t_data *d, int cc);
+int par_unset(t_data *d, int cc);
+char **ft_tabjoin(char **tab, char *s);
+char	**ft_subtab(char **tab, char *s);
+
 
 #endif

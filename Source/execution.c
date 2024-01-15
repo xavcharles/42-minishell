@@ -6,11 +6,11 @@ int	is_builtin(t_data *d, int cc)
 
 	cmd = d->cmd[cc].cmd;
 	if (!cmd)
-		return (0);
+		return (1);
 	if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
 		return (print_env(d), 1);
 	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
-		return (ft_export(d), 1);
+		return (ft_export(d, cc), 1);
 	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
 		return (ft_unset(d, cc), 1);
 	else if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
@@ -18,7 +18,9 @@ int	is_builtin(t_data *d, int cc)
 	else if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
 		return (cd_builtin(d, cc), 1);
 	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
-		return (ft_echo(d, 0), 1);
+		return (ft_echo(d, cc), 1);
+	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+		return (ft_exit(d, 0), 1);
 	return (0);
 }
 
@@ -85,7 +87,7 @@ char	**env_read(int fd)
 }
 */
 
-int	is_builtin1(t_data *d, int i)
+int	is_builtin1(t_data *d, int cc)
 {
 	char	*cmd;
 
@@ -97,7 +99,34 @@ int	is_builtin1(t_data *d, int i)
 	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
 		return (1);
 	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
-		return (ft_export(d));
+		return (1);
+	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+		return (ft_exit(d, 0), 1);
+	return (0);
+}
+
+int	is_builtin2(t_data *d, int cc)
+{
+	char	*cmd;
+
+	cmd = d->cmd[cc].cmd;
+	if (!cmd)
+		return (0);
+	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+	{
+		if (par_cd(d, cc))
+			return (1);
+	}
+	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+	{
+		if (par_export(d, cc))
+			return (1);
+	}
+	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+	{
+		if (par_unset(d, cc))
+			return (1);
+	}
 	return (0);
 }
 
@@ -108,8 +137,6 @@ int	cmd_exec(t_data *d)
 	t_pipe p;
 
 	i = 0;
-	// if (is_builtin(d, 0))
-	// 	return (0);
 	printf("cmd count = %d\n", d->cmd_count);
 	p.pid1 = fork();
 	if (p.pid1 == 0)
@@ -127,8 +154,7 @@ int	cmd_exec(t_data *d)
 			if (d->cmd[i].out)
 				redir_out(&d->cmd[i]);
 			if (!is_builtin(d, i))
-				if (exec_1(d, i))
-					return (printf("cmd error\n"), 1);
+				exec_1(d, i);
 		}
 		else
 		{
@@ -140,8 +166,7 @@ int	cmd_exec(t_data *d)
 			if (d->cmd->out)
 				redir_out(d->cmd);
 			if (!is_builtin(d, 0))
-				if (exec_1(d, 0))
-					return (printf("cmd error\n"), 1);
+				exec_1(d, 0);
 		}
 	}
 	else
@@ -150,6 +175,8 @@ int	cmd_exec(t_data *d)
 		printf("parent process, i = ? %d\n", i);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(p.pid1, &status, 0);
+		if (is_builtin2(d, d->cmd_count - 1))
+			return (1);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 		{
 			printf("Quit (Core Dumped)\n");

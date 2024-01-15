@@ -81,7 +81,7 @@ int	ft_export(t_data *d, int cc)
 	{
 		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
 		{
-			tmp = ft_split(d->cmd[cc].cmd_arg[i], "=");
+			tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
 			if (find_var(d->env, tmp[0]))
 			{
 				j = -1;
@@ -90,7 +90,12 @@ int	ft_export(t_data *d, int cc)
 					if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
 					{
 						free(d->env[j]);
-						d->env[j] = ft_strdup(d->d->cmd[cc].cmd_arg[i]);
+						d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
+						if (!d->env[j])
+						{
+							clean_strs(tmp, 0, 0);
+							return (ft_exit(d, 1), 1);
+						}
 					}
 				}
 			}
@@ -106,54 +111,103 @@ int	ft_export(t_data *d, int cc)
 	return (ft_exit(d, 0), 0);
 }
 
+// char	**ft_subtab(char **tab, char *s)
+// {
+// 	int	i;
+// 	int	j;
+// 	char **n_tab;
+
+// 	n_tab = malloc(sizeof(char *) * strs_len(tab));
+// 	i = 0;
+// 	j = 0;
+// 	while (tab[i] != NULL)
+// 	{
+// 		if (!ft_strncmp(tab[i], s, ft_strlen(s)))
+// 		{
+// 			i++;
+// 			if (tab[i] == NULL)
+// 			{
+// 				n_tab[j] = NULL;
+// 				break;
+// 			}
+// 		}
+// 		if (tab[i] != NULL && tab[j] != NULL)
+// 		{
+// 			n_tab[j] = ft_strdup(tab[i]);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (n_tab);
+// }
+
 char	**ft_subtab(char **tab, char *s)
 {
 	int	i;
 	int	j;
 	char **n_tab;
 
-	i = 0;
+	n_tab = malloc(sizeof(char *) * strs_len(tab));
+	if (!n_tab)
+		return (printf("malloc error in subtab\n"), NULL);
+	i = -1;
 	j = 0;
-	while (tab[i] != NULL)
-		i++;
-	n_tab = malloc(sizeof(char *) * i);
-	i = 0;
-	while (tab[i] != NULL)
+	while (tab[++i])
 	{
-		if (!ft_strncmp(tab[i], s, ft_strlen(s)))
+		if (ft_strncmp(tab[i], s, ft_strlen(s)))
 		{
-			i++;
-			if (tab[i] == NULL)
-			{
-				n_tab[j] = NULL;
-				break;
-			}
+			n_tab[i - j] = ft_strdup(tab[i]);
+			if (!n_tab[i - j])
+				return (printf("malloc error in subtab\n"), NULL);
 		}
-		if (tab[i] != NULL && tab[j] != NULL)
-		{
-			n_tab[j] = ft_strdup(tab[i]);
+		else
 			j++;
-		}
-		i++;
 	}
+	n_tab[i - j] = NULL;
+	clean_strs(tab, 0, 0);
 	return (n_tab);
 }
+
+// int	ft_unset(t_data *d, int cc)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	j = 1;
+// 	while (d->env[i] != NULL)
+// 	{
+// 		if (!ft_strncmp(d->env[i], d->cmd[cc].cmd_arg[j], ft_strlen(d->cmd[cc].cmd_arg[j])))
+// 		{
+// 			d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 int	ft_unset(t_data *d, int cc)
 {
 	int	i;
 	int	j;
+	int	len;
 
 	i = 0;
-	j = 1;
-	while (d->env[i] != NULL)
+	while (d->cmd[cc].cmd_arg[++i])
 	{
-		if (!ft_strncmp(d->env[i], d->cmd[cc].cmd_arg[j], ft_strlen(d->cmd[cc].cmd_arg[j])))
+		j = -1;
+		len = ft_strlen(d->cmd[cc].cmd_arg[i]);
+		while (d->env[++j])
 		{
-			d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
-			break ;
+			if (!ft_strncmp(d->env[j], d->cmd[cc].cmd_arg[i], len))
+			{
+				d->env = ft_subtab(d->env, d->cmd[cc].cmd_arg[i]);
+				if (!d->env)
+					return (ft_exit(d, 1), 1);
+				break ;
+			}
 		}
-		i++;
 	}
-	return (0);
+	return (ft_exit(d, 0), 0);
 }
