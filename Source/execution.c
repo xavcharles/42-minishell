@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
+/*   Updated: 2024/01/15 13:25:53 by maderuel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	is_builtin(t_data *d, int cc)
@@ -26,13 +38,14 @@ int	is_builtin(t_data *d, int cc)
 
 int	exec_1(t_data *d, int cc)
 {
-	int	i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (d->paths[i])
 	{
-		if (!ft_strncmp(d->cmd[cc].cmd, "./minishell", ft_strlen(d->cmd[cc].cmd)))
+		if (!ft_strncmp(d->cmd[cc].cmd, "./minishell",
+				ft_strlen(d->cmd[cc].cmd)))
 		{
 			if (!access(d->cmd[cc].cmd, F_OK | X_OK))
 			{
