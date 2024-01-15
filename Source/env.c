@@ -6,27 +6,17 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2023/12/05 16:02:43 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/15 16:43:06 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	print_env(t_data *d)
+char	**ft_tabjoin(char **tab, char *s)
 {
-	int i;
-
-	i = -1;
-	while (d->env[++i] != NULL)
-		printf("%s\n", d->env[i]);
-	return (ft_exit(d, 0), 0);
-}
-
-char **ft_tabjoin(char **tab, char *s)
-{
-	int i;
-	int j;
-	char **n_tab;
+	int		i;
+	int		j;
+	char	**n_tab;
 
 	i = 0;
 	j = 0;
@@ -42,63 +32,82 @@ char **ft_tabjoin(char **tab, char *s)
 		free(tab[j]);
 		j++;
 	}
+	free(tab);
 	n_tab[j] = ft_strdup(s);
 	n_tab[j + 1] = NULL;
 	return (n_tab);
 }
 
-int	ft_export(t_data *d)
+int	sub_export(t_data *d, int i, int cc)
+{
+	int		j;
+	char	**tmp;
+
+	tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
+	if (find_var(d->env, tmp[0]))
+	{
+		j = -1;
+		while (d->env[++j])
+		{
+			if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
+			{
+				free(d->env[j]);
+				d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
+				if (!d->env[j])
+				{
+					clean_strs(tmp, 0, 0);
+					return (ft_exit(d, 1), 1);
+				}
+			}
+		}
+	}
+	return (0);
+}
+
+int	ft_export(t_data *d, int cc)
 {
 	int		i;
-	int		j;
-	char **tmp;
 
 	i = 0;
-	j = 0;
-	tmp = ft_split(d->cmd->cmd_arg[1], '=');
-	while (d->env[i] != NULL)
+	while (d->cmd[cc].cmd_arg[++i])
 	{
-		if (!ft_strncmp(tmp[0], d->env[i], ft_strlen(tmp[0])))
-			j = i;
-		i++;
+		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
+			sub_export(d, i, cc);
+		else
+		{
+			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
+			if (!d->env)
+				return (ft_exit(d, 1),
+					printf("Failed to malloc env after export\n"));
+		}
 	}
-	if (j == 0)
-		d->env = ft_tabjoin(d->env, d->cmd->cmd_arg[1]);
-	else
-		d->env[j] = ft_strjoin(d->env[j], tmp[1]);
-	return (0);
+	return (ft_exit(d, 0), 0);
 }
 
 char	**ft_subtab(char **tab, char *s)
 {
-	int	i;
-	int	j;
-	char **n_tab;
+	int		i;
+	int		j;
+	char	**n_tab;
 
-	i = 0;
+	n_tab = malloc(sizeof(char *) * strs_len(tab));
+	if (!n_tab)
+		return (printf("malloc error in subtab\n"), NULL);
+	i = -1;
 	j = 0;
-	while (tab[i] != NULL)
-		i++;
-	n_tab = malloc(sizeof(char *) * i);
-	i = 0;
-	while (tab[i] != NULL)
+	while (tab[++i])
 	{
-		if (!ft_strncmp(tab[i], s, ft_strlen(s)))
+		if (ft_strncmp(tab[i], s, ft_strlen(s)))
 		{
-			i++;
-			if (tab[i] == NULL)
-			{
-				n_tab[j] = NULL;
-				break;
-			}
+			n_tab[i - j] = ft_strdup(tab[i]);
+			if (!n_tab[i - j])
+				return (printf("malloc error in subtab\n"), NULL);
 		}
-		if (tab[i] != NULL && tab[j] != NULL)
-		{
-			n_tab[j] = ft_strdup(tab[i]);
+		else
 			j++;
-		}
-		i++;
 	}
+	n_tab[i - j] = NULL;
+	clean_strs(tab, 0, 0);
 	return (n_tab);
 }
 
@@ -106,17 +115,23 @@ int	ft_unset(t_data *d, int cc)
 {
 	int	i;
 	int	j;
+	int	len;
 
 	i = 0;
-	j = 1;
-	while (d->env[i] != NULL)
+	while (d->cmd[cc].cmd_arg[++i])
 	{
-		if (!ft_strncmp(d->env[i], d->cmd[cc].cmd_arg[j], ft_strlen(d->cmd[cc].cmd_arg[j])))
+		j = -1;
+		len = ft_strlen(d->cmd[cc].cmd_arg[i]);
+		while (d->env[++j])
 		{
-			d->env = ft_subtab(d->env, d->cmd->cmd_arg[j]);
-			break ;
+			if (!ft_strncmp(d->env[j], d->cmd[cc].cmd_arg[i], len))
+			{
+				d->env = ft_subtab(d->env, d->cmd[cc].cmd_arg[i]);
+				if (!d->env)
+					return (ft_exit(d, 1), 1);
+				break ;
+			}
 		}
-		i++;
 	}
-	return (0);
+	return (ft_exit(d, 0), 0);
 }

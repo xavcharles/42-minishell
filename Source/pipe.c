@@ -26,8 +26,9 @@ int	ft_pipe(t_data *d, int cc)
 		close(p.end[0]);
 		dup2(p.end[1], 1);
 		if (!is_builtin(d, cc))
-			if (exec_1(d, cc))
-				return (printf("exec in piepe error\n"), 0);
+			exec_1(d, cc);
+		else
+			ft_exit(d, 0);
 	}
 	else
 	{

@@ -6,37 +6,37 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/15 13:52:39 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/15 16:26:39 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include "libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <unistd.h>
-#include <errno.h>
+# include "libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <unistd.h>
+# include <errno.h>
 
 extern int	g_ret;
 
-typedef	struct s_cmd
+typedef struct s_cmd
 {
-	char 	**cmds;
-	char	**sep;
-	char 	**cmd_path;
-	char 	*path;
-	struct	s_data *data;
-	void	*next;
+	char			**cmds;
+	char			**sep;
+	char			**cmd_path;
+	char			*path;
+	struct s_data	*data;
+	void			*next;
 }	t_cmd;
 
-typedef struct	s_ccmd
+typedef struct s_ccmd
 {
 	char	*cmd;
 	char	**cmd_arg;
@@ -46,7 +46,7 @@ typedef struct	s_ccmd
 	char	*prev_op;
 }	t_ccmd;
 
-typedef struct	s_pipe
+typedef struct s_pipe
 {
 	pid_t	pid1;
 	pid_t	pid2;
@@ -55,12 +55,12 @@ typedef struct	s_pipe
 	int		f2;
 }	t_pipe;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	t_ccmd	*cmd;
 	char	**cmds;
 	char	**seps;
-	char 	**paths;
+	char	**paths;
 	char	**env;
 	char	*input;
 	int		cmd_count;
@@ -92,7 +92,7 @@ int		cmd_exec(t_data *d);
 int		redir_out(t_ccmd *cmd);
 int		ft_pipe(t_data *d, int cc);
 int		print_env(t_data *d);
-int		ft_export(t_data *d);
+int		ft_export(t_data *d, int cc);
 int		ft_unset(t_data *d, int cc);
 int		ft_echo(t_data *d, int cc);
 int		cd_builtin(t_data *d, int cc);
@@ -104,7 +104,16 @@ int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
 int		check_first(char *input);
 int		check_firstbis(char *input);
-void    ft_exit(t_data *d, int n);
+void	ft_exit(t_data *d, int n);
 int		is_builtin(t_data *d, int cc);
+int		strs_len(char **strs);
+int		find_var(char **env, char *var);
+int		is_builtin(t_data *d, int cc);
+int		is_builtin2(t_data *d, int cc);
+int		par_cd(t_data *d, int cc);
+int		par_export(t_data *d, int cc);
+int		par_unset(t_data *d, int cc);
+char	**ft_tabjoin(char **tab, char *s);
+char	**ft_subtab(char **tab, char *s);
 
 #endif

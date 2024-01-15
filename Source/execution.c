@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 13:31:12 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 16:06:04 by maderuel         ###   ########.fr       */
+/*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
+/*   Updated: 2024/01/15 16:27:12 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ int	cmd_exec(t_data *d)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(p.pid1, &status, 0);
+		if (is_builtin2(d, d->cmd_count - 1))
+			return (1);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-		{
 			printf("Quit (Core Dumped)\n");
-		}
 	}
 	return (0);
 }
