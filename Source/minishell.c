@@ -40,7 +40,7 @@ void	print_contenu(t_data *d)
 		printf("cmd with arg : ");
 		while (d->cmd[i].cmd_arg && d->cmd[i].cmd_arg[j])
 		{
-			printf("%s ", d->cmd[i].cmd_arg[j]);
+			printf("arg%d=%s ", j, d->cmd[i].cmd_arg[j]);
 			j++;
 		}
 		printf("\n");
@@ -86,6 +86,8 @@ int	ca_parse(t_data *d, char *input)
 	if (set_next_op(d, input))
 		return (clean_data(d), 1);
 	if (init_ccmd(d, d->cmd))
+		return (clean_data(d), 1);
+	if (dollar_search(d))
 		return (clean_data(d), 1);
 	print_contenu(d);    // ne pas oublier de retirer
 	return (0);

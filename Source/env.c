@@ -18,6 +18,7 @@ int	print_env(t_data *d)
 
 	i = -1;
 	while (d->env[++i] != NULL)
+	
 		printf("%s\n", d->env[i]);
 	return (ft_exit(d, 0), 0);
 }
@@ -79,34 +80,31 @@ int	ft_export(t_data *d, int cc)
 	i = 0;
 	while (d->cmd[cc].cmd_arg[++i])
 	{
-		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
+		tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
+		if (find_var(d->env, tmp[0]))
 		{
-			tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
-			if (find_var(d->env, tmp[0]))
+			j = -1;
+			while (d->env[++j])
 			{
-				j = -1;
-				while (d->env[++j])
+				if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
 				{
-					if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
+					free(d->env[j]);
+					d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
+					if (!d->env[j])
 					{
-						free(d->env[j]);
-						d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
-						if (!d->env[j])
-						{
-							clean_strs(tmp, 0, 0);
-							return (ft_exit(d, 1), 1);
-						}
+						clean_strs(tmp, 0, 0);
+						return (ft_exit(d, 1), 1);
 					}
 				}
 			}
-			else
-			{
-				d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
-				if (!d->env)
-					return(ft_exit(d, 1), printf("Failed to malloc env after export\n"));
-			}
-			clean_strs(tmp, 0, 0);
 		}
+		else
+		{
+			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
+			if (!d->env)
+				return(ft_exit(d, 1), printf("Failed to malloc env after export\n"));
+		}
+			clean_strs(tmp, 0, 0);
 	}
 	return (ft_exit(d, 0), 0);
 }

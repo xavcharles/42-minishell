@@ -4,12 +4,22 @@
 int	find_var(char **env, char *var)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	while (env[i])
 	{
-		if (!ft_strncmp(env[i], var, ft_strlen(var)))
-			return (1);
+		if (ft_strchr(env[i], '='))
+		{
+			j = ft_strlen(env[i]) - ft_strlen(ft_strchr(env[i], '='));
+			if (!ft_strncmp(env[i], var, j))
+				return (1);
+		}
+		else
+		{
+			if (!ft_strncmp(env[i], var, ft_strlen(env[i])))
+				return (1);
+		}
 		i++;
 	}
 	return (0);

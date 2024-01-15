@@ -17,6 +17,7 @@ SRC = Source/main.c \
 		Source/ic_signal.c \
 		Source/ft_exit.c \
 		Source/par_builtins.c \
+		Source/dollar.c
 		
 NAME = minishell
 

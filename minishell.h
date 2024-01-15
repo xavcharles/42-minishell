@@ -113,6 +113,7 @@ int par_export(t_data *d, int cc);
 int par_unset(t_data *d, int cc);
 char **ft_tabjoin(char **tab, char *s);
 char	**ft_subtab(char **tab, char *s);
+int	dollar_search(t_data *d);
 
 
 #endif
