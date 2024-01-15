@@ -104,9 +104,29 @@ int	dollar_search(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count)
 	{
-		j = -1;
 		if (d->cmd[i].cmd)
 		{
+			if (d->cmd[i].cmd == '"')
+			{
+				tmp = ft_strtrim(d->cmd[i], "\"");
+				if (!tmp)
+					return (1);
+				if (ft_strchr(d->cmd[i], '$'))
+				{
+					if (dollar_replace(d, &tmp))
+						return (1);
+				}
+				free(d->cmd[i]);
+				free(d->cmd[i].cmd_arg[j]);
+				d->cmd[i].cmd_arg[j] = ft_strdup(tmp);
+				if (!d->cmd[i].cmd_arg[j])
+					return (free(tmp), 1);
+				d->cmd[i] = ft_strdup(tmp);
+				if (!d->cmd[i])
+					return (free(tmp), 1);
+				free(tmp);
+			}
+			j = 0;
 			while (d->cmd[i].cmd_arg[++j])
 			{
 				if (d->cmd[i].cmd_arg[j][0] == '"')
