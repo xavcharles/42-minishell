@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2023/12/05 13:41:08 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:52:39 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ int		input_check(t_data *strs);
 int		check_esp(char *str, int *i);
 int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
-int	check_first(char *input);
-int	check_firstbis(char *input);
+int		check_first(char *input);
+int		check_firstbis(char *input);
 void    ft_exit(t_data *d, int n);
-int	is_builtin(t_data *d, int cc);
+int		is_builtin(t_data *d, int cc);
 
 #endif
