@@ -31,14 +31,14 @@ int	exec_2(t_data *d, int cc)
 				exit(EXIT_FAILURE);
 			}
 		}
+		free(tmp);
 		i++;
 	}
 	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
 		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
 			perror(d->cmd[cc].cmd);
 	perror(d->cmd[cc].cmd);
-	free(tmp);
-	exit(EXIT_FAILURE);
+	return (ft_exit(d, EXIT_FAILURE), EXIT_FAILURE);
 }
 
 int	exec_1(t_data *d, int cc)
