@@ -1,16 +1,4 @@
-
 #include "../minishell.h"
-
-int par_cd(t_data *d, int cc)
-{
-    char *dir;
-
-	dir = d->cmd[cc].cmd_arg[1];
-	if (chdir(dir) == 0)
-		return (EXIT_SUCCESS);
-	perror(dir);
-	return (EXIT_FAILURE);
-}
 
 int par_export(t_data *d, int cc)
 {

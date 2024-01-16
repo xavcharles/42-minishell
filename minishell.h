@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/15 16:26:39 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:26:52 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,6 @@ int	d_quote1(t_data *d, char ***strs, char *arg, int *k);
 int	dollar_replace(t_data *d, char **s, int op, int start);
 int	len_varval(t_data *d, char *str);
 char	*env_varval(t_data *d, char *str);
+int		exec_builtin(t_data *d, int cc);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2023/10/24 15:40:32 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:06:14 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (init_ccmd(d, d->cmd))
 		return (clean_data(d), 1);
-//	print_contenu(d);    // ne pas oublier de retirer
+	print_contenu(d);    // ne pas oublier de retirer
 	if (dollar_search(d))
 		return (clean_data(d), 1);
 //	print_contenu(d);    // ne pas oublier de retirer
