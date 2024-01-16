@@ -55,7 +55,10 @@ int	exec_1(t_data *d, int cc)
 		i++;
 	}
 	if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+	{
+		printf("ls\n");
 		perror(d->cmd[cc].cmd);
+	}
 	return (ft_exit(d, EXIT_FAILURE), 1);
 }
 
@@ -73,7 +76,9 @@ int	exec_pipes(t_data *d)
 	}
 	if (d->cmd[i].out)
 		redir_out(&d->cmd[i]);
-	if (!is_builtin1(d, i) && !is_builtin2(d, i))
+	if (is_builtin1(d, i) || is_builtin2(d, i))
+		exit(0);
+	else
 		if (exec_1(d, i))
 			return (printf("cmd error\n"), 1);
 	exit(0);
@@ -85,7 +90,9 @@ int	simple_exec(t_data *d)
 		redir_in(d->cmd);
 	if (d->cmd->out)
 		redir_out(d->cmd);
-	if (!is_builtin1(d, 0) && !is_builtin2(d, 0))
+	if (is_builtin1(d, 0) || is_builtin2(d, 0))
+		exit(0);
+	else
 		if (exec_1(d, 0))
 			return (printf("cmd error\n"), 1);
 	exit(0);
@@ -109,8 +116,8 @@ int	cmd_exec(t_data *d)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(p.pid1, &status, 0);
-		if (is_builtin2(d, d->cmd_count - 1))
-			return (1);
+	//	if (is_builtin2(d, d->cmd_count - 1))
+	//		return (1);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			printf("Quit (Core Dumped)\n");
 		g_ret = WEXITSTATUS(status);
