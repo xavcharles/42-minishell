@@ -42,6 +42,7 @@ int		ft_atoi(const char *nptr);
 int		ft_lstsize(t_list *lst);
 int		is_line(char *buffer, int l);
 int		wd_count(char const *s, char c);
+int		ft_nbsize(int n);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);

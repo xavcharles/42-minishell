@@ -116,5 +116,10 @@ int		par_unset(t_data *d, int cc);
 char	**ft_tabjoin(char **tab, char *s);
 char	**ft_subtab(char **tab, char *s);
 int	dollar_search(t_data *d);
+int	s_quote1(char **tmp, char *arg, int *k);
+int	d_quote1(t_data *d, char ***strs, char *arg, int *k);
+int	dollar_replace(t_data *d, char **s, int op, int start);
+int	len_varval(t_data *d, char *str);
+char	*env_varval(t_data *d, char *str);
 
 #endif
