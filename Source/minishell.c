@@ -87,6 +87,7 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (init_ccmd(d, d->cmd))
 		return (clean_data(d), 1);
+	print_contenu(d);    // ne pas oublier de retirer
 	if (dollar_search(d))
 		return (clean_data(d), 1);
 	print_contenu(d);    // ne pas oublier de retirer
