@@ -24,7 +24,7 @@ int	exec_2(t_data *d, int i, int cc)
 		{
 			free(tmp);
 			perror(d->cmd[cc].cmd);
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 	}
 	free(tmp);
@@ -56,7 +56,7 @@ int	exec_1(t_data *d, int cc)
 	}
 	if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
 		perror(d->cmd[cc].cmd);
-	return (ft_exit(d, EXIT_SUCCESS), 1);
+	return (ft_exit(d, EXIT_FAILURE), 1);
 }
 
 int	exec_pipes(t_data *d)
@@ -73,34 +73,29 @@ int	exec_pipes(t_data *d)
 	}
 	if (d->cmd[i].out)
 		redir_out(&d->cmd[i]);
-	if (!is_builtin(d, i))
+	if (!is_builtin1(d, i) && !is_builtin2(d, i))
 		if (exec_1(d, i))
 			return (printf("cmd error\n"), 1);
-	return (0);
+	exit(0);
 }
 
 int	simple_exec(t_data *d)
 {
 	if (d->cmd->in)
-	{
-		if (redir_in(d->cmd))
-			return (1);
-	}
+		redir_in(d->cmd);
 	if (d->cmd->out)
 		redir_out(d->cmd);
-	if (!is_builtin(d, 0))
+	if (!is_builtin1(d, 0) && !is_builtin2(d, 0))
 		if (exec_1(d, 0))
 			return (printf("cmd error\n"), 1);
-	return (0);
+	exit(0);
 }
 
 int	cmd_exec(t_data *d)
 {
-	int		i;
 	int		status;
 	t_pipe	p;
 
-	i = 0;
 	p.pid1 = fork();
 	if (p.pid1 == 0)
 	{
@@ -118,6 +113,7 @@ int	cmd_exec(t_data *d)
 			return (1);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			printf("Quit (Core Dumped)\n");
+		g_ret = WEXITSTATUS(status);
 	}
 	return (0);
 }

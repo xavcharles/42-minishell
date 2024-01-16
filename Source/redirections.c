@@ -54,6 +54,7 @@ int	get_doc(char *end, int *p_fd)
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
 	}
+	close(p_fd[1]);
 	return (0);
 }
 

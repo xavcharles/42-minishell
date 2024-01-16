@@ -12,11 +12,11 @@
 
 #include "../minishell.h"
 
-char	**ft_tabjoin(char **tab, char *s)
+char **ft_tabjoin(char **tab, char *s)
 {
-	int		i;
-	int		j;
-	char	**n_tab;
+	int i;
+	int j;
+	char **n_tab;
 
 	i = 0;
 	j = 0;
@@ -67,19 +67,37 @@ int	sub_export(t_data *d, int i, int cc)
 int	ft_export(t_data *d, int cc)
 {
 	int		i;
+	int		j;
+	char **tmp;
 
 	i = 0;
 	while (d->cmd[cc].cmd_arg[++i])
 	{
-		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
-			sub_export(d, i, cc);
+		tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
+		if (find_var(d->env, tmp[0]))
+		{
+			j = -1;
+			while (d->env[++j])
+			{
+				if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
+				{
+					free(d->env[j]);
+					d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
+					if (!d->env[j])
+					{
+						clean_strs(tmp, 0, 0);
+						return (ft_exit(d, 1), 1);
+					}
+				}
+			}
+		}
 		else
 		{
 			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
 			if (!d->env)
-				return (ft_exit(d, 1),
-					printf("Failed to malloc env after export\n"));
+				return(ft_exit(d, 1), printf("Failed to malloc env after export\n"));
 		}
+			clean_strs(tmp, 0, 0);
 	}
 	return (ft_exit(d, 0), 0);
 }

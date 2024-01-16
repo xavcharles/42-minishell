@@ -108,12 +108,13 @@ void	ft_exit(t_data *d, int n);
 int		is_builtin(t_data *d, int cc);
 int		strs_len(char **strs);
 int		find_var(char **env, char *var);
-int		is_builtin(t_data *d, int cc);
+int		is_builtin1(t_data *d, int cc);
 int		is_builtin2(t_data *d, int cc);
 int		par_cd(t_data *d, int cc);
 int		par_export(t_data *d, int cc);
 int		par_unset(t_data *d, int cc);
 char	**ft_tabjoin(char **tab, char *s);
 char	**ft_subtab(char **tab, char *s);
+int	dollar_search(t_data *d);
 
 #endif
