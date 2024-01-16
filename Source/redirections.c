@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
+/*   Updated: 2024/01/15 13:29:52 by maderuel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../minishell.h"
 
 int	redir_out(t_ccmd *cmd)
 {
 	t_pipe	p;
-	int	i;
+	int		i;
 	char	**tmp;
 
 	i = -1;
@@ -28,7 +39,7 @@ int	redir_out(t_ccmd *cmd)
 
 int	get_doc(char *end, int *p_fd)
 {
-	char *str;
+	char	*str;
 
 	close(p_fd[0]);
 	while (1)
@@ -43,12 +54,13 @@ int	get_doc(char *end, int *p_fd)
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
 	}
+	close(p_fd[1]);
 	return (0);
 }
 
 int	here_doc(char *end)
 {
-	int	p_fd[2];
+	int		p_fd[2];
 	pid_t	pid;
 
 	if (pipe(p_fd) < 0)
@@ -87,12 +99,12 @@ int	redir_in(t_ccmd *cmd)
 				perror("file not found\n");
 				return (1);
 			}
-			dup2(p.f1, 0); 
+			dup2(p.f1, 0);
 			close(p.f1);
 		}
 		else
 			here_doc(tmp[1]);
 		clean_strs(tmp, 0, 0);
 	}
-	return(0);
+	return (0);
 }

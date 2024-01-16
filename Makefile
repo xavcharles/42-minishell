@@ -16,6 +16,7 @@ SRC = Source/main.c \
 		Source/input_check.c \
 		Source/ic_signal.c \
 		Source/ft_exit.c \
+		Source/exec_utils.c \
 		Source/par_builtins.c \
 		Source/dollar.c
 		
