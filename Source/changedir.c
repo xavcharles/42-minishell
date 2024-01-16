@@ -12,46 +12,46 @@
 
 #include "../minishell.h"
 
-int	add_dir(t_data *d, int cc)
+
+char	*sub_dir(char *s)
 {
 	int	i;
-	int	j;
+	char	*rs;
 
-	i = -1;
-	j = -1;
-	while (d->env[++i])
-		if (!ft_strncmp(d->env[i], "OLDPWD", 6))
+	i = ft_strlen(s) - 1;
+	while (s[i])
+	{
+		if (s[i] == '/')
 			break ;
-	while (d->env[++j])
-		if (!ft_strncmp(d->env[j], "PWD", 3))
-			break ;
-	free(d->env[i]);
-	d->env[i] = ft_strdup(d->env[j]);
-	free(d->env[j]);
-	d->env[j] = ft_strjoin(d->env[i], "/");
-	d->env[j] = ft_strjoin(d->env[j], d->cmd[cc].cmd_arg[1]);
-	return (1);
+		i--;
+	}
+	rs = malloc(sizeof(char) * i + 1);
+	if (rs == NULL)
+		return (NULL);
+	ft_strlcpy(rs, s, i + 1);
+	free(s);
+	return(rs);
 }
 
-int	sub_dir(t_data *d, int cc)
+int	update_pwd(t_data *d, int cc)
 {
-	int	i;
-	int	j;
-	int	tmp;
+	int		i;
+	char	*s;
 
 	i = -1;
-	j = -1;
+	s = NULL;
 	while (d->env[++i])
-		if (!ft_strncmp(d->env[i], "OLDPWD", 6))
-			break ;
-	while (d->env[++j])
-		if (!ft_strncmp(d->env[j], "PWD", 3))
-			break ;
-	free(d->env[i]);
-	d->env[i] = ft_strdup(d->env[j]);
-	free(d->env[j]);
-	tmp = ft_strlen(d->env[i]) - ft_strlen(d->cmd[cc].cmd_arg[1]);
-	d->env[j] = ft_substr(d->env[i], tmp, ft_strlen(d->cmd[cc].cmd_arg[1]));
+		if (!ft_strncmp(d->env[i], "PWD", 3))
+			break ;	
+	if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "..", 2))
+		d->env[i] = sub_dir(d->env[i]);
+	else
+	{
+		s = ft_strjoin(d->env[i], "/");
+		free(d->env[i]);
+		d->env[i] = ft_strjoin(s, d->cmd[cc].cmd_arg[1]);
+	}
+	free(s);
 	return (1);
 }
 
@@ -62,10 +62,7 @@ int	cd_builtin(t_data *d, int cc)
 	dir = d->cmd[cc].cmd_arg[1];
 	if (chdir(dir) == 0)
 	{
-		if (!ft_strncmp(dir, "..", 2))
-			sub_dir(d, cc);
-		else
-			add_dir(d, cc);
+		update_pwd(d, cc);
 		return (EXIT_SUCCESS);
 	}
 	perror(dir);
