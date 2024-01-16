@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:23:50 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 14:23:53 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:30:15 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ int	ft_pipe(t_data *d, int cc)
 		close(p.end[0]);
 		dup2(p.end[1], 1);
 		close(p.end[1]);
-		if (!is_builtin1(d, cc))
-			exec_1(d, cc);
-		else
-			ft_exit(d, 0);
+		exec_1(d, cc);
+		ft_exit(d, 0);
 	}
 	else
 	{

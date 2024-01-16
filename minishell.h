@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/15 16:26:39 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:26:52 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int		par_export(t_data *d, int cc);
 int		par_unset(t_data *d, int cc);
 char	**ft_tabjoin(char **tab, char *s);
 char	**ft_subtab(char **tab, char *s);
-int	dollar_search(t_data *d);
+int		dollar_search(t_data *d);
+int		exec_builtin(t_data *d, int cc);
 
 #endif

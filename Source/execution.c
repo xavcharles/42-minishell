@@ -6,59 +6,59 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 16:27:12 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:36:49 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exec_2(t_data *d, int i, int cc)
+int	exec_2(t_data *d, int cc)
 {
 	char	*tmp;
-
-	tmp = ft_strjoin(d->paths[i], "/");
-	tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
-	if (!access(tmp, F_OK | X_OK))
-	{
-		if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
-		{
-			free(tmp);
-			perror(d->cmd[cc].cmd);
-			exit(EXIT_FAILURE);
-		}
-	}
-	free(tmp);
-	return (1);
-}
-
-int	exec_1(t_data *d, int cc)
-{
 	int		i;
 
 	i = 0;
 	while (d->paths[i])
 	{
-		if (!ft_strncmp(d->cmd[cc].cmd, "./minishell",
-				ft_strlen(d->cmd[cc].cmd)))
+		tmp = ft_strjoin(d->paths[i], "/");
+		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
+		if (!access(tmp, F_OK | X_OK))
 		{
-			if (!access(d->cmd[cc].cmd, F_OK | X_OK))
+			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
-				if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
-				{
-					perror(d->cmd[cc].cmd);
-					return (ft_exit(d, EXIT_FAILURE), 1);
-				}
+				free(tmp);
+				perror(d->cmd[cc].cmd);
+				exit(EXIT_FAILURE);
 			}
 		}
-		else
-			exec_2(d, i, cc);
 		i++;
 	}
-	if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
+		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+			perror(d->cmd[cc].cmd);
+	perror(d->cmd[cc].cmd);
+	free(tmp);
+	exit(EXIT_FAILURE);
+}
+
+int	exec_1(t_data *d, int cc)
+{
+	if (!ft_strncmp(d->cmd[cc].cmd, "./minishell",
+			ft_strlen(d->cmd[cc].cmd)))
 	{
-		printf("ls\n");
-		perror(d->cmd[cc].cmd);
+		if (!access(d->cmd[cc].cmd, F_OK | X_OK))
+		{
+			if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+			{
+				perror(d->cmd[cc].cmd);
+				return (ft_exit(d, EXIT_FAILURE), 1);
+			}
+		}
 	}
+	else if (is_builtin(d, cc) == 1)
+		exec_builtin(d, cc);
+	else
+		exec_2(d, cc);
 	return (ft_exit(d, EXIT_FAILURE), 1);
 }
 
@@ -76,11 +76,8 @@ int	exec_pipes(t_data *d)
 	}
 	if (d->cmd[i].out)
 		redir_out(&d->cmd[i]);
-	if (is_builtin1(d, i) || is_builtin2(d, i))
-		exit(0);
-	else
-		if (exec_1(d, i))
-			return (printf("cmd error\n"), 1);
+	if (exec_1(d, i))
+		return (printf("cmd error\n"), 1);
 	exit(0);
 }
 
@@ -90,11 +87,12 @@ int	simple_exec(t_data *d)
 		redir_in(d->cmd);
 	if (d->cmd->out)
 		redir_out(d->cmd);
-	if (is_builtin1(d, 0) || is_builtin2(d, 0))
+	if (is_builtin(d, 0) == 1)
+		exec_builtin(d, 0);
+	else if (is_builtin(d, 0) == 2)
 		exit(0);
-	else
-		if (exec_1(d, 0))
-			return (printf("cmd error\n"), 1);
+	else if (exec_1(d, 0))
+		return (printf("cmd error\n"), 1);
 	exit(0);
 }
 
@@ -116,8 +114,8 @@ int	cmd_exec(t_data *d)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(p.pid1, &status, 0);
-	//	if (is_builtin2(d, d->cmd_count - 1))
-	//		return (1);
+		if (is_builtin(d, d->cmd_count - 1) == 2)
+			exec_builtin(d, d->cmd_count - 1);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
 			printf("Quit (Core Dumped)\n");
 		g_ret = WEXITSTATUS(status);
