@@ -5,8 +5,8 @@ int	is_builtin(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
-	if (!cmd)
-		return (1);
+	if (!cmd || ft_strlen(cmd) == 0)
+		return (ft_exit(d, 0), 0);
 	if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
 		return (print_env(d), 1);
 	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
@@ -110,7 +110,7 @@ int	is_builtin2(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
-	if (!cmd)
+	if (!cmd || ft_strlen(cmd) == 0)
 		return (0);
 	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
 	{
