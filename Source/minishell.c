@@ -104,7 +104,7 @@ char *prompt_pwd(t_data *d)
 			break ;
 	s = ft_split (d->env[i], '=');
 	free(s[0]);
-	s[0] = ft_strjoin(s[1], "$>");
+	s[0] = ft_strjoin(s[1], "$> ");
 	free(s[1]);
 	return (s[0]);
 }

@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
-
+void	her_handle(int signum)
+{
+	(void) signum;
+	exit(0);
+}
 int	redir_out(t_ccmd *cmd)
 {
 	t_pipe	p;
@@ -53,6 +57,7 @@ int	get_doc(char *end, int *p_fd)
 		ft_putstr_fd(str, p_fd[1]);
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
+		signal(SIGINT, her_handle);
 	}
 	close(p_fd[1]);
 	return (0);
