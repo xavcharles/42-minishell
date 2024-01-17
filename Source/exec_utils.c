@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/16 18:31:05 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:03:39 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -30,7 +30,7 @@ int	is_builtin(t_data *d, int cc)
 
 	cmd = d->cmd[cc].cmd;
 	if (!cmd)
-		return (ft_exit(d, 0), 0);
+		return (0);
 	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
 		return (2);
 	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))

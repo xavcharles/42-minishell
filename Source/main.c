@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2023/12/05 13:46:35 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:02:21 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@ int	pathfinder(t_data *d)
 		{
 			d->paths = ft_split(*strs, ':');
 			if (!d->paths)
-				return (printf("Minishell: failed to malloc in pathfinder function\n"));
+				return (printf
+					("Minishell: failed to malloc in pathfinder function\n"));
 			return (0);
 		}
 		strs++;
 	}
-	// if (*strs == NULL)
-	// 	return (printf("Minishell: PATH not found\n"));
 	return (0);
 }
 

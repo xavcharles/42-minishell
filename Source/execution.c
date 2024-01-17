@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 14:34:33 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:03:13 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	exec_2(t_data *d, int cc)
 	char	*tmp;
 	int		i;
 
-	i = 0;
-	while (d->paths[i])
+	i = -1;
+	while (d->paths[++i])
 	{
 		tmp = ft_strjoin(d->paths[i], "/");
 		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
@@ -33,7 +33,6 @@ int	exec_2(t_data *d, int cc)
 			}
 		}
 		free(tmp);
-		i++;
 	}
 	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
 		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
@@ -71,12 +70,12 @@ int	exec_pipes(t_data *d)
 	while (i < d->cmd_count - 1)
 	{
 		if (d->cmd[i].in)
-			redir_in(&d->cmd[i]);
+			redir_in(d, &d->cmd[i]);
 		ft_pipe(d, i);
 		i++;
 	}
 	if (d->cmd[i].out)
-		redir_out(&d->cmd[i]);
+		redir_out(d, &d->cmd[i]);
 	if (exec_1(d, i))
 		return (printf("cmd error\n"), 1);
 	exit(0);
@@ -85,16 +84,18 @@ int	exec_pipes(t_data *d)
 int	simple_exec(t_data *d)
 {
 	if (d->cmd->in)
-		redir_in(d->cmd);
+		redir_in(d, d->cmd);
 	if (d->cmd->out)
-		redir_out(d->cmd);
+		redir_out(d, d->cmd);
+	if (d->cmd->cmd == NULL)
+		exit(0);
 	if (is_builtin(d, 0) == 1)
 		exec_builtin(d, 0);
 	else if (is_builtin(d, 0) == 2)
-		exit(0);
+		ft_exit(d, 0);
 	else if (exec_1(d, 0))
 		return (printf("cmd error\n"), 1);
-	exit(0);
+	return (ft_exit(d, 0), 0);
 }
 
 int	cmd_exec(t_data *d)

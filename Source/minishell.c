@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/17 13:02:58 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:29:50 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int	shell_loop(t_data *d)
 			add_history(input);
 			if (!ca_parse(d, input))
 			{
+				signal(SIGINT, SIG_IGN);
 				if (cmd_exec(d))
 					printf("Error during execution\n");
 				clean_data(d);
