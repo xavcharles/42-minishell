@@ -93,15 +93,29 @@ int	ca_parse(t_data *d, char *input)
 //	print_contenu(d);    // ne pas oublier de retirer
 	return (0);
 }
+char *prompt_pwd(t_data *d)
+{
+	int		i;
+	char	**s;
 
+	i = -1;
+	while (d->env[++i])
+		if (!ft_strncmp(d->env[i], "PWD", 3))
+			break ;
+	s = ft_split (d->env[i], '=');
+	free(s[0]);
+	s[0] = ft_strjoin(s[1], "$>");
+	free(s[1]);
+	return (s[0]);
+}
 int	shell_loop(t_data *d)
 {
 	const char	*prompt;
 	char	*input;
 
-	prompt = "$> ";
 	while (1)
 	{
+		prompt = prompt_pwd(d);
 		ic_sigs(1);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline(prompt);
