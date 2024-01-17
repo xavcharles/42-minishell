@@ -18,7 +18,7 @@ char	*sub_dir(char *s)
 	int	i;
 	char	*rs;
 
-	i = ft_strlen(s) - 1;
+	i = ft_strlen(s) - 2;
 	while (s[i])
 	{
 		if (s[i] == '/')
@@ -55,6 +55,30 @@ int	update_pwd(t_data *d, int cc)
 	return (1);
 }
 
+int	update_oldpwd(t_data *d)
+{
+	int		i;
+	int		j;
+	char	**s;
+
+	i = -1;
+	j = -1;
+	while (d->env[++i])
+		if (!ft_strncmp(d->env[i], "OLDPWD", 6))
+			break ;
+	while (d->env[++j])
+		if (!ft_strncmp(d->env[j], "PWD", 3))
+			break ;
+	s = ft_split(d->env[j], '=');
+	free(s[0]);
+	s[0] = ft_strjoin("OLDPWD", "=");
+	d->env[i] = ft_strjoin(s[0], s[1]);
+	free(s[0]);
+	free(s[1]);
+	free(s);
+	return (0);
+}
+
 int	cd_builtin(t_data *d, int cc)
 {
 	char	*dir;
@@ -62,6 +86,7 @@ int	cd_builtin(t_data *d, int cc)
 	dir = d->cmd[cc].cmd_arg[1];
 	if (chdir(dir) == 0)
 	{
+		update_oldpwd(d);
 		update_pwd(d, cc);
 		return (EXIT_SUCCESS);
 	}
