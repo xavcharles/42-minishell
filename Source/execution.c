@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/16 18:36:49 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:34:33 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ int	exec_2(t_data *d, int cc)
 			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
 				free(tmp);
-				perror(d->cmd[cc].cmd);
-				exit(EXIT_FAILURE);
+				if (errno == 13)
+					exit(126);
+				exit(127);
 			}
 		}
 		free(tmp);
@@ -36,9 +37,9 @@ int	exec_2(t_data *d, int cc)
 	}
 	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
 		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
-			perror(d->cmd[cc].cmd);
-	perror(d->cmd[cc].cmd);
-	return (ft_exit(d, EXIT_FAILURE), EXIT_FAILURE);
+			printf("Minishell : %s %s\n", d->cmd[cc].cmd, strerror(errno));
+	printf("Minishell : %s %s\n", d->cmd[cc].cmd, strerror(errno));
+	return (ft_exit(d, 127), EXIT_FAILURE);
 }
 
 int	exec_1(t_data *d, int cc)
@@ -59,7 +60,7 @@ int	exec_1(t_data *d, int cc)
 		exec_builtin(d, cc);
 	else
 		exec_2(d, cc);
-	return (ft_exit(d, EXIT_FAILURE), 1);
+	return (ft_exit(d, 127), 1);
 }
 
 int	exec_pipes(t_data *d)

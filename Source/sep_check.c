@@ -57,25 +57,25 @@ int	check_pipe(char *str, int *i)
 	while (str[*i] && str[*i] == '|' && *i < 4)
 		(*i)++;
 	if (*i == 4)
-		return (printf("minishell: syntax error near unexpected token `||'\n"));
+		return (printf("minishell: syntax error near unexpected token `||'\n"), g_ret = 127, 1);
 	if (*i == 3)
-		return (printf("minishell: syntax error near unexpected token `|'\n"));
+		return (printf("minishell: syntax error near unexpected token `|'\n"), g_ret = 127, 1);
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	while (str[*i + n] == '&' && n < 2)
 		n++;
 	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `&&'\n"));
+		return (printf("minishell: syntax error near unexpected token `&&'\n"), g_ret = 127, 1);
 	if (n == 1)
-		return (printf("minishell: syntax error near unexpected token `&'\n"));
+		return (printf("minishell: syntax error near unexpected token `&'\n"), g_ret = 127, 1);
 	while (str[*i + n] == '|' && n < 2)
 		n++;
 	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `||'\n"));
+		return (printf("minishell: syntax error near unexpected token `||'\n"), g_ret = 127, 1);
 	if (n == 1 && str[*i + n] == '&')
-		return (printf("minishell: syntax error near unexpected token `|&'\n"));
+		return (printf("minishell: syntax error near unexpected token `|&'\n"), g_ret = 127, 1);
 	if (n == 1)
-		return (printf("minishell: syntax error near unexpected token `|'\n"));
+		return (printf("minishell: syntax error near unexpected token `|'\n"), g_ret = 127, 1);
 	while (str[*i + n] == ';' && n < 2)
 		n++;
 	if (n == 2)
@@ -83,7 +83,7 @@ int	check_pipe(char *str, int *i)
 	if (n == 1 && str[*i + n] == '&')
 		return (printf("minishell: syntax error near unexpected token `;&'\n"));
 	if (n == 1)
-		return (printf("minishell: syntax error near unexpected token `;'\n"));
+		return (printf("minishell: syntax error near unexpected token `;'\n"), g_ret = 127, 1);
 	return (0);
 }
 

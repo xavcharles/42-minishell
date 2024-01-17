@@ -6,16 +6,15 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/16 18:55:34 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 12:48:45 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
 char	*sub_dir(char *s)
 {
-	int	i;
+	int		i;
 	char	*rs;
 
 	i = ft_strlen(s) - 2;
@@ -30,7 +29,7 @@ char	*sub_dir(char *s)
 		return (NULL);
 	ft_strlcpy(rs, s, i + 1);
 	free(s);
-	return(rs);
+	return (rs);
 }
 
 int	update_pwd(t_data *d, int cc)
@@ -42,7 +41,7 @@ int	update_pwd(t_data *d, int cc)
 	s = NULL;
 	while (d->env[++i])
 		if (!ft_strncmp(d->env[i], "PWD", 3))
-			break ;	
+			break ;
 	if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "..", 2))
 		d->env[i] = sub_dir(d->env[i]);
 	else
@@ -72,6 +71,7 @@ int	update_oldpwd(t_data *d)
 	s = ft_split(d->env[j], '=');
 	free(s[0]);
 	s[0] = ft_strjoin("OLDPWD", "=");
+	free(d->env[i]);
 	d->env[i] = ft_strjoin(s[0], s[1]);
 	free(s[0]);
 	free(s[1]);

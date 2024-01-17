@@ -6,15 +6,11 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 13:29:52 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:04:52 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
-void	her_handle(int signum)
-{
-	(void) signum;
-	exit(0);
-}
+
 int	redir_out(t_ccmd *cmd)
 {
 	t_pipe	p;
@@ -57,7 +53,7 @@ int	get_doc(char *end, int *p_fd)
 		ft_putstr_fd(str, p_fd[1]);
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
-		signal(SIGINT, her_handle);
+		ic_sigs(1);
 	}
 	close(p_fd[1]);
 	return (0);
