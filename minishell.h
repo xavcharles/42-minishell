@@ -127,5 +127,9 @@ size_t	ft_trslen(const char *s);
 int	dollar_replace2(t_data *d, char **s, int op, int start);
 int	find_match(t_data *d, int *i, char **tmp, char *str);
 char	*recreate_str(t_data *d, int start, char **s, char **tmp);
+int	check_braces(char *str, int *i);
+int	check_parenth(char *str, int *i);
+char	**quot_split(char *s, char *set);
+int		quot_count(char *s, char *set);
 
 #endif

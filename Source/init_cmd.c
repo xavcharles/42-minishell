@@ -85,6 +85,7 @@ int	loop_cmd(t_ccmd *ccmd, char **strs, char **in, char **out)
 	j = 0;
 	while (strs[j])
 	{
+		printf("strspj[ = %s\n", strs[j]);
 		if (!ft_strchr(strs[j], '<') && !ft_strchr(strs[j], '>'))
 		{
 			if (set_cmd(ccmd, strs, &j))
@@ -122,11 +123,14 @@ int	init_ccmd(t_data *d, t_ccmd *ccmd)
 	{
 		if (input_check(d))
 			return (printf("Minishell: Incorrect synthax\n"));
+		// strs = quot_split(d->cmds[i], "\t \"'");
 		strs = ms_split(d->cmds[i], "\t ");
 		if (!strs)
 			return (printf("Minishell: Failed Malloc in init_ccmd\n"));
 		in = NULL;
 		out = NULL;
+		printf("ici\n");
+		printf("strs[0] = %s\n", strs[0]);
 		if (loop_cmd(ccmd + i, strs, &in, &out))
 			return (init_clean(strs, in, out), 1);
 		if (set_in_out(ccmd + i, &in, &out))
