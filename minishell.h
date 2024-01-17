@@ -122,5 +122,7 @@ int	dollar_replace(t_data *d, char **s, int op, int start);
 int	len_varval(t_data *d, char *str);
 char	*env_varval(t_data *d, char *str);
 int		exec_builtin(t_data *d, int cc);
+int	ven_larlav(t_data *d, char *str);
+size_t	ft_trslen(const char *s);
 
 #endif

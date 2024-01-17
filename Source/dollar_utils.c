@@ -10,17 +10,22 @@ int	find_match(t_data *d, int *i, char **tmp, char *str)
 		if (*tmp)
 			free(*tmp);
 		if (*i == 1 && str[*i] == '?')
-		{
 			*tmp = ft_strdup("?");
-			if (!*tmp)
-				return (1);
+		if (!*tmp && *i == 1 && str[*i] == '?')
+			return (1);
+		if (*i == 1 && str[*i] == '?')
 			break ;
-		}
 		*tmp = ft_substr(str + 1, 0, *i);
 		if (!*tmp)
 			return (1);
 		if (find_var(d->env, *tmp))
 			break ;
+	}
+	if ((*i) > 0 && str[(*i)] == '$' && str[(*i) - 1] == '$')
+	{
+		*tmp = ft_substr(str, 0, *(i) + 1);
+		if (!*tmp)
+			return (1);
 	}
 	return (0);
 }
@@ -31,7 +36,7 @@ char	*recreate_str(t_data *d, int start, char **s, char **tmp)
 	char	*str;
 	int		len;
 
-	len = ft_strlen(*s) - ft_strlen(*tmp) + len_varval(d, *tmp);
+	len = ft_strlen(*s) - ft_strlen(*tmp) + ven_larlav(d, *tmp);
 	val = env_varval(d, *tmp);
 	if (!val && len_varval(d, *tmp) != 0)
 		return (free(*tmp), NULL);
@@ -47,8 +52,8 @@ char	*recreate_str(t_data *d, int start, char **s, char **tmp)
 	len += len_varval(d, *tmp);
 	if (val)
 		ft_strlcat(str, val, len + 1);
-	len += ft_strlen(ft_strchr(*s + start, '$')) - ft_strlen(*tmp) - 1;
-	ft_strlcat(str, ft_strchr(*s + start, '$') + ft_strlen(*tmp) + 1, len + 1);
+	len += ft_strlen(ft_strchr(*s + start, '$')) - ft_trslen(*tmp) - 1;
+	ft_strlcat(str, ft_strchr(*s + start, '$') + ft_trslen(*tmp) + 1, len + 1);
 	if (val)
 		free(val);
 	return (str);
@@ -65,18 +70,18 @@ int	dollar_replace(t_data *d, char **s, int op, int start)
 	{
 		if (find_match(d, &i, &tmp, str))
 			return (1);
-		if (i > 1 || (str[i] && !is_charset(str[i], " $\t\"'")))
+		if (tmp && str[i] && !is_charset(str[i], " \t\"'"))
 		{
 			str = recreate_str(d, start, s, &tmp);
 			if (!str)
 				return (free(tmp), 1);
-			free(tmp);
 			free(*s);
 			*s = ft_strdup(str);
 			if (!*s)
-				return (free(str), 1);
+				return ((free(str), free(tmp)), 1);
 			free(str);
-			str = ft_strchr(*s, '$');
+			str = ft_strchr(*s + start + len_varval(d, tmp), '$');
+			free(tmp);
 		}
 		op--;
 	}

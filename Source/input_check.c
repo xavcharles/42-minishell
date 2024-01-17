@@ -87,7 +87,7 @@ int	check_lessthan(char *str, int *i)
 
 	*i = 0;
 	n = 0;
-	while (str[*i] && str[*i] == '<' && *i < 3)
+	while (str[*i] && str[*i] == '<' && *i < 2)
 		(*i)++;
 	if (*i == 1 && str[*i] == '&')
 		(*i)++;
