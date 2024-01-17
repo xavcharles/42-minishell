@@ -59,20 +59,20 @@ char	*recreate_str(t_data *d, int start, char **s, char **tmp)
 	return (str);
 }
 
-int	dollar_replace(t_data *d, char **s, int op, int start)
+int	dollar_replace(t_data *d, char **s, int op, int *start)
 {
 	int	i;
 	char	*str;
 	char	*tmp;
 
-	str = ft_strchr(*s + start, '$');
+	str = ft_strchr(*s + *start, '$');
 	while (str != 0 && op > 0)
 	{
 		if (find_match(d, &i, &tmp, str))
 			return (1);
 		if (tmp && str[i] && !is_charset(str[i], " \t\"'"))
 		{
-			str = recreate_str(d, start, s, &tmp);
+			str = recreate_str(d, *start, s, &tmp);
 			if (!str)
 				return (free(tmp), 1);
 			free(*s);
@@ -80,7 +80,8 @@ int	dollar_replace(t_data *d, char **s, int op, int start)
 			if (!*s)
 				return ((free(str), free(tmp)), 1);
 			free(str);
-			str = ft_strchr(*s + start + len_varval(d, tmp), '$');
+			str = ft_strchr(*s + *start + len_varval(d, tmp), '$');
+			*start +=  len_varval(d, tmp) - 1;
 			free(tmp);
 		}
 		op--;
@@ -132,12 +133,12 @@ int	d_quote1(t_data *d, char ***strs, char *arg, int *k)
 	free(str);
 	if (strs_len(*strs) == 2)
 	{
-		if (dollar_replace(d, *strs + 1, ft_strlen(*(*strs + 1)), 0))
+		if (dollar_replace2(d, *strs + 1, ft_strlen(*(*strs + 1)), 0))
 			return (clean_strs(*strs, 0, 0), 1);
 	}
 	else
 	{
-		if (dollar_replace(d, *strs, ft_strlen(**strs), 0))
+		if (dollar_replace2(d, *strs, ft_strlen(**strs), 0))
 			return (clean_strs(*strs, 0, 0), 1);
 	}
 	return (0);

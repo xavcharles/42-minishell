@@ -21,6 +21,7 @@ SRC = Source/main.c \
 		Source/dollar.c \
 		Source/dollar_utils.c \
 		Source/dollar_utils2.c \
+		Source/dollar_utils3.c \
 		
 NAME = minishell
 
