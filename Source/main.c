@@ -14,18 +14,34 @@
 
 int	g_ret;
 
+int	wipe_data(t_data *data)
+{
+	if (data->paths)
+		clean_strs(data->paths, 0, 0);
+	if (data->env)
+		clean_strs(data->env, 0, 0);
+	free(data);
+	return (0);
+}
+
 int	pathfinder(t_data *d)
 {
 	char	**strs;
 
 	strs = d->env;
-	while (ft_strncmp("PATH", *strs, 4))
+	while (*strs)
+	{
+		if (!ft_strncmp(*strs, "PATH", 4))
+		{
+			d->paths = ft_split(*strs, ':');
+			if (!d->paths)
+				return (printf("Minishell: failed to malloc in pathfinder function\n"));
+			return (0);
+		}
 		strs++;
-	if (*strs == NULL)
-		return (printf("Minishell: PATH not found\n"));
-	d->paths = ft_split(*strs, ':');
-	if (!d->paths)
-		return (printf("Minishell: failed to malloc in pathfinder function\n"));
+	}
+	// if (*strs == NULL)
+	// 	return (printf("Minishell: PATH not found\n"));
 	return (0);
 }
 
@@ -55,7 +71,7 @@ int	main(int ac, char **av, char **env)
 	if (data == NULL)
 		return (printf("Minishell: failed to malloc data structure\n"));
 	if (init_data(data, env))
-		return (1);
+		return ((wipe_data(data)), 1);
 	(void) av;
 	if (ac != 1)
 	{
@@ -63,10 +79,6 @@ int	main(int ac, char **av, char **env)
 		return (0);
 	}
 	shell_loop(data);
-	if (data->paths)
-		clean_strs(data->paths, 0, 0);
-	if (data->env)
-		clean_strs(data->env, 0, 0);
-	free(data);
+	wipe_data(data);
 	return (0);
 }
