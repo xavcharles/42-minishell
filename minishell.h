@@ -118,9 +118,14 @@ char	**ft_subtab(char **tab, char *s);
 int	dollar_search(t_data *d);
 int	s_quote1(char **tmp, char *arg, int *k);
 int	d_quote1(t_data *d, char ***strs, char *arg, int *k);
-int	dollar_replace(t_data *d, char **s, int op, int start);
+int	dollar_replace(t_data *d, char **s, int op, int *start);
 int	len_varval(t_data *d, char *str);
 char	*env_varval(t_data *d, char *str);
 int		exec_builtin(t_data *d, int cc);
+int	ven_larlav(t_data *d, char *str);
+size_t	ft_trslen(const char *s);
+int	dollar_replace2(t_data *d, char **s, int op, int start);
+int	find_match(t_data *d, int *i, char **tmp, char *str);
+char	*recreate_str(t_data *d, int start, char **s, char **tmp);
 
 #endif

@@ -54,29 +54,48 @@ int	do_squote(t_data *d, int i, int j, int *k)
 
 int	do_dollar(t_data *d, int i, int j, int *k)
 {
-	if (dollar_replace(d, d->cmd[i].cmd_arg + j, 1, *k))
-		return (1);
+	int	start;
+
+	start = *k;
+	printf("start k = %d\n", *k);
+	while (d->cmd[i].cmd_arg[j][++(*k)] == '$')
+		;
+	if (*k - start == 1)
+		(*k)--;
+	if (*k != start)
+	{
+		if (dollar_replace(d, d->cmd[i].cmd_arg + j, (*k - start) / 2, &start))
+			return (1);
+		// *k -= (*k - start) % 2;
+	}
+	else
+		if (dollar_replace(d, d->cmd[i].cmd_arg + j, 1, &start))
+			return (1);
 	if (j == 0)
 	{
-		free(d->cmd[i].cmd);
 		d->cmd[i].cmd = ft_strdup(d->cmd[i].cmd_arg[0]);
 		if (!d->cmd[i].cmd)
 			return (1);
 	}
-	if (d->cmd[i].cmd_arg[j][*k] != '$' || d->cmd[i].cmd_arg[j][*k + 1])
-		*k -= 1;
+	// if (d->cmd[i].cmd_arg[j][*k] != '$' || d->cmd[i].cmd_arg[j][*k + 1] != 0)
+		*k = start;
+	printf("end k = %d\n", *k);
 	return (0);
 }
 
 int	dollar_loop(t_data *d, int i, int j, int *k)
 {
 	char	*arg;
+	char	*old;
 
-	arg = d->cmd[i].cmd_arg[j]; 
+	arg = d->cmd[i].cmd_arg[j];
 	if (arg[*k] == '$')
 	{
+		old = d->cmd[i].cmd;
 		if (do_dollar(d, i, j, k))
 			return (1);
+		if (old != d->cmd[i].cmd)
+			free(old);
 	}
 	else if (arg[*k] == '\'')
 	{
@@ -108,7 +127,7 @@ int	dollar_search(t_data *d)
 				k = -1;
 				while (d->cmd[i].cmd_arg[j][++k])
 				{
-					usleep(1000);
+					printf("k = %d\n", k);
 					if (dollar_loop(d, i, j, &k))
 						return (1);
 				}

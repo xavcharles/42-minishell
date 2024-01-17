@@ -6,6 +6,8 @@ int		is_charset(char c, char *set)
 	int	i;
 
 	i = 0;
+	if (c == 0)
+		return (1);
 	while (set[i])
 	{
 		if (c == set[i++])
