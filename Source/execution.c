@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 17:03:13 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:03:35 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	exec_2(t_data *d, int cc)
 	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
 		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
 			printf("Minishell : %s %s\n", d->cmd[cc].cmd, strerror(errno));
-	printf("Minishell : %s %s\n", d->cmd[cc].cmd, strerror(errno));
 	return (ft_exit(d, 127), EXIT_FAILURE);
 }
 
@@ -59,43 +58,61 @@ int	exec_1(t_data *d, int cc)
 		exec_builtin(d, cc);
 	else
 		exec_2(d, cc);
-	return (ft_exit(d, 127), 1);
+	return (ft_exit(d, 2), 1);
+}
+
+int	simple_exec(t_data *d, int cc)
+{
+	printf("oui\n");
+	if (d->cmd->in)
+		redir_in(d, d->cmd + cc);
+	if (d->cmd->out)
+		redir_out(d, d->cmd + cc);
+	if (d->cmd->cmd == NULL)
+		exit(2);
+	if (is_builtin(d, 0) == 1)
+		exec_builtin(d, cc);
+	else if (is_builtin(d, cc) == 2)
+		ft_exit(d, 0);
+	else if (exec_1(d, cc))
+		return (printf("cmd error\n"), 1);
+	return (ft_exit(d, 0), 0);
+}
+
+void	print(void)
+{
+	char	buf[50];
+	int		ret;
+
+	ret = 1;
+	while (ret)
+	{
+		ret = read(0, buf, sizeof(buf));
+		buf[ret] = '\0';
+		write(1, buf, ret);
+	}
 }
 
 int	exec_pipes(t_data *d)
 {
-	int	i;
+	int	i;	
 
-	i = 0;
-	while (i < d->cmd_count - 1)
+	i = -1;
+	while (++i < d->cmd_count - 1)
 	{
 		if (d->cmd[i].in)
 			redir_in(d, &d->cmd[i]);
+		if (d->cmd[i].out)
+			redir_out(d, &d->cmd[i]);
 		ft_pipe(d, i);
-		i++;
+		if (!isatty(0) && !isatty(1))
+			print();
 	}
-	if (d->cmd[i].out)
-		redir_out(d, &d->cmd[i]);
-	if (exec_1(d, i))
-		return (printf("cmd error\n"), 1);
+	dup2(d->std_in, 0);
+	dup2(d->std_out, 1);
+	simple_exec(d, i);
+	print();
 	exit(0);
-}
-
-int	simple_exec(t_data *d)
-{
-	if (d->cmd->in)
-		redir_in(d, d->cmd);
-	if (d->cmd->out)
-		redir_out(d, d->cmd);
-	if (d->cmd->cmd == NULL)
-		exit(0);
-	if (is_builtin(d, 0) == 1)
-		exec_builtin(d, 0);
-	else if (is_builtin(d, 0) == 2)
-		ft_exit(d, 0);
-	else if (exec_1(d, 0))
-		return (printf("cmd error\n"), 1);
-	return (ft_exit(d, 0), 0);
 }
 
 int	cmd_exec(t_data *d)
@@ -104,13 +121,17 @@ int	cmd_exec(t_data *d)
 	t_pipe	p;
 
 	p.pid1 = fork();
+	d->std_in = dup(0);
+	d->std_out = dup(1);
 	if (p.pid1 == 0)
 	{
 		ic_sigs(2);
 		if (d->cmd_count > 1)
 			exec_pipes(d);
 		else
-			simple_exec(d);
+			simple_exec(d, 0);
+		while (wait(NULL) > 0)
+			;
 	}
 	else
 	{

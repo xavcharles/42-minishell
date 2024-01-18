@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/17 17:00:23 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:16:09 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_data
 	int		cmd_count;
 	int		sep_count;
 	int		err;
+	int		std_out;
+	int		std_in;
 	t_pipe	*p;
 }	t_data;
 
