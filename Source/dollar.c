@@ -78,7 +78,7 @@ int	do_dollar(t_data *d, int i, int j, int *k)
 			return (1);
 	}
 	// if (d->cmd[i].cmd_arg[j][*k] != '$' || d->cmd[i].cmd_arg[j][*k + 1] != 0)
-		*k = start;
+	*k = start;
 	printf("end k = %d\n", *k);
 	return (0);
 }
@@ -127,12 +127,14 @@ int	dollar_search(t_data *d)
 				k = -1;
 				while (d->cmd[i].cmd_arg[j][++k])
 				{
-					printf("k = %d\n", k);
 					if (dollar_loop(d, i, j, &k))
 						return (1);
 				}
 			}	
 		}
+		// if (d->cmd[i].in || d->cmd[i].out)
+		// 	if (dollar_inout(d, d->cmd + i))
+		// 		return (1);
 	}
 	return (0);
 }
