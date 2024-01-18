@@ -191,7 +191,7 @@ int	input_check(t_data *d)
 	inquote = 0;
 	while (*str)
 	{
-		if (!is_charset(*str, "\"'&|><"))
+		if (!is_charset(*str, "()[]\"'&|><"))
 			str++;
 		else
 		{
@@ -206,10 +206,8 @@ int	input_check(t_data *d)
 						break ;
 					}
 				}
-				printf("str = %s\n", str);
 				if (*str)
 					str++;
-				printf("str = %s\n", str);
 			}
 			else if (*str == '\'' && inquote == 0)
 			{
@@ -253,6 +251,7 @@ int	input_check(t_data *d)
 				{
 					return (1);
 				}
+				printf("str = %s, i = %d\n", str, i);
 				str += i;
 			}
 			else if (*str == '&')

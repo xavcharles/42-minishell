@@ -131,5 +131,8 @@ int	check_braces(char *str, int *i);
 int	check_parenth(char *str, int *i);
 char	**quot_split(char *s, char *set);
 int		quot_count(char *s, char *set);
+int	loop_2(char *str, char **cmd_arg, char **in, char **out);
+int	fill_justthesign(char *str, char **in, char **out, int *i);
+
 
 #endif

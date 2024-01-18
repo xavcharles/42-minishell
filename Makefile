@@ -8,6 +8,8 @@ SRC = Source/main.c \
 		Source/redirections.c \
 		Source/pipe.c \
 		Source/init_cmd.c \
+		Source/init_cmd_utils.c \
+		Source/init_cmd_utils2.c \
 		Source/set_op.c \
 		Source/env.c \
 		Source/echo.c \
