@@ -12,8 +12,9 @@
 
 #include "../minishell.h"
 
-int	fd_manager(t_pipe p, t_data *d)
+int	fd_manager(t_pipe p, t_data *d, int cc)
 {
+	(void) cc;
 	close(p.end[0]);
 	dup2(p.end[1], 1);
 	close(p.end[1]);
@@ -33,7 +34,7 @@ int	ft_pipe(t_data *d, int cc)
 		return (printf("fork err") * 0);
 	if (pid == 0)
 	{
-		fd_manager(p, d);
+		fd_manager(p, d, cc);
 		exec_1(d, cc);
 	}
 	else

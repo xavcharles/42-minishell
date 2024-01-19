@@ -31,7 +31,7 @@ typedef struct s_ccmd
 	char	**in;
 	char	**out;
 	char	*next_op;
-	char	*prev_op;
+	char	*prev_o;
 }	t_ccmd;
 
 typedef struct s_pipe

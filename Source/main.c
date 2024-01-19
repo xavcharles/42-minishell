@@ -53,6 +53,8 @@ int	init_data(t_data *d, char **env)
 	d->sep_count = 0;
 	d->err = 0;
 	d->p = NULL;
+	d->std_out = dup(1);
+	d->std_in = dup(0);
 	if (env_cpy(d, env))
 		return (1);
 	if (pathfinder(d))

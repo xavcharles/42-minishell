@@ -63,7 +63,6 @@ int	exec_1(t_data *d, int cc)
 
 int	simple_exec(t_data *d, int cc)
 {
-	printf("oui\n");
 	if (d->cmd->in)
 		redir_in(d, d->cmd + cc);
 	if (d->cmd->out)
@@ -100,6 +99,7 @@ int	exec_pipes(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count - 1)
 	{
+
 		if (d->cmd[i].in)
 			redir_in(d, &d->cmd[i]);
 		if (d->cmd[i].out)
@@ -107,10 +107,10 @@ int	exec_pipes(t_data *d)
 		ft_pipe(d, i);
 		if (!isatty(0) && !isatty(1))
 			print();
+		dup2(d->std_out, 1);
 	}
-	dup2(d->std_in, 0);
-	dup2(d->std_out, 1);
 	simple_exec(d, i);
+	dup2(d->std_in, 0);
 	print();
 	exit(0);
 }
@@ -121,8 +121,6 @@ int	cmd_exec(t_data *d)
 	t_pipe	p;
 
 	p.pid1 = fork();
-	d->std_in = dup(0);
-	d->std_out = dup(1);
 	if (p.pid1 == 0)
 	{
 		ic_sigs(2);
