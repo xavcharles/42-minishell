@@ -137,5 +137,6 @@ int	ministrlen(char **strs);
 char	*minijoin(char **strs);
 int	dollar_loop(t_data *d, t_ccmd *ccmd, char **rep, int *k);
 int	dollar_inout(t_data *d, t_ccmd *cmd);
+int	do_squote(t_data *d, t_ccmd *ccmd, char **rep, int *k);
 
 #endif
