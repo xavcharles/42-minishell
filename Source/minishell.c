@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/16 17:06:14 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:29:50 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	first_char(char	*input)
 		return (check_firstbis(input + i), 1);
 	return (0);
 }
-
+/*
 void	print_contenu(t_data *d)
 {
 	int	i;
@@ -66,6 +66,7 @@ void	print_contenu(t_data *d)
 		i++;
 	}
 }
+*/
 
 int	ca_parse(t_data *d, char *input)
 {
@@ -87,45 +88,57 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (init_ccmd(d, d->cmd))
 		return (clean_data(d), 1);
-	// print_contenu(d);    // ne pas oublier de retirer
 	if (dollar_search(d))
 		return (clean_data(d), 1);
-	print_contenu(d);    // ne pas oublier de retirer
 	return (0);
+}
+
+char	*prompt_pwd(t_data *d)
+{
+	int		i;
+	char	**s;
+	char	*ret;
+
+	i = -1;
+	while (d->env[++i])
+		if (!ft_strncmp(d->env[i], "PWD", 3))
+			break ;
+	s = ft_split(d->env[i], '=');
+	free(s[0]);
+	ret = ft_strjoin(s[1], "$> ");
+	free(s[1]);
+	free(s);
+	return (ret);
 }
 
 int	shell_loop(t_data *d)
 {
-	const char	*prompt;
-	char	*input;
+	char		*prompt;
+	char		*input;
 
-	prompt = "$> ";
 	while (1)
 	{
+		prompt = prompt_pwd(d);
 		ic_sigs(1);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline(prompt);
+		free(prompt);
 		if (!input)
-		{
-			printf("break 1\n");
 			break ;
-		}
 		if (!ft_strncmp(input, "exit", ft_strlen(input)) && ft_strlen(input))
-		{	
-			printf("break 2\n");
 			break ;
-		}
 		if (ft_strlen(input))
 		{
 			add_history(input);
 			if (!ca_parse(d, input))
 			{
+				signal(SIGINT, SIG_IGN);
 				if (cmd_exec(d))
 					printf("Error during execution\n");
 				clean_data(d);
 			}
 			else
-				printf("Error during parsing\n");		
+				printf("Error during parsing\n");
 		}
 		free(input);
 		usleep(10);

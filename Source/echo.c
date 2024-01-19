@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:25:22 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 14:33:20 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:48:37 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	eqote(t_data *d, int i, int cc)
 	{
 		str = ft_strtrim(d->cmd[cc].cmd_arg[i], "'");
 		if (!str)
-			return (exit(1), 1);
+			return (1);
 		ft_putstr_fd(str, 1);
 		free(str);
 	}
@@ -42,6 +42,8 @@ int	ft_echo(t_data *d, int cc)
 	i = 1;
 	if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 		i = 2;
+	if (ft_strlen(d->cmd[cc].cmd) == 0)
+		return (ft_exit(d, 127), 1);
 	while (d->cmd[cc].cmd_arg[i])
 	{
 		if (d->cmd[cc].cmd_arg[i][0] == '\''

@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/16 18:26:52 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:16:09 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,6 @@
 # include <unistd.h>
 # include <errno.h>
 
-extern int	g_ret;
-
-typedef struct s_cmd
-{
-	char			**cmds;
-	char			**sep;
-	char			**cmd_path;
-	char			*path;
-	struct s_data	*data;
-	void			*next;
-}	t_cmd;
-
 typedef struct s_ccmd
 {
 	char	*cmd;
@@ -43,7 +31,7 @@ typedef struct s_ccmd
 	char	**in;
 	char	**out;
 	char	*next_op;
-	char	*prev_op;
+	char	*prev_o;
 }	t_ccmd;
 
 typedef struct s_pipe
@@ -66,8 +54,12 @@ typedef struct s_data
 	int		cmd_count;
 	int		sep_count;
 	int		err;
+	int		std_out;
+	int		std_in;
 	t_pipe	*p;
 }	t_data;
+
+extern int	g_ret;
 
 void	clean_strs(char	**strs1, char **strs2, char **strs3);
 int		clean_data(t_data *d);
@@ -85,11 +77,11 @@ int		cmd_count(char const *s, char *set);
 int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
-int		redir_in(t_ccmd *cmd);
+int		redir_in(t_data *d, t_ccmd *cmd);
 int		sep_check(char **seps);
 int		exec_1(t_data *d, int cc);
 int		cmd_exec(t_data *d);
-int		redir_out(t_ccmd *cmd);
+int		redir_out(t_data *d, t_ccmd *cmd);
 int		ft_pipe(t_data *d, int cc);
 int		print_env(t_data *d);
 int		ft_export(t_data *d, int cc);
@@ -122,10 +114,10 @@ int	dollar_replace(t_data *d, char **s, int op, int *start);
 int	len_varval(t_data *d, char *str, int op);
 char	*env_varval(t_data *d, char *str);
 int		exec_builtin(t_data *d, int cc);
-int	ven_larlav(t_data *d, char *str);
+int		ven_larlav(t_data *d, char *str);
 size_t	ft_trslen(const char *s);
-int	dollar_replace2(t_data *d, char **s, int op, int start);
-int	find_match(t_data *d, int *i, char **tmp, char *str);
+int		dollar_replace2(t_data *d, char **s, int op, int start);
+int		find_match(t_data *d, int *i, char **tmp, char *str);
 char	*recreate_str(t_data *d, int start, char **s, char **tmp);
 int	check_braces(char *str, int *i);
 int	check_parenth(char *str, int *i);

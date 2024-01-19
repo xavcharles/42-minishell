@@ -6,19 +6,19 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 13:29:52 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:01:07 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	redir_out(t_ccmd *cmd)
+int	redir_out(t_data *d, t_ccmd *cmd)
 {
 	t_pipe	p;
 	int		i;
 	char	**tmp;
 
 	i = -1;
-	while (cmd->out[++i])
+	while (cmd->out[++i] != NULL)
 	{
 		tmp = ft_split(cmd->out[i], ' ');
 		if (ft_strlen(tmp[0]) == 2)
@@ -30,37 +30,42 @@ int	redir_out(t_ccmd *cmd)
 	if (p.f2 < 0)
 	{
 		printf("file not found\n");
-		return (1);
+		return (ft_exit(d, 0), 0);
 	}
 	dup2(p.f2, 1);
 	close(p.f2);
 	return (0);
 }
 
-int	get_doc(char *end, int *p_fd)
+void	get_doc(t_data *d, char *end, int *p_fd)
 {
 	char	*str;
 
 	close(p_fd[0]);
 	while (1)
-	{
+	{		
+		ic_sigs(3);
 		str = readline("here_doc $>");
-		if (ft_strncmp(str, end, ft_strlen(end)) == 0)
+		if (g_ret == 130 || ft_strncmp(str, end, ft_strlen(end)) == 0
+			|| str == NULL)
 		{
 			free(str);
-			return (1);
+			close(p_fd[1]);
+			free(end);
+			return (ft_exit(d, 0));
 		}
 		ft_putstr_fd(str, p_fd[1]);
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
 	}
 	close(p_fd[1]);
-	return (0);
+	return ;
 }
 
-int	here_doc(char *end)
+int	here_doc(t_data *d, char *end)
 {
 	int		p_fd[2];
+	int		status;
 	pid_t	pid;
 
 	if (pipe(p_fd) < 0)
@@ -69,18 +74,20 @@ int	here_doc(char *end)
 	if (pid < 0)
 		return (2);
 	if (pid == 0)
-		exit(get_doc(end, p_fd));
+		get_doc(d, end, p_fd);
 	else
 	{
 		close(p_fd[1]);
 		dup2(p_fd[0], 0);
 		close(p_fd[0]);
-		wait(NULL);
+		waitpid(pid, &status, 0);
+		g_ret = WEXITSTATUS(status);
+		return (0);
 	}
 	return (0);
 }
 
-int	redir_in(t_ccmd *cmd)
+int	redir_in(t_data *d, t_ccmd *cmd)
 {
 	t_pipe	p;
 	char	**tmp;
@@ -97,13 +104,13 @@ int	redir_in(t_ccmd *cmd)
 			{
 				clean_strs(tmp, 0, 0);
 				perror("file not found\n");
-				return (1);
+				return (ft_exit(d, 0), 0);
 			}
 			dup2(p.f1, 0);
 			close(p.f1);
 		}
 		else
-			here_doc(tmp[1]);
+			here_doc(d, tmp[1]);
 		clean_strs(tmp, 0, 0);
 	}
 	return (0);
