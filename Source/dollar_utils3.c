@@ -158,7 +158,6 @@ int	dollar_inout(t_data *d, t_ccmd *cmd)
 				if (dollar_loop(d, cmd, cmd->out + i, &j))
 					return (1);
 			}
-			printf("cmd out = %s\n", cmd->out[i]);
 		}
 	}
 	return (0);

@@ -70,10 +70,8 @@ int	dollar_replace(t_data *d, char **s, int op, int *start)
 	{
 		if (find_match(d, &i, &tmp, str))
 			return (1);
-		printf("test1\n");
 		if (tmp)
 		{
-			printf("test\n");
 			str = recreate_str(d, *start, s, &tmp);
 			if (!str)
 				return (free(tmp), 1);
@@ -132,7 +130,6 @@ int	d_quote1(t_data *d, char ***strs, char *arg, int *k)
 	if (!*strs)
 		return (free(str), 1);
 	free(str);
-	printf("caca\n");
 	if (strs_len(*strs) == 2)
 	{
 		if (dollar_replace2(d, *strs + 1, ft_strlen(*(*strs + 1)), 0))

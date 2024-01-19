@@ -79,7 +79,6 @@ int	do_dollar(t_data *d, t_ccmd *ccmd, char **rep, int *k)
 			return (1);
 	}
 	*k = start;
-	printf("end k = %d\n", *k);
 	return (0);
 }
 
@@ -130,7 +129,6 @@ int	dollar_search(t_data *d)
 					if (dollar_loop(d, d->cmd + i, d->cmd[i].cmd_arg + j, &k))
 						return (1);
 				}
-				printf("cmdarg = %s\n", d->cmd[i].cmd_arg[j]);
 			}	
 		}
 		if (d->cmd[i].in || d->cmd[i].out)
