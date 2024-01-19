@@ -31,7 +31,7 @@ typedef struct s_ccmd
 	char	**in;
 	char	**out;
 	char	*next_op;
-	char	*prev_o;
+	char	*prev_op;
 }	t_ccmd;
 
 typedef struct s_pipe
@@ -77,11 +77,11 @@ int		cmd_count(char const *s, char *set);
 int		sep_count(char const *s, char *set);
 char	**ms_split(char *s, char *set);
 char	**rev_ms_split(char *s, char *set);
-int		redir_in(t_data *d, t_ccmd *cmd);
+int		redir_in(t_data *d, int cc);
 int		sep_check(char **seps);
 int		exec_1(t_data *d, int cc);
 int		cmd_exec(t_data *d);
-int		redir_out(t_data *d, t_ccmd *cmd);
+int		redir_out(t_data *d, int cc);
 int		ft_pipe(t_data *d, int cc);
 int		print_env(t_data *d);
 int		ft_export(t_data *d, int cc);

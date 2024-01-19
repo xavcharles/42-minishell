@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 #include "../minishell.h"
 
-int	redir_out(t_data *d, t_ccmd *cmd)
+int	redir_out(t_data *d, int cc)
 {
 	t_pipe	p;
 	int		i;
 	char	**tmp;
 
 	i = -1;
-	while (cmd->out[++i] != NULL)
+	while (d->cmd[cc].out[++i] != NULL)
 	{
-		tmp = ft_split(cmd->out[i], ' ');
+		tmp = ft_split(d->cmd[cc].out[i], ' ');
 		if (ft_strlen(tmp[0]) == 2)
 			p.f2 = open(tmp[1], O_CREAT | O_RDWR | O_APPEND, 0777);
 		else
@@ -30,7 +30,7 @@ int	redir_out(t_data *d, t_ccmd *cmd)
 	if (p.f2 < 0)
 	{
 		printf("file not found\n");
-		return (ft_exit(d, 0), 0);
+		return (0);
 	}
 	dup2(p.f2, 1);
 	close(p.f2);
@@ -87,16 +87,16 @@ int	here_doc(t_data *d, char *end)
 	return (0);
 }
 
-int	redir_in(t_data *d, t_ccmd *cmd)
+int	redir_in(t_data *d, int cc)
 {
 	t_pipe	p;
 	char	**tmp;
 	int		i;
 
 	i = -1;
-	while (cmd->in[++i])
+	while (d->cmd[cc].in[++i])
 	{
-		tmp = ft_split(cmd->in[i], ' ');
+		tmp = ft_split(d->cmd[cc].in[i], ' ');
 		if (ft_strlen(tmp[0]) == 1)
 		{
 			p.f1 = open(tmp[1], O_RDONLY);
@@ -104,7 +104,7 @@ int	redir_in(t_data *d, t_ccmd *cmd)
 			{
 				clean_strs(tmp, 0, 0);
 				perror("file not found\n");
-				return (ft_exit(d, 0), 0);
+				return (0);
 			}
 			dup2(p.f1, 0);
 			close(p.f1);

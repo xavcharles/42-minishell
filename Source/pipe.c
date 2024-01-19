@@ -28,7 +28,8 @@ int	ft_pipe(t_data *d, int cc)
 	t_pipe	p;
 	pid_t	pid;
 
-	pipe(p.end);
+	if (pipe(p.end) == -1)
+		return (1);
 	pid = fork();
 	if (pid < 0)
 		return (printf("fork err") * 0);

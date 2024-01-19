@@ -63,19 +63,27 @@ int	exec_1(t_data *d, int cc)
 
 int	simple_exec(t_data *d, int cc)
 {
-	if (d->cmd->in)
-		redir_in(d, d->cmd + cc);
-	if (d->cmd->out)
-		redir_out(d, d->cmd + cc);
-	if (d->cmd->cmd == NULL)
-		exit(2);
-	if (is_builtin(d, 0) == 1)
-		exec_builtin(d, cc);
-	else if (is_builtin(d, cc) == 2)
-		ft_exit(d, 0);
-	else if (exec_1(d, cc))
-		return (printf("cmd error\n"), 1);
-	return (ft_exit(d, 0), 0);
+	pid_t	pid;
+	int	status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		close(d->std_in);
+		close(d->std_out);
+		exec_1(d, cc);
+	}
+	else
+	{
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		if (is_builtin(d, d->cmd_count - 1) == 2)
+			exec_builtin(d, d->cmd_count - 1);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			printf("Quit (Core Dumped)\n");
+		g_ret = WEXITSTATUS(status);
+	}
+	return (0);
 }
 
 void	print(void)
@@ -92,54 +100,33 @@ void	print(void)
 	}
 }
 
-int	exec_pipes(t_data *d)
+int	cmd_exec(t_data *d)
 {
-	int	i;	
+	int	i;
 
 	i = -1;
-	while (++i < d->cmd_count - 1)
+	while (++i < d->cmd_count)
 	{
-
+		if (d->cmd->cmd == NULL)
+			return (2);
 		if (d->cmd[i].in)
-			redir_in(d, &d->cmd[i]);
+			redir_in(d, i);
 		if (d->cmd[i].out)
-			redir_out(d, &d->cmd[i]);
-		ft_pipe(d, i);
+			redir_out(d, i);
+		if (is_builtin(d, 0) == 1)
+			exec_builtin(d, i);
+		else if (is_builtin(d, i) == 2)
+			exec_builtin(d, i);
+		if (d->cmd[i].next_op)
+			ft_pipe(d, i);
+		else
+			simple_exec(d, i);
 		if (!isatty(0) && !isatty(1))
 			print();
 		dup2(d->std_out, 1);
-	}
-	simple_exec(d, i);
-	dup2(d->std_in, 0);
-	print();
-	exit(0);
-}
+		if (!d->cmd[i].next_op)
+			dup2(d->std_in, 0);
 
-int	cmd_exec(t_data *d)
-{
-	int		status;
-	t_pipe	p;
-
-	p.pid1 = fork();
-	if (p.pid1 == 0)
-	{
-		ic_sigs(2);
-		if (d->cmd_count > 1)
-			exec_pipes(d);
-		else
-			simple_exec(d, 0);
-		while (wait(NULL) > 0)
-			;
-	}
-	else
-	{
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(p.pid1, &status, 0);
-		if (is_builtin(d, d->cmd_count - 1) == 2)
-			exec_builtin(d, d->cmd_count - 1);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			printf("Quit (Core Dumped)\n");
-		g_ret = WEXITSTATUS(status);
 	}
 	return (0);
 }
