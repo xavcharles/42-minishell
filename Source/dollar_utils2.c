@@ -44,12 +44,12 @@ char	*env_varval(t_data *d, char *str)
 	int	len;
 	char	*tmp;
 
-	i = 0;
+	i = -1;
 	if (!ft_strncmp(str, "?", ft_strlen(str)))
 		return (dol_qmark());
 	if (!ft_strncmp(str, "$$", 2))
 		return (double_dollar());
-	while (d->env[i])
+	while (d->env[++i])
 	{
 		if (!ft_strncmp(d->env[i], str, ft_strlen(str)))
 		{
@@ -62,7 +62,6 @@ char	*env_varval(t_data *d, char *str)
 				return (tmp);
 			}
 		}
-		i++;
 	}
 	return (NULL);
 }
@@ -90,7 +89,7 @@ int	ven_larlav(t_data *d, char *str)
 	return (0);
 }
 
-int	len_varval(t_data *d, char *str)
+int	len_varval(t_data *d, char *str, int op)
 {
 	int	i;
 
@@ -98,7 +97,7 @@ int	len_varval(t_data *d, char *str)
 	if (!ft_strncmp(str, "?", ft_strlen(str)))
 		return (ft_nbsize(g_ret));
 	if (!ft_strncmp(str, "$", 1))
-		return (ft_strlen(str));
+		return (ft_strlen(str) + op);
 	while (d->env[i])
 	{
 		if (!ft_strncmp(d->env[i], str, ft_strlen(str)))

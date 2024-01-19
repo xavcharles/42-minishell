@@ -119,7 +119,7 @@ int	dollar_search(t_data *d);
 int	s_quote1(char **tmp, char *arg, int *k);
 int	d_quote1(t_data *d, char ***strs, char *arg, int *k);
 int	dollar_replace(t_data *d, char **s, int op, int *start);
-int	len_varval(t_data *d, char *str);
+int	len_varval(t_data *d, char *str, int op);
 char	*env_varval(t_data *d, char *str);
 int		exec_builtin(t_data *d, int cc);
 int	ven_larlav(t_data *d, char *str);
@@ -133,6 +133,9 @@ char	**quot_split(char *s, char *set);
 int		quot_count(char *s, char *set);
 int	loop_2(char *str, char **cmd_arg, char **in, char **out);
 int	fill_justthesign(char *str, char **in, char **out, int *i);
-
+int	ministrlen(char **strs);
+char	*minijoin(char **strs);
+int	dollar_loop(t_data *d, t_ccmd *ccmd, char **rep, int *k);
+int	dollar_inout(t_data *d, t_ccmd *cmd);
 
 #endif
