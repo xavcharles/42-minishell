@@ -119,8 +119,6 @@ size_t	ft_trslen(const char *s);
 int		dollar_replace2(t_data *d, char **s, int op, int start);
 int		find_match(t_data *d, int *i, char **tmp, char *str);
 char	*recreate_str(t_data *d, int start, char **s, char **tmp);
-char	**quot_split(char *s, char *set);
-int		quot_count(char *s, char *set);
 int	loop_2(char *str, char **cmd_arg, char **in, char **out);
 int	fill_justthesign(char *str, char **in, char **out, int *i);
 int	ministrlen(char **strs);
@@ -129,5 +127,7 @@ int	dollar_loop(t_data *d, t_ccmd *ccmd, char **rep, int *k);
 int	dollar_inout(t_data *d, t_ccmd *cmd);
 int	do_squote(t_data *d, t_ccmd *ccmd, char **rep, int *k);
 int	print_stxerr(char c1, char c2);
+char	**check_if_unclosed(char **strs, int inquote);
+void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 
 #endif

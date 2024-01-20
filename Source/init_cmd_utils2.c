@@ -18,7 +18,7 @@ int	fill_in(char *str, char **in, int *i)
 	char	*tmp;
 
 	start = *i;
-	while(str[*i] == '<')
+	while (str[*i] == '<')
 		(*i)++;
 	tmp = ft_substr(str, start, *i - start);
 	if (!tmp)
@@ -36,7 +36,7 @@ int	fill_out(char *str, char **out, int *i)
 	char	*tmp;
 
 	start = *i;
-	while(str[*i] == '>')
+	while (str[*i] == '>')
 		(*i)++;
 	tmp = ft_substr(str, start, *i - start);
 	if (!tmp)

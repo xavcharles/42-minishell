@@ -54,7 +54,7 @@ int	check_firstbis(char *input)
 		if (i == 1 && input[i] == '&')
 			return (print_stxerr(';', '&'));
 		else
-			return (print_stxerr(';'));
+			return (print_stxerr(';', 0));
 	}
 	return (0);
 }
@@ -72,7 +72,7 @@ int	check_bis(char *str, int *i)
 	else if (*i == 1 && str[*i] == '&')
 		return (print_stxerr(';', '&'));
 	else if (*i == 1)
-		return (print_stxerr(';'));
+		return (print_stxerr(';', 0));
 	return (0);
 }
 

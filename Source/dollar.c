@@ -78,7 +78,6 @@ int	do_dollar(t_data *d, t_ccmd *ccmd, char **rep, int *k)
 	{
 		if (dollar_replace(d, rep, (*k - start) / 2, &start))
 			return (1);
-		// *k -= (*k - start) % 2;
 	}
 	else
 		if (dollar_replace(d, rep, 1, &start))
