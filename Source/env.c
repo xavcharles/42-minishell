@@ -6,17 +6,17 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 16:43:06 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:11:08 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **ft_tabjoin(char **tab, char *s)
+char	**ft_tabjoin(char **tab, char *s)
 {
-	int i;
-	int j;
-	char **n_tab;
+	int		i;
+	int		j;
+	char	**n_tab;
 
 	i = 0;
 	j = 0;
