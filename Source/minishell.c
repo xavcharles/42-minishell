@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:28:47 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:41:51 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,47 +24,6 @@ int	first_char(char	*input)
 	else if (input[i] == ';')
 		return (check_firstbis(input + i), 1);
 	return (0);
-}
-
-void	print_contenu(t_data *d)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	printf("\n       ************      \nDans la fonction ca_parse : \n\n");
-	while (i < d->cmd_count)
-	{
-		printf("cmd = %s\n", d->cmd[i].cmd);
-		j = 0;
-		printf("cmd with arg : ");
-		while (d->cmd[i].cmd_arg && d->cmd[i].cmd_arg[j])
-		{
-			printf("arg%d=%s ", j, d->cmd[i].cmd_arg[j]);
-			j++;
-		}
-		printf("\n");
-		j = 0;
-		printf("in : ");
-		while (d->cmd[i].in && d->cmd[i].in[j])
-		{
-			printf("in%d=%s ", j, d->cmd[i].in[j]);
-			j++;
-		}
-		printf("\n");
-		j = 0;
-		printf("out : ");
-		while (d->cmd[i].out && d->cmd[i].out[j])
-		{
-			printf("out%d=%s ", j, d->cmd[i].out[j]);
-			j++;
-		}
-		printf("\n");
-		printf("prev op = %s\n", d->cmd[i].prev_op);
-		printf("next op = %s\n", d->cmd[i].next_op);
-		printf("\n       ************      \n\n");
-		i++;
-	}
 }
 
 int	ca_parse(t_data *d, char *input)
@@ -89,7 +48,6 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (dollar_search(d))
 		return (clean_data(d), 1);
-	print_contenu(d);
 	return (0);
 }
 
