@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 17:48:59 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:12:43 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ int	par_ex_sub(t_data *d, int cc, int i)
 	return (0);
 }
 
+int	check_inp(t_data *d, int cc, int i)
+{
+	if (ft_isdigit(d->cmd[cc].cmd_arg[i][0])
+		|| !ft_isalpha(d->cmd[cc].cmd_arg[i][0]))
+		return (printf("export: '%s' : not a valid identifier\n",
+				d->cmd[cc].cmd_arg[i]), 1);
+	return (0);
+}
+
 int	par_export(t_data *d, int cc)
 {
 	int		i;
@@ -42,7 +51,9 @@ int	par_export(t_data *d, int cc)
 
 	i = 0;
 	while (d->cmd[cc].cmd_arg[++i])
-	{
+	{	
+		if (check_inp(d, cc, i))
+			return (g_ret = 1, 1);
 		if (ft_strchr(d->cmd[cc].cmd_arg[i], '='))
 		{
 			tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
