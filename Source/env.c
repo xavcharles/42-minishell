@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 15:32:53 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:04:21 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,12 @@ int	ft_unset(t_data *d, int cc)
 	while (d->cmd[cc].cmd_arg[++i])
 	{
 		j = -1;
-		len = ft_strlen(d->cmd[cc].cmd_arg[i]);
 		while (d->env[++j])
 		{
+			len = ft_strlen(d->env[j]) - ft_strlen(ft_strchr(d->env[i], '='));
 			if (!ft_strncmp(d->env[j], d->cmd[cc].cmd_arg[i], len))
 			{
+				printf("%s | %d\n", d->cmd[cc].cmd_arg[i], len);
 				d->env = ft_subtab(d->env, d->cmd[cc].cmd_arg[i]);
 				if (!d->env)
 					return (ft_exit(d, 1), 1);

@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:32:17 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:57:48 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_1(t_data *d, int cc)
 		exec_builtin(d, cc);
 	else
 		exec_2(d, cc);
-	return (ft_exit(d, 2), 1);
+	return (ft_exit(d, 127), 1);
 }
 
 int	simple_exec(t_data *d, int cc)
@@ -118,7 +118,7 @@ int	cmd_exec(t_data *d)
 			exec_builtin(d, i);
 		if (d->cmd[i].next_op)
 			ft_pipe(d, i);
-		else
+		else if (is_builtin(d, i) != 2)
 			simple_exec(d, i);
 		if (!isatty(0) && !isatty(1))
 			print();
