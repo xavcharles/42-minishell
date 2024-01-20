@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/18 18:03:35 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:08:37 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exec_1(t_data *d, int cc)
 int	simple_exec(t_data *d, int cc)
 {
 	pid_t	pid;
-	int	status;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -124,7 +124,6 @@ int	cmd_exec(t_data *d)
 		dup2(d->std_out, 1);
 		if (!d->cmd[i].next_op)
 			dup2(d->std_in, 0);
-
 	}
 	return (0);
 }

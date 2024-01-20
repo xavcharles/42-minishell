@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 12:48:45 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:07:28 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,24 @@ char	*sub_dir(char *s)
 	return (rs);
 }
 
+int	update_pwd2(t_data *d, int cc, int i)
+{
+	char	**tmp;
+	char	*s;
+
+	tmp = ft_split(d->env[i], '=');
+	free(tmp[1]);
+	free(d->env[i]);
+	s = ft_strjoin(tmp[0], "=");
+	free(tmp[0]);
+	d->env[i] = ft_strjoin(s, d->cmd[cc].cmd_arg[1]);
+	return (0);
+}
+
 int	update_pwd(t_data *d, int cc)
 {
 	int		i;
 	char	*s;
-	char	**tmp;
 
 	i = -1;
 	s = NULL;
@@ -45,15 +58,9 @@ int	update_pwd(t_data *d, int cc)
 			break ;
 	if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "..", 2))
 		d->env[i] = sub_dir(d->env[i]);
-	else if (ft_strnstr(d->env[i], d->cmd[cc].cmd_arg[1], ft_strlen(d->env[i])) != 0)
-	{
-		tmp = ft_split(d->env[i], '=');
-		free(tmp[1]);
-		free(d->env[i]);
-		s = ft_strjoin(tmp[0], "=");
-		free(tmp[0]);
-		d->env[i] = ft_strjoin(s, d->cmd[cc].cmd_arg[1]);
-	}
+	else if (ft_strnstr(d->env[i],
+			d->cmd[cc].cmd_arg[1], ft_strlen(d->env[i])) != 0)
+		update_pwd2(d, cc, i);
 	else
 	{
 		s = ft_strjoin(d->env[i], "/");
