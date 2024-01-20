@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:17:44 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:32:17 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	exec_2(t_data *d, int cc)
 		}
 		free(tmp);
 	}
+	clean_strs(path, 0, 0);
 	abs_exec(d, cc);
 	return (ft_exit(d, 127), EXIT_FAILURE);
 }

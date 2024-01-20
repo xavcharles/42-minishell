@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:08:05 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:49:35 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -42,6 +42,8 @@ void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 	char	*str;
 
 	close(p_fd[0]);
+	close(d->std_in);
+	close(d->std_out);
 	while (1)
 	{		
 		ic_sigs(3);

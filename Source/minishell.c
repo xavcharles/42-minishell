@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/17 15:29:50 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:28:47 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,21 @@ char	*prompt_pwd(t_data *d)
 	return (ret);
 }
 
+int	shell_loop2(t_data *d, char *input)
+{
+	add_history(input);
+	if (!ca_parse(d, input))
+	{
+		signal(SIGINT, SIG_IGN);
+		if (cmd_exec(d))
+			printf("Error during execution\n");
+		clean_data(d);
+	}
+	else
+		printf("Error during parsing\n");
+	return (0);
+}
+
 int	shell_loop(t_data *d)
 {
 	char		*prompt;
@@ -128,18 +143,7 @@ int	shell_loop(t_data *d)
 		if (!ft_strncmp(input, "exit", ft_strlen(input)) && ft_strlen(input))
 			break ;
 		if (ft_strlen(input))
-		{
-			add_history(input);
-			if (!ca_parse(d, input))
-			{
-				signal(SIGINT, SIG_IGN);
-				if (cmd_exec(d))
-					printf("Error during execution\n");
-				clean_data(d);
-			}
-			else
-				printf("Error during parsing\n");
-		}
+			shell_loop2(d, input);
 		free(input);
 		usleep(10);
 	}
