@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 17:30:35 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 17:48:59 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	par_unset(t_data *d, int cc)
 			len = ft_strlen(d->env[j]) - ft_strlen(ft_strchr(d->env[j], '='));
 			if (!ft_strncmp(d->env[j], d->cmd[cc].cmd_arg[i], len))
 			{
-				printf("%s | %d\n", d->cmd[cc].cmd_arg[i], len);
 				d->env = ft_subtab(d->env, d->cmd[cc].cmd_arg[i]);
 				if (!d->env)
 					return (1);
