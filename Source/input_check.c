@@ -274,6 +274,5 @@ int	input_check(t_data *d)
 			}
 		}
 	}
-	printf("sorti\n");
 	return (0);
 }

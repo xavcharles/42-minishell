@@ -9,6 +9,7 @@ static void    cc_handler(int sig)
     rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	g_ret = 130;
 }
 
 static void    cc_hd_handler(int sig)

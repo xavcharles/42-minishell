@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 16:03:39 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:16:41 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -64,4 +64,33 @@ int	exec_builtin(t_data *d, int cc)
 	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
 		return (ft_echo(d, cc));
 	return (0);
+}
+
+char	**pathman(t_data *d)
+{
+	int		i;
+	char	**ret;
+
+	i = -1;
+	while (d->env[++i])
+		if (ft_strncmp(d->env[i], "PATH", 4) == 0)
+			break ;
+	ret = ft_split(d->env[i], ':');
+	return (ret);
+}
+
+int	abs_exec(t_data *d, int cc)
+{	
+	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
+	{
+		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+		{
+			perror(d->cmd[cc].cmd);
+			if (errno == 13)
+				ft_exit(d, 126);
+			ft_exit(d, 127);
+		}
+	}
+	perror(d->cmd[cc].cmd);
+	return (ft_exit(d, 127), 0);
 }

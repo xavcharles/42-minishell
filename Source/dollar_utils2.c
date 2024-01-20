@@ -1,7 +1,7 @@
 
 #include "../minishell.h"
 
-char	*dol_qmark()
+char	*dol_qmark(void)
 {
 	char	*ret;
 
@@ -11,7 +11,7 @@ char	*dol_qmark()
 	return (ret);
 }
 
-char	*double_dollar()
+char	*double_dollar(void)
 {
 	char	*tmp;
 
@@ -21,27 +21,10 @@ char	*double_dollar()
 	return (tmp);
 }
 
-size_t	ft_trslen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (i);
-	if (!ft_strncmp(s, "$$", 2))
-		return (1); 
-	else
-	{
-		while (s[i])
-			i++;
-	}
-	return (i);
-}
-
 char	*env_varval(t_data *d, char *str)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 	char	*tmp;
 
 	i = -1;

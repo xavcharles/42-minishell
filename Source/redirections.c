@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/18 18:01:07 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:08:05 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -37,7 +37,7 @@ int	redir_out(t_data *d, int cc)
 	return (0);
 }
 
-void	get_doc(t_data *d, char *end, int *p_fd)
+void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 {
 	char	*str;
 
@@ -51,7 +51,7 @@ void	get_doc(t_data *d, char *end, int *p_fd)
 		{
 			free(str);
 			close(p_fd[1]);
-			free(end);
+			clean_strs(strs, 0, 0);
 			return (ft_exit(d, 0));
 		}
 		ft_putstr_fd(str, p_fd[1]);
@@ -62,7 +62,7 @@ void	get_doc(t_data *d, char *end, int *p_fd)
 	return ;
 }
 
-int	here_doc(t_data *d, char *end)
+int	here_doc(t_data *d, char *end, char **strs)
 {
 	int		p_fd[2];
 	int		status;
@@ -74,7 +74,7 @@ int	here_doc(t_data *d, char *end)
 	if (pid < 0)
 		return (2);
 	if (pid == 0)
-		get_doc(d, end, p_fd);
+		get_doc(d, end, p_fd, strs);
 	else
 	{
 		close(p_fd[1]);
@@ -110,7 +110,7 @@ int	redir_in(t_data *d, int cc)
 			close(p.f1);
 		}
 		else
-			here_doc(d, tmp[1]);
+			here_doc(d, tmp[1], tmp);
 		clean_strs(tmp, 0, 0);
 	}
 	return (0);

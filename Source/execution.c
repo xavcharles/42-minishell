@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 15:08:37 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:17:44 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 int	exec_2(t_data *d, int cc)
 {
 	char	*tmp;
+	char	**path;
 	int		i;
 
 	i = -1;
-	while (d->paths[++i])
+	path = pathman(d);
+	while (path[++i])
 	{
 		tmp = ft_strjoin(d->paths[i], "/");
 		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
@@ -34,9 +36,7 @@ int	exec_2(t_data *d, int cc)
 		}
 		free(tmp);
 	}
-	if (!access(d->cmd[cc].cmd, F_OK | X_OK))
-		if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
-			printf("Minishell : %s %s\n", d->cmd[cc].cmd, strerror(errno));
+	abs_exec(d, cc);
 	return (ft_exit(d, 127), EXIT_FAILURE);
 }
 

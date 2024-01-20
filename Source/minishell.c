@@ -25,7 +25,7 @@ int	first_char(char	*input)
 		return (check_firstbis(input + i), 1);
 	return (0);
 }
-/*
+
 void	print_contenu(t_data *d)
 {
 	int	i;
@@ -66,7 +66,6 @@ void	print_contenu(t_data *d)
 		i++;
 	}
 }
-*/
 
 int	ca_parse(t_data *d, char *input)
 {
@@ -90,6 +89,7 @@ int	ca_parse(t_data *d, char *input)
 		return (clean_data(d), 1);
 	if (dollar_search(d))
 		return (clean_data(d), 1);
+	print_contenu(d);
 	return (0);
 }
 
