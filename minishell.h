@@ -131,5 +131,6 @@ char	**check_if_unclosed(char **strs, int inquote);
 void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
+void	data_zero(t_data *d);
 
 #endif

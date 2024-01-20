@@ -64,5 +64,6 @@ int	clean_data(t_data *d)
 	if (d->cmd)
 		free(d->cmd);
 	clean_strs(d->seps, d->cmds, 0);
+	data_zero(d);
 	return (0);
 }

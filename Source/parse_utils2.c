@@ -74,3 +74,13 @@ void	init_zero(t_data *d)
 		i++;
 	}
 }
+
+void	data_zero(t_data *d)
+{
+	d->cmd = NULL;
+	d->cmds = NULL;
+	d->seps = NULL;
+	d->input = NULL;
+	d->cmd_count = 0;
+	d->sep_count = 0;
+}
