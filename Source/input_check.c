@@ -164,6 +164,7 @@ int	check_lessthan(char *str, int *i)
 int	input_check(t_data *d)
 {
 	int	i;
+	int	inquote;
 	char	*str;
 	// char	**strs;
 
@@ -187,13 +188,54 @@ int	input_check(t_data *d)
 	// clean_strs(strs, 0, 0);
 	i = 0;
 	str = d->input;
+	inquote = 0;
 	while (*str)
 	{
-		if (!is_charset(*str, "&|><"))
+		if (!is_charset(*str, "()[]\"'&|><"))
 			str++;
 		else
 		{
-			if (*str == '<')
+			if (*str == '"' && inquote == 0)
+			{
+				inquote = 1;
+				while (*(++str))
+				{
+					if (*str == '"')
+					{
+						inquote = 0;
+						break ;
+					}
+				}
+				if (*str)
+					str++;
+			}
+			else if (*str == '\'' && inquote == 0)
+			{
+				inquote = 1;
+				while (*(++str))
+				{
+					if (*str == '\'')
+					{
+						inquote = 0;
+						break ;
+					}
+				}
+				if (*str)
+					str++;
+			}
+			else if (*str == '(' || *str == ')')
+			{
+				if (check_parenth(str, &i))
+					return (1);
+				str++;
+			}
+			else if (*str == '[' || *str == ']')
+			{
+				if (check_braces(str, &i))
+					return (1);
+				str++;
+			}
+			else if (*str == '<')
 			{
 				str = ft_strchr(str, '<');
 				if (check_lessthan(str, &i))
@@ -209,6 +251,7 @@ int	input_check(t_data *d)
 				{
 					return (1);
 				}
+				printf("str = %s, i = %d\n", str, i);
 				str += i;
 			}
 			else if (*str == '&')
@@ -231,5 +274,6 @@ int	input_check(t_data *d)
 			}
 		}
 	}
+	printf("sorti\n");
 	return (0);
 }

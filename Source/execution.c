@@ -113,9 +113,7 @@ int	cmd_exec(t_data *d)
 			redir_in(d, i);
 		if (d->cmd[i].out)
 			redir_out(d, i);
-		if (is_builtin(d, 0) == 1)
-			exec_builtin(d, i);
-		else if (is_builtin(d, i) == 2)
+		if (is_builtin(d, i) == 2)
 			exec_builtin(d, i);
 		if (d->cmd[i].next_op)
 			ft_pipe(d, i);

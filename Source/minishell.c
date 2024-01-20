@@ -48,7 +48,7 @@ void	print_contenu(t_data *d)
 		printf("in : ");
 		while (d->cmd[i].in && d->cmd[i].in[j])
 		{
-			printf("%s ", d->cmd[i].in[j]);
+			printf("in%d=%s ", j, d->cmd[i].in[j]);
 			j++;
 		}
 		printf("\n");
@@ -56,7 +56,7 @@ void	print_contenu(t_data *d)
 		printf("out : ");
 		while (d->cmd[i].out && d->cmd[i].out[j])
 		{
-			printf("%s ", d->cmd[i].out[j]);
+			printf("out%d=%s ", j, d->cmd[i].out[j]);
 			j++;
 		}
 		printf("\n");

@@ -42,7 +42,7 @@ INCLUDES = .libft.h
 BONUS = ft_lstnew.o ft_lstadd_front.o ft_lstsize.o ft_lstlast.o ft_lstadd_back.o ft_lstdelone.o ft_lstclear.o ft_lstiter.o ft_lstmap.o
 
 %.o: %.c
-	gcc -c -Wall -Wextra -Werror -I$(INCLUDES) $< -o $@
+	gcc -c -Wall -Wextra -Werror -g3 -I$(INCLUDES) $< -o $@
 
 all: $(NAME)
 

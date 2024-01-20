@@ -29,7 +29,7 @@ int	is_builtin(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
-	if (!cmd)
+	if (!cmd || ft_strlen(cmd) == 0)
 		return (0);
 	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
 		return (2);
