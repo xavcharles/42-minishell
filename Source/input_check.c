@@ -1,5 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_check.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 16:55:10 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 16:55:33 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	sign_after_sign(char *str, int *i)
+{
+	while (str[*i] == '<' && *i < 2)
+		(*i)++;
+	if (*i == 2)
+		return (print_stxerr('<', '<'));
+	if (*i == 1 && is_charset(str[*i], "&>"))
+		return (print_stxerr('<', str[*i]));
+	else if (*i == 1)
+		return (print_stxerr('<', 0));
+	while (str[*i] == '|' && *i < 2)
+		(*i)++;
+	if (*i == 2)
+		return (print_stxerr('|', '|'));
+	if (*i == 1 && str[*i] == '&')
+		return (print_stxerr('|', '&'));
+	else if (*i == 1)
+		return (print_stxerr('|', 0));
+	while (str[*i] == '>' && *i < 2)
+		(*i)++;
+	if (*i == 2)
+		return (print_stxerr('>', '>'));
+	if ((*i == 1) && is_charset(str[*i], "&|"))
+		return (print_stxerr('>', str[*i]));
+	else if (*i == 1)
+		return (print_stxerr('>', 0));
+	return (0);
+}
 
 int	check_morethan(char *str, int *i)
 {
@@ -9,75 +49,19 @@ int	check_morethan(char *str, int *i)
 	n = 0;
 	while (str[*i] && str[*i] == '>' && *i < 2)
 		(*i)++;
-	if (*i == 1 && str[*i] == '&')
-		(*i)++;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	if (!str[*i])
-		return (printf("minishell: syntax error near unexpected token `newline'\n"));
-	// if (!is_charset(str[*i], "&|;><") && str[1] == '&')
-	// 	return (printf("bash: ambiguous redirect\n"));
-	while (str[*i + n] == '<' && n < 3)
-		n++;
-	if (n == 3)
-		return (printf("minishell: syntax error near unexpected token `<<<'\n"));
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `<<'\n"));
-	if (n == 1)
 	{
-		if (!is_charset(str[*i + n], "&>"))
-			return (printf("minishell: syntax error near unexpected token `<'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `<%c'\n", str[*i + n]));
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return (1);
 	}
-	while (str[*i + n] == '&' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `&&'\n"));
-	if (n == 1)
+	if (sign_after_sign(str + *i, &n))
 	{
-		if (str[*i + n] == '>' && str[*i + n + 1] == '>')
-			return (printf("minishell: syntax error near unexpected token `&>>'\n"));
-		else if (str[*i + n] == '>')
-			return (printf("minishell: syntax error near unexpected token `&>'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `&'\n"));
+		*i += n;
+		return (1);
 	}
-	while (str[*i + n] == '|' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `||'\n"));
-	if (n == 1)
-	{
-		if (str[*i + n] == '&')
-			return (printf("minishell: syntax error near unexpected token `|&'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `|'\n"));
-	}
-	while (str[*i + n] == ';' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `;;'\n"));
-	if (n == 1)
-	{
-		if (str[*i + n] == '&')
-			return (printf("minishell: syntax error near unexpected token `;&'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `;'\n"));
-	}
-	while (str[*i + n] == '>' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `>>'\n"));
-	if (n == 1)
-	{
-		if (str[*i + n] == '&' || str[*i + n] == '|')
-			return (printf("minishell: syntax error near unexpected token `>%c'\n", str[*i + n]));
-		else
-			return (printf("minishell: syntax error near unexpected token `>'\n"));
-	}
-	while (is_charset(str[*i], "&|><;"))
-		(*i)++;
+	*i += n;
 	return (0);
 }
 
@@ -89,189 +73,71 @@ int	check_lessthan(char *str, int *i)
 	n = 0;
 	while (str[*i] && str[*i] == '<' && *i < 2)
 		(*i)++;
-	if (*i == 1 && str[*i] == '&')
-		(*i)++;
 	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	if (!str[*i])
-		return (printf("minishell: syntax error near unexpected token `newline'\n"));
-	if (!is_charset(str[*i], "&|;><") && str[1] == '&')
-		return (printf("bash: ambiguous redirect\n"));
-	while (str[*i + n] == '<' && n < 3)
-		n++;
-	if (n == 3)
-		return (printf("minishell: syntax error near unexpected token `<<<'\n"));
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `<<'\n"));
-	if (n == 1)
 	{
-		if (!is_charset(str[*i + n], "&>"))
-			return (printf("minishell: syntax error near unexpected token `<'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `<%c'\n", str[*i + n]));
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return (1);
 	}
-	while (str[*i + n] == '&' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `&&'\n"));
-	if (n == 1)
+	if (sign_after_sign(str, i))
 	{
-		if (str[*i + n] == '>' && str[*i + n + 1] == '>')
-			return (printf("minishell: syntax error near unexpected token `&>>'\n"));
-		else if (str[*i + n] == '>')
-			return (printf("minishell: syntax error near unexpected token `&>'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `&'\n"));
+		*i += n;
+		return (1);
 	}
-	while (str[*i + n] == '|' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `||'\n"));
-	if (n == 1)
+	*i += n;
+	return (0);
+}
+
+int	input_check2(char *str, int *i)
+{
+	if (*str == '(' || *str == ')' || *str == '[' || *str == ']')
+		return (print_stxerr(*str, 0), 1);
+	else if (*str == '<')
 	{
-		if (str[*i + n] == '&')
-			return (printf("minishell: syntax error near unexpected token `|&'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `|'\n"));
+		if (check_lessthan(str, i))
+			return (1);
 	}
-	while (str[*i + n] == ';' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `;;'\n"));
-	if (n == 1)
+	else if (*str == '>')
 	{
-		if (str[*i + n] == '&')
-			return (printf("minishell: syntax error near unexpected token `;&'\n"));
-		else
-			return (printf("minishell: syntax error near unexpected token `;'\n"));
+		if (check_morethan(str, i))
+			return (1);
 	}
-	while (str[*i + n] == '>' && n < 2)
-		n++;
-	if (n == 2)
-		return (printf("minishell: syntax error near unexpected token `>>'\n"));
-	if (n == 1)
+	else if (*str == '&')
 	{
-		if (str[*i + n] == '&' || str[*i + n] == '|')
-			return (printf("minishell: syntax error near unexpected token `>%c'\n", str[*i + n]));
-		else
-			return (printf("minishell: syntax error near unexpected token `>'\n"));
+		if (check_esp(str, i))
+			return (1);
 	}
-	while (is_charset(str[*i], "&|><;"))
-		(*i)++;
+	else if (*str == '|')
+	{
+		if (check_pipe(str, i))
+			return (1);
+	}
 	return (0);
 }
 
 int	input_check(t_data *d)
 {
-	int	i;
-	int	inquote;
+	int		i;
 	char	*str;
-	// char	**strs;
 
-	// i = 0;
-	// strs = ms_split(d->cmds[i], "\t ");
-	// 	if (!strs)
-	// 		return (1);
-	// while (strs[i])
-	// {
-	// 	if (!ft_strncmp(strs[i], "<<<", ft_strlen(strs[i])))
-	// 	{
-	// 		if ((i > 0 && (!ft_strchr(strs[i - 1], '<') || !ft_strchr(strs[i - 1], '>')))
-	// 			&& (!ft_strchr(strs[i + 1], '<') || !ft_strchr(strs[i + 1], '>')))
-	// 		{
-	// 			clean_strs(strs, 0, 0);
-	// 			return (printf("minishell: syntax error near unexpected token `>'\n"));
-	// 		}
-	// 	}
-	// 	i++;
-	// }
-	// clean_strs(strs, 0, 0);
-	i = 0;
 	str = d->input;
-	inquote = 0;
 	while (*str)
 	{
+		i = 1;
 		if (!is_charset(*str, "()[]\"'&|><"))
 			str++;
 		else
 		{
-			if (*str == '"' && inquote == 0)
-			{
-				inquote = 1;
-				while (*(++str))
-				{
-					if (*str == '"')
-					{
-						inquote = 0;
-						break ;
-					}
-				}
-				if (*str)
-					str++;
-			}
-			else if (*str == '\'' && inquote == 0)
-			{
-				inquote = 1;
-				while (*(++str))
-				{
-					if (*str == '\'')
-					{
-						inquote = 0;
-						break ;
-					}
-				}
-				if (*str)
-					str++;
-			}
-			else if (*str == '(' || *str == ')')
-			{
-				if (check_parenth(str, &i))
-					return (1);
-				str++;
-			}
-			else if (*str == '[' || *str == ']')
-			{
-				if (check_braces(str, &i))
-					return (1);
-				str++;
-			}
-			else if (*str == '<')
-			{
-				str = ft_strchr(str, '<');
-				if (check_lessthan(str, &i))
-				{
-					return (1);
-				}
-				str += i;
-			}
-			else if (*str == '>')
-			{
-				str = ft_strchr(str, '>');
-				if (check_morethan(str, &i))
-				{
-					return (1);
-				}
-				printf("str = %s, i = %d\n", str, i);
-				str += i;
-			}
-			else if (*str == '&')
-			{
-				str = ft_strchr(str, '&');
-				if (check_esp(str, &i))
-				{
-					return (1);
-				}
-				str += i;
-			}
-			else if (*str == '|')
-			{
-				str = ft_strchr(str, '|');
-				if (check_pipe(str, &i))
-				{
-					return (1);
-				}
-				str += i;
-			}
+			if (*str == '"')
+				while (*(++str) && *str != '"')
+					;
+			if (*str == '\'')
+				while (*(++str) && *str != '\'')
+					;
+			if (input_check2(str, &i))
+				return (1);
+			str += i;
 		}
 	}
 	return (0);
