@@ -6,37 +6,11 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/15 16:43:06 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:32:53 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-char **ft_tabjoin(char **tab, char *s)
-{
-	int i;
-	int j;
-	char **n_tab;
-
-	i = 0;
-	j = 0;
-	(void) s;
-	while (tab[i])
-		i++;
-	n_tab = malloc(sizeof(char *) * (i + 2));
-	if (n_tab == NULL)
-		return (NULL);
-	while (j < i)
-	{
-		n_tab[j] = ft_strdup(tab[j]);
-		free(tab[j]);
-		j++;
-	}
-	free(tab);
-	n_tab[j] = ft_strdup(s);
-	n_tab[j + 1] = NULL;
-	return (n_tab);
-}
 
 int	sub_export(t_data *d, int i, int cc)
 {
@@ -64,40 +38,41 @@ int	sub_export(t_data *d, int i, int cc)
 	return (0);
 }
 
+int	export_bis(t_data *d, int cc, int i, char **tmp)
+{
+	int		j;
+
+	j = -1;
+	while (d->env[++j])
+	{
+		if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
+		{
+			free(d->env[j]);
+			d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
+			if (!d->env[j])
+				return (clean_strs(tmp, 0, 0), ft_exit(d, 1), 1);
+		}
+	}
+	return (0);
+}
+
 int	ft_export(t_data *d, int cc)
 {
 	int		i;
-	int		j;
-	char **tmp;
+	char	**tmp;
 
 	i = 0;
 	while (d->cmd[cc].cmd_arg[++i])
 	{
 		tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
 		if (find_var(d->env, tmp[0]))
-		{
-			j = -1;
-			while (d->env[++j])
-			{
-				if (!ft_strncmp(d->env[j], tmp[0], ft_strlen(tmp[0])))
-				{
-					free(d->env[j]);
-					d->env[j] = ft_strdup(d->cmd[cc].cmd_arg[i]);
-					if (!d->env[j])
-					{
-						clean_strs(tmp, 0, 0);
-						return (ft_exit(d, 1), 1);
-					}
-				}
-			}
-		}
+			export_bis(d, cc, i, tmp);
 		else
-		{
 			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
-			if (!d->env)
-				return(ft_exit(d, 1), printf("Failed to malloc env after export\n"));
-		}
-			clean_strs(tmp, 0, 0);
+		if (!d->env)
+			return (ft_exit(d, 1),
+				printf("Failed to malloc env after export\n"));
+		clean_strs(tmp, 0, 0);
 	}
 	return (ft_exit(d, 0), 0);
 }

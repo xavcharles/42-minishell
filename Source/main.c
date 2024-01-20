@@ -21,6 +21,8 @@ int	wipe_data(t_data *data)
 	if (data->env)
 		clean_strs(data->env, 0, 0);
 	free(data);
+	close(data->std_in);
+	close(data->std_out);
 	return (0);
 }
 
