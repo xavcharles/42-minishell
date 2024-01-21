@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:27:38 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 23:01:19 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:03 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void	init_zero(t_data *d)
 	{
 		d->cmd[i].cmd = NULL;
 		d->cmd[i].cmd_arg = NULL;
-		d->cmd[i].in = NULL;
-		d->cmd[i].out = NULL;
+		d->cmd[i].all = NULL;
 		i++;
 	}
 }

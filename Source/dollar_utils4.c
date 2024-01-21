@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_utils4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 20:00:07 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/19 20:00:09 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:11 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,19 @@ int	dollar_in(t_data *d, t_ccmd *cmd)
 	int	j;
 
 	i = -1;
-	while (cmd->in[++i])
+	while (cmd->all[++i])
 	{
 		j = -1;
-		while (cmd->in[i][++j])
+		while (cmd->all[i][++j])
 		{
-			if (!ft_strncmp(cmd->in[i], "<<", 2))
+			if (!ft_strncmp(cmd->all[i], "<<", 2))
 			{
-				if (dollar_loophd(d, cmd, cmd->in + i, &j))
+				if (dollar_loophd(d, cmd, cmd->all + i, &j))
 					return (1);
 			}
 			else
 			{
-				if (dollar_loop(d, cmd, cmd->in + i, &j))
+				if (dollar_loop(d, cmd, cmd->all + i, &j))
 					return (1);
 			}
 		}
@@ -104,23 +104,21 @@ int	dollar_in(t_data *d, t_ccmd *cmd)
 
 int	dollar_inout(t_data *d, t_ccmd *cmd)
 {
-	int	i;
-	int	j;
 
-	if (cmd->out)
-	{
-		i = -1;
-		while (cmd->out[++i])
-		{
-			j = -1;
-			while (cmd->out[i][++j])
-			{
-				if (dollar_loop(d, cmd, cmd->out + i, &j))
-					return (1);
-			}
-		}
-	}
-	if (cmd->in)
+	// if (cmd->all)
+	// {
+	// 	i = -1;
+	// 	while (cmd->all[++i])
+	// 	{
+	// 		j = -1;
+	// 		while (cmd->all[i][++j])
+	// 		{
+	// 			if (dollar_loop(d, cmd, cmd->all + i, &j))
+	// 				return (1);
+	// 		}
+	// 	}
+	// }
+	if (cmd->all)
 	{
 		if (dollar_in(d, cmd))
 			return (1);

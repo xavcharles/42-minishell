@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:25 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 23:28:31 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:12 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	clean_strs(char **strs1, char **strs2, char **strs3)
 
 void	clean_ccmd(t_ccmd *ccmd)
 {
-	clean_strs(ccmd->cmd_arg, ccmd->in, ccmd->out);
+	clean_strs(ccmd->cmd_arg, ccmd->all, NULL);
 	if (ccmd->cmd)
 		free(ccmd->cmd);
 	if (ccmd->prev_op)

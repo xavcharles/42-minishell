@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 23:43:08 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:09 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,7 @@ void	redirect_all(int i, int pipe[2], t_data *d)
 		dup2(pipe[1], 1);
 	close(pipe[0]);
 	close(pipe[1]);
-	if (d->cmd[i].in && redir_in(d, i))
-		ft_exit(d, 1, -1);
-	if (d->cmd[i].out && redir_out(d, i))
+	if (d->cmd[0].all && redir_all(d, 0))
 		ft_exit(d, 1, -1);
 }
 
@@ -142,9 +140,11 @@ int	cmd_exec(t_data *d)
 	i = -1;
 	if (d->cmd_count == 1 && is_builtin(d, 0))
 	{
-		if (d->cmd[0].in && redir_in(d, 0))
-			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
-		if (d->cmd[0].out && redir_out(d, 0))
+		// if (d->cmd[0].in && redir_in(d, 0))
+			// return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
+		// if (d->cmd[0].out && redir_out(d, 0))
+			// return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
+		if (d->cmd[0].all && redir_all(d, 0))
 			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
 		if (exec_builtin(d, 0))
 			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:30:36 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 17:30:37 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:10 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	dollar_search(t_data *d)
 				}
 			}	
 		}
-		if (d->cmd[i].in || d->cmd[i].out)
+		if (d->cmd[i].all)
 			if (dollar_inout(d, d->cmd + i))
 				return (1);
 	}

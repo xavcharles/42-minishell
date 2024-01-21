@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 23:10:31 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:18:44 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ typedef struct s_ccmd
 {
 	char	*cmd;
 	char	**cmd_arg;
-	char	**in;
-	char	**out;
+	// char	**in;
+	// char	**out;
 	char	*next_op;
 	char	*prev_op;
+	char	**all;
 }	t_ccmd;
 
 typedef struct s_pipe
@@ -129,8 +130,8 @@ size_t	ft_trslen(const char *s);
 int		dollar_replace2(t_data *d, char **s, int op, int start);
 int		find_match(t_data *d, int *i, char **tmp, char *str);
 char	*recreate_str(t_data *d, int start, char **s, char **tmp);
-int		loop_2(char *str, char **cmd_arg, char **in, char **out);
-int		fill_justthesign(char *str, char **in, char **out, int *i);
+int		loop_2(char *str, char **cmd_arg, char **all);
+int		fill_justthesign(char *str, char **all, int *i);
 int		ministrlen(char **strs);
 char	*minijoin(char **strs);
 int		dollar_loop(t_data *d, t_ccmd *ccmd, char **rep, int *k);
@@ -142,6 +143,8 @@ void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
+int redir_all(t_data *d, int cc);
+
 
 // here_doc.c
 void    init_heredoc(t_data *d);

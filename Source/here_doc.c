@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 21:58:27 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 23:32:07 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:03:38 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int     nb_heredoc(t_data *d)
     while (i < d->cmd_count)
     {
         j = 0;
-		if (d->cmd[i].in)
+		if (d->cmd[i].all)
 		{
-			while (d->cmd[i].in[j])
+			while (d->cmd[i].all[j])
 			{
-				if (!ft_strncmp(d->cmd[i].in[j], "<<", 2))
+				if (!ft_strncmp(d->cmd[i].all[j], "<<", 2))
 					total++;
 				j++;
 			}
@@ -69,13 +69,13 @@ void delim_heredoc(t_data *d)
     while (i < d->cmd_count)
     {
         j = 0;
-		if (d->cmd[i].in)
+		if (d->cmd[i].all)
 		{
-			while (d->cmd[i].in[j])
+			while (d->cmd[i].all[j])
 			{
-				if (!ft_strncmp(d->cmd[i].in[j], "<<", 2))
+				if (!ft_strncmp(d->cmd[i].all[j], "<<", 2))
 				{
-					d->hd[total].delim = ft_strdup(d->cmd[i].in[j] + 3);
+					d->hd[total].delim = ft_strdup(d->cmd[i].all[j] + 3);
 					pipe(d->hd[total++].fd);
 				}
 				j++;
