@@ -80,7 +80,7 @@ int	shell_loop2(t_data *d, char *input)
 		clean_data(d);
 	}
 	else
-		printf("Error during parsing\n");
+		g_ret = 2;
 	return (0);
 }
 

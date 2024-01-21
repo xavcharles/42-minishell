@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_cmd_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 17:29:54 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:29:56 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -27,10 +38,10 @@ int	add_tmp(char *tmp, char **cmd_arg, char **in, char **out)
 	return (0);
 }
 
-int fill_argsinout(char *str, char **cmd_arg, char **in, char **out)
+int	fill_argsinout(char *str, char **cmd_arg, char **in, char **out)
 {
-	int	i;
-	int	inquote;
+	int		i;
+	int		inquote;
 	char	start_q;
 	char	*tmp;
 

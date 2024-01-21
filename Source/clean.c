@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 17:57:30 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 17:57:35 by maderuel         ###   ########.fr       */
+/*   Created: 2024/01/20 17:31:25 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:31:26 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	clean_strs(char **strs1, char **strs2, char **strs3)
@@ -63,5 +64,6 @@ int	clean_data(t_data *d)
 	if (d->cmd)
 		free(d->cmd);
 	clean_strs(d->seps, d->cmds, 0);
+	data_zero(d);
 	return (0);
 }

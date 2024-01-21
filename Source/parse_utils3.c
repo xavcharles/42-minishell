@@ -1,63 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils3.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 18:27:48 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 18:27:49 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-int trim_squote(char **cmd_arg, int j)
-{
-	char	*tmp;
-
-	tmp = ft_strtrim(cmd_arg[j], " \t");
-	if (!tmp)
-		return (1);
-	free(cmd_arg[j]);
-	cmd_arg[j] = ft_strdup(tmp);
-	free(tmp);
-	if (!cmd_arg[j])
-		return (1);
-	return (0);
-}
-
-int trim_dquote(char **cmd_arg, int j)
-{
-	char	*tmp;
-
-	tmp = ft_strtrim(cmd_arg[j], " \t");
-	if (!tmp)
-		return (1);
-	free(cmd_arg[j]);
-	cmd_arg[j] = ft_strdup(tmp);
-	free(tmp);
-	if (!cmd_arg[j])
-		return (1);
-	return (0);
-}
-
-int	trim_args(t_data *d)
+int	is_charset(char c, char *set)
 {
 	int	i;
-	int	j;
-	char	*tmp;
 
-	i = -1;
-	while (++i < d->cmd_count)
+	i = 0;
+	if (c == 0)
+		return (1);
+	while (set[i])
 	{
-		if (d->cmd[i].cmd)
-		{
-			j = -1;
-			while (d->cmd[i].cmd_arg[++j])
-			{
-				if (d->cmd[i].cmd_arg[j][0] == '"')
-				{
-					tmp = ft_strtrim(d->cmd[i].cmd_arg[j], " \t");
-					if (!tmp)
-						return (1);
-					free(d->cmd[i].cmd_arg[j]);
-					d->cmd[i].cmd_arg[j] = ft_strdup(tmp);
-					free(tmp);
-					if (!d->cmd[i].cmd_arg[j])
-						return (1);
-				}
-			}
-		}
+		if (c == set[i++])
+			return (1);
 	}
 	return (0);
+}
+
+void	cmd_count_loop(char const *s, int *i, char *set, int *in_quote)
+{
+	int		start;
+	char	open_quote;
+
+	start = *i;
+	open_quote = 0;
+	while (s[*i] && (!is_charset(s[*i], set) || *in_quote))
+	{
+		if ((s[*i] == '\'' || s[*i] == '"') && !*in_quote)
+		{
+			open_quote = s[*i];
+			*in_quote = 1;
+		}
+		else if (*in_quote == 1 && s[*i] == open_quote && *i != start)
+		{
+			open_quote = 0;
+			*in_quote = 0;
+		}
+		(*i)++;
+	}
+}
+
+int	cmd_count(char const *s, char *set)
+{
+	int		i;
+	int		w;
+	int		in_quote;
+
+	i = 0;
+	w = 0;
+	in_quote = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+	{
+		if (is_charset(s[i], set) && !in_quote)
+			i++;
+		else
+		{
+			cmd_count_loop(s, &i, set, &in_quote);
+			w++;
+		}
+	}
+	return (w);
+}
+
+int	sep_count(char const *s, char *set)
+{
+	int		i;
+	int		w;
+	int		in_quote;
+
+	i = 0;
+	w = 0;
+	in_quote = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+	{
+		if (s[i] && (!is_charset(s[i], set) || in_quote))
+			rev_ms_split_if(s, &i, &in_quote);
+		else
+		{
+			while (s[i] && is_charset(s[i], set) && !in_quote)
+				i++;
+			w++;
+		}
+	}
+	return (w);
+}
+
+char	**check_if_unclosed(char **strs, int inquote)
+{
+	if (inquote == 1)
+	{
+		printf("Error : unclosed quote\n");
+		clean_strs(strs, 0, 0);
+		return (NULL);
+	}
+	return (strs);
 }

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_cmd_utils2.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 17:29:59 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:30:01 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -7,7 +18,7 @@ int	fill_in(char *str, char **in, int *i)
 	char	*tmp;
 
 	start = *i;
-	while(str[*i] == '<')
+	while (str[*i] == '<')
 		(*i)++;
 	tmp = ft_substr(str, start, *i - start);
 	if (!tmp)
@@ -25,7 +36,7 @@ int	fill_out(char *str, char **out, int *i)
 	char	*tmp;
 
 	start = *i;
-	while(str[*i] == '>')
+	while (str[*i] == '>')
 		(*i)++;
 	tmp = ft_substr(str, start, *i - start);
 	if (!tmp)

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 17:29:30 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:29:31 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -17,7 +28,7 @@ int	set_in_out(t_ccmd *ccmd, char **in, char **out)
 	{
 		ccmd->in = ms_split(*in, "\t");
 		if (!ccmd->in)
-			return (printf("Minishell: Failed Malloc in set_in_out\n")); //malloc error
+			return (printf("Minishell: Failed Malloc in set_in_out\n"));
 		free(*in);
 	}
 	if (*out)
@@ -28,9 +39,9 @@ int	set_in_out(t_ccmd *ccmd, char **in, char **out)
 			if (*in)
 			{
 				printf("Minishell: Failed Malloc in set_in_out\n");
-				return (free(*in), 1); //malloc error
+				return (free(*in), 1);
 			}
-			return (printf("Minishell: Failed Malloc in set_in_out\n")); //malloc error
+			return (printf("Minishell: Failed Malloc in set_in_out\n"));
 		}
 		free(*out);
 	}

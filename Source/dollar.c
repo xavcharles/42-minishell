@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 17:30:36 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:30:37 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -67,7 +78,6 @@ int	do_dollar(t_data *d, t_ccmd *ccmd, char **rep, int *k)
 	{
 		if (dollar_replace(d, rep, (*k - start) / 2, &start))
 			return (1);
-		// *k -= (*k - start) % 2;
 	}
 	else
 		if (dollar_replace(d, rep, 1, &start))

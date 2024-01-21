@@ -1,22 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_check2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 17:24:16 by xacharle          #+#    #+#             */
+/*   Updated: 2024/01/20 17:24:16 by xacharle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-int check_parenth(char *str, int *i)
+int	print_stxerr(char c1, char c2)
 {
-    *i = 0;
-	if (str[*i] == ')')
-		return (printf("minishell: syntax error near unexpected token `)'\n"), 1);
-	else if (str[*i] == '(')
-		return (printf("minishell: syntax error near unexpected token `('\n"), 1);
-	return (0);
-}
-
-int	check_braces(char *str, int *i)
-{
-	*i = 0;
-	if (str[*i] == ']')
-		return (printf("minishell: syntax error near unexpected token `]'\n"), 1);
-	else if (str[*i] == '[')
-		return (printf("minishell: syntax error near unexpected token `['\n"), 1);
+	if (!c2)
+	{
+		(printf("minishell: syntax error near unexpected token"));
+		(printf(" `%c'\n", c1));
+		return (1);
+	}
+	else
+	{
+		printf("minishell: syntax error near unexpected token `%c", c1);
+		printf("%c'\n", c2);
+		return (1);
+	}
 	return (0);
 }

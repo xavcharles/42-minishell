@@ -4,6 +4,7 @@ SRC = Source/main.c \
 		Source/parse_utils.c \
 		Source/pwd.c \
 		Source/parse_utils2.c \
+		Source/parse_utils3.c \
 		Source/sep_check.c \
 		Source/redirections.c \
 		Source/pipe.c \
