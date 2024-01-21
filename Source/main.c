@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 17:02:21 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:53:11 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ int	init_data(t_data *d, char **env)
 	d->p = NULL;
 	d->std_out = dup(1);
 	d->std_in = dup(0);
+	d->prev = 0;
+	d->hd = NULL;
+	d->nb_heredoc = 0;
 	if (env_cpy(d, env))
 		return (g_ret = 2, 1);
 	if (pathfinder(d))

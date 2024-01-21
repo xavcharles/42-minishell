@@ -75,6 +75,7 @@ int	shell_loop2(t_data *d, char *input)
 	if (!ca_parse(d, input))
 	{
 		signal(SIGINT, SIG_IGN);
+		init_heredoc(d);
 		if (cmd_exec(d))
 			printf("Error during execution\n");
 		clean_data(d);
@@ -86,16 +87,16 @@ int	shell_loop2(t_data *d, char *input)
 
 int	shell_loop(t_data *d)
 {
-	char		*prompt;
+	// char		*prompt;
 	char		*input;
 
 	while (1)
 	{
-		prompt = prompt_pwd(d);
+		// prompt = prompt_pwd(d);
 		ic_sigs(1);
 		signal(SIGQUIT, SIG_IGN);
-		input = readline(prompt);
-		free(prompt);
+		input = readline("> ");
+		// free(prompt);
 		if (!input)
 			break ;
 		if (!ft_strncmp(input, "exit", ft_strlen(input)) && ft_strlen(input))

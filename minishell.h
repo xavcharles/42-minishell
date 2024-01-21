@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:54:25 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 23:10:31 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 # include <signal.h>
 # include <unistd.h>
 # include <errno.h>
+
+typedef struct t_here
+{
+	int		fd[2];
+	char	*delim;
+}	t_here;
 
 typedef struct s_ccmd
 {
@@ -57,6 +63,10 @@ typedef struct s_data
 	int		std_out;
 	int		std_in;
 	t_pipe	*p;
+	int		prev;
+	pid_t	allpids[1024];
+	t_here	*hd;
+	int		nb_heredoc;
 }	t_data;
 
 extern int	g_ret;
@@ -132,5 +142,11 @@ void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
+
+// here_doc.c
+void    init_heredoc(t_data *d);
+int	break_doc_loop(char *end, char *str);
+void	clean_heredoc(t_data *d);
+
 
 #endif

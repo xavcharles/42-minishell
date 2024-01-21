@@ -35,15 +35,33 @@ int	eqote(t_data *d, int i, int cc)
 	return (0);
 }
 
+int	tiret_n(char **tab)
+{
+	int	i;
+	int	j;
+	
+	i = 0;
+	while (tab[i])
+	{
+		j = 1;
+		if (tab[i][0] != '-')
+			return (i + 1);
+		while (tab[i][j] == 'n')
+			j++;
+		if (tab[i][j])
+			return (i + 1);
+		i++;
+	}
+	return (i + 1);
+}
+
 int	ft_echo(t_data *d, int cc)
 {
 	int		i;
 
-	i = 1;
-	if (d->cmd[cc].cmd_arg[1])
+	i = tiret_n(&d->cmd[cc].cmd_arg[1]);
+	if (d->cmd[cc].cmd_arg[i])
 	{
-		if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
-			i = 2;
 		if (ft_strlen(d->cmd[cc].cmd) == 0)
 			return (ft_exit(d, 127, -1), 1);
 		while (d->cmd[cc].cmd_arg[i])

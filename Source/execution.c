@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:57:48 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 23:43:08 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	exec_1(t_data *d, int cc)
 			}
 		}
 	}
-	if (is_builtin(d, cc) == 1)
+	if (is_builtin(d, cc) > 0)
 	{
 		exec_builtin(d, cc);
 	}
@@ -117,36 +117,71 @@ void	print(void)
 		write(1, buf, ret);
 	}
 }
+void	redirect_all(int i, int pipe[2], t_data *d)
+{
+	if (i != 0)
+	{
+		dup2(d->prev, 0);
+		close(d->prev);
+	}
+	if (i != d->cmd_count -1)
+		dup2(pipe[1], 1);
+	close(pipe[0]);
+	close(pipe[1]);
+	if (d->cmd[i].in && redir_in(d, i))
+		ft_exit(d, 1, -1);
+	if (d->cmd[i].out && redir_out(d, i))
+		ft_exit(d, 1, -1);
+}
 
 int	cmd_exec(t_data *d)
 {
 	int	i;
+	t_pipe p;
 
 	i = -1;
-	while (++i < d->cmd_count)
+	if (d->cmd_count == 1 && is_builtin(d, 0))
 	{
-		if (d->cmd[i].in)
-			redir_in(d, i);
-		if (d->cmd[i].out)
-			redir_out(d, i);
-		if (!d->cmd->cmd)
-		{
-			dup2(d->std_out, 1);
-			if (!d->cmd[i].next_op)
-				dup2(d->std_in, 0);
-			continue ;
-		}
-		if (is_builtin(d, i) == 2)
-			exec_builtin(d, i);
-		if (d->cmd[i].next_op)
-			ft_pipe(d, i);
-		else if (is_builtin(d, i) != 2)
-			simple_exec(d, i);
-		if (!isatty(0) && !isatty(1))
-			print();
-		dup2(d->std_out, 1);
-		if (!d->cmd[i].next_op)
-			dup2(d->std_in, 0);
+		if (d->cmd[0].in && redir_in(d, 0))
+			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
+		if (d->cmd[0].out && redir_out(d, 0))
+			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
+		if (exec_builtin(d, 0))
+			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
+		return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 0);
 	}
+	d->prev = -1;
+	while (++i < d->cmd_count && i < 1024)
+	{
+		if (pipe(p.end) == -1)
+			return (1);
+		d->allpids[i] = fork();
+		if (!d->allpids[i])
+		{
+			close(d->std_in);
+			close(d->std_out);
+			redirect_all(i, p.end, d);
+			if (!d->cmd->cmd)
+				ft_exit(d, 0, -1);
+			if (is_builtin(d, i)) 
+			{
+				exec_builtin(d, i);
+				ft_exit(d, 0, -1);
+			}
+			exec_1(d, i);
+			ft_exit(d, 127, -1);
+		}
+		else
+		{
+			close(p.end[1]);
+			if (d->prev != -1)
+				close(d->prev);
+			d->prev = p.end[0];
+		}
+	}
+	close(p.end[0]);
+	i = -1;
+	while (++i < d->cmd_count)
+		waitpid(d->allpids[i], NULL, 0);
 	return (0);
 }

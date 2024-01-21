@@ -129,7 +129,6 @@ int	input_check(t_data *d)
 			str++;
 		else
 		{
-			printf("str = %s\n", str);
 			if (*str == '"')
 				while (*(++str) && *str != '"')
 					;

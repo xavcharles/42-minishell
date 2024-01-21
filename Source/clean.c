@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:25 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 17:31:26 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/21 23:28:31 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	clean_data(t_data *d)
 	if (d->cmd)
 		free(d->cmd);
 	clean_strs(d->seps, d->cmds, 0);
+	clean_heredoc(d);
 	data_zero(d);
 	return (0);
 }
