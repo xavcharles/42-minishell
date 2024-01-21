@@ -96,7 +96,7 @@ int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
 int		check_first(char *input);
 int		check_firstbis(char *input);
-void	ft_exit(t_data *d, int n);
+void	ft_exit(t_data *d, int n, int cc);
 int		is_builtin(t_data *d, int cc);
 int		strs_len(char **strs);
 int		find_var(char **env, char *var);

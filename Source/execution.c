@@ -50,10 +50,10 @@ int	exec_2(t_data *d, int cc)
 			free(cmd);
 		perror(d->cmd[cc].cmd);
 		if (errno == 13)
-			ft_exit(d, 126);
-		ft_exit(d, 127);
+			ft_exit(d, 126, -1);
+		ft_exit(d, 127, -1);
 	}
-	return (ft_exit(d, 127), EXIT_FAILURE);
+	return (ft_exit(d, 127, -1), EXIT_FAILURE);
 }
 
 int	exec_1(t_data *d, int cc)
@@ -66,18 +66,17 @@ int	exec_1(t_data *d, int cc)
 			if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
 			{
 				perror(d->cmd[cc].cmd);
-				return (ft_exit(d, EXIT_FAILURE), 1);
+				return (ft_exit(d, EXIT_FAILURE, -1), 1);
 			}
 		}
 	}
 	if (is_builtin(d, cc) == 1)
 	{
-		dprintf(2, "cmd = %s\n", d->cmd[cc].cmd);
 		exec_builtin(d, cc);
 	}
 	else
 		exec_2(d, cc);
-	return (ft_exit(d, 127), 1);
+	return (ft_exit(d, 127, -1), 1);
 }
 
 int	simple_exec(t_data *d, int cc)
@@ -126,12 +125,17 @@ int	cmd_exec(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count)
 	{
-		// if (d->cmd->cmd == NULL)
-		// 	return (2);
 		if (d->cmd[i].in)
 			redir_in(d, i);
 		if (d->cmd[i].out)
 			redir_out(d, i);
+		if (!d->cmd->cmd)
+		{
+			dup2(d->std_out, 1);
+			if (!d->cmd[i].next_op)
+				dup2(d->std_in, 0);
+			continue ;
+		}
 		if (is_builtin(d, i) == 2)
 			exec_builtin(d, i);
 		if (d->cmd[i].next_op)

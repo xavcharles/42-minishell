@@ -119,8 +119,8 @@ int	pwd_builtin(t_data *d, int cc)
 			write(1, tmp[1], ft_strlen(tmp[1]));
 			write(1, "\n", 1);
 			clean_strs(tmp, 0, 0);
-			return (ft_exit(d, 0), EXIT_SUCCESS);
+			return (ft_exit(d, 0, -1), EXIT_SUCCESS);
 		}
 	}
-	return (ft_exit(d, 1), EXIT_FAILURE);
+	return (ft_exit(d, 1, -1), EXIT_FAILURE);
 }

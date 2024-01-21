@@ -21,7 +21,7 @@ int	print_env(t_data *d)
 		if (ft_strchr(d->env[i], '='))
 			printf("%s\n", d->env[i]);
 	}
-	return (ft_exit(d, 0), 0);
+	return (ft_exit(d, 0, -1), 0);
 }
 
 int	is_builtin(t_data *d, int cc)
@@ -43,6 +43,8 @@ int	is_builtin(t_data *d, int cc)
 		return (1);
 	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
 		return (1);
+	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+		return (1);
 	return (0);
 }
 
@@ -63,6 +65,8 @@ int	exec_builtin(t_data *d, int cc)
 		return (pwd_builtin(d, cc));
 	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
 		return (ft_echo(d, cc));
+	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+		return (ft_exit(d, 0, cc), 0);
 	return (0);
 }
 
@@ -87,10 +91,10 @@ int	abs_exec(t_data *d, int cc)
 		{
 			perror(d->cmd[cc].cmd);
 			if (errno == 13)
-				ft_exit(d, 126);
-			ft_exit(d, 127);
+				ft_exit(d, 126, -1);
+			ft_exit(d, 127, -1);
 		}
 	}
 	perror(d->cmd[cc].cmd);
-	return (ft_exit(d, 127), 0);
+	return (ft_exit(d, 127, -1), 0);
 }

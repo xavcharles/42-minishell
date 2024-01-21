@@ -37,6 +37,22 @@ int	redir_out(t_data *d, int cc)
 	return (0);
 }
 
+int	break_doc_loop(char *end, char *str)
+{
+	if (!str && g_ret != 130)
+	{
+		printf("minishell: warning: here-document delimited by end-of-file ");
+		printf("(wanted `%s')\n", end);
+		return (1);
+	}
+	if (g_ret == 130 || str == NULL || ft_strncmp(str, end, ft_strlen(end)) == 0)
+	{
+		free(str);
+		return (1);
+	}
+	return (0);
+}
+
 void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 {
 	char	*str;
@@ -48,20 +64,15 @@ void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 	{		
 		ic_sigs(3);
 		str = readline("here_doc $>");
-		if (g_ret == 130 || ft_strncmp(str, end, ft_strlen(end)) == 0
-			|| str == NULL)
-		{
-			free(str);
-			close(p_fd[1]);
-			clean_strs(strs, 0, 0);
-			return (ft_exit(d, 0));
-		}
+		if (break_doc_loop(end, str))
+			break ;
 		ft_putstr_fd(str, p_fd[1]);
 		ft_putchar_fd('\n', p_fd[1]);
 		free(str);
 	}
 	close(p_fd[1]);
-	return ;
+	clean_strs(strs, 0, 0);
+	return (ft_exit(d, g_ret, -1));
 }
 
 void	last_hd(pid_t pid, int p_fd[2], int status)

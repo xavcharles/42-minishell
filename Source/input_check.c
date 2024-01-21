@@ -80,7 +80,7 @@ int	check_lessthan(char *str, int *i)
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		return (1);
 	}
-	if (sign_after_sign(str, i))
+	if (sign_after_sign(str + *i, &n))
 	{
 		*i += n;
 		return (1);
@@ -129,6 +129,7 @@ int	input_check(t_data *d)
 			str++;
 		else
 		{
+			printf("str = %s\n", str);
 			if (*str == '"')
 				while (*(++str) && *str != '"')
 					;

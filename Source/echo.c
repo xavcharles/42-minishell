@@ -45,7 +45,7 @@ int	ft_echo(t_data *d, int cc)
 		if (!ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 			i = 2;
 		if (ft_strlen(d->cmd[cc].cmd) == 0)
-			return (ft_exit(d, 127), 1);
+			return (ft_exit(d, 127, -1), 1);
 		while (d->cmd[cc].cmd_arg[i])
 		{
 			if (d->cmd[cc].cmd_arg[i][0] == '\''
@@ -60,5 +60,5 @@ int	ft_echo(t_data *d, int cc)
 		if (ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 			write(1, "\n", 1);
 	}
-	return (ft_exit(d, 0), 0);
+	return (ft_exit(d, 0, -1), 0);
 }
