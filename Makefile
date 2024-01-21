@@ -28,6 +28,7 @@ SRC = Source/main.c \
 		Source/dollar_utils4.c \
 		Source/input_check2.c \
 		Source/builtin_utils.c \
+		Source/exec_utils3.c \
 		
 NAME = minishell
 

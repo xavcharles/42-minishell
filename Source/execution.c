@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:57:48 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:29:04 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,6 @@ int	simple_exec(t_data *d, int cc)
 	return (0);
 }
 
-void	print(void)
-{
-	char	buf[50];
-	int		ret;
-
-	ret = 1;
-	while (ret)
-	{
-		ret = read(0, buf, sizeof(buf));
-		buf[ret] = '\0';
-		write(1, buf, ret);
-	}
-}
 
 int	cmd_exec(t_data *d)
 {

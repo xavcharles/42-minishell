@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:54:25 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:30:51 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
+void	print(void);
 
 #endif

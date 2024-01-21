@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 17:41:51 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:33:27 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	shell_loop(t_data *d)
 		free(prompt);
 		if (!input)
 			break ;
-		if (!ft_strncmp(input, "exit", ft_strlen(input)) && ft_strlen(input))
+		if (!ft_strncmp(input, "exit", 4) && ft_strlen(input) == 4)
 			break ;
 		if (ft_strlen(input))
 			shell_loop2(d, input);
