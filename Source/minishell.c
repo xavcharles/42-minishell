@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 17:33:27 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:35:27 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ char	*prompt_pwd(t_data *d)
 	char	*ret;
 
 	i = -1;
+	ret = NULL;
 	while (d->env[++i])
 		if (!ft_strncmp(d->env[i], "PWD", 3))
 			break ;
 	s = ft_split(d->env[i], '=');
 	free(s[0]);
-	ret = ft_strjoin(s[1], "$> ");
+	if (s[1] != NULL)
+		ret = ft_strjoin(s[1], "$> ");
 	free(s[1]);
 	free(s);
 	return (ret);
