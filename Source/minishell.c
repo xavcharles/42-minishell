@@ -103,11 +103,9 @@ int	shell_loop(t_data *d)
 		if (ft_strlen(input))
 			shell_loop2(d, input);
 		free(input);
-		free(prompt);
 		usleep(10);
 	}
 	free(input);
-	free(prompt);
 	rl_clear_history();
 	printf("exitted\n");
 	return (0);
