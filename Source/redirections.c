@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 16:55:32 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:02:48 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -64,12 +64,22 @@ void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 	return ;
 }
 
+void	last_hd(pid_t pid, int p_fd[2], int status)
+{
+	close(p_fd[1]);
+	dup2(p_fd[0], 0);
+	close(p_fd[0]);
+	waitpid(pid, &status, 0);
+	g_ret = WEXITSTATUS(status);
+}
+
 int	here_doc(t_data *d, char **strs, int cc, int i)
 {
 	int		p_fd[2];
 	int		status;
 	pid_t	pid;
 
+	status = 0;
 	if (pipe(p_fd) < 0)
 		return (1);
 	pid = fork();
@@ -84,13 +94,7 @@ int	here_doc(t_data *d, char **strs, int cc, int i)
 		close(p_fd[0]);
 	}
 	else
-	{
-		close(p_fd[1]);
-		dup2(p_fd[0], 0);
-		close(p_fd[0]);
-		waitpid(pid, &status, 0);
-		g_ret = WEXITSTATUS(status);
-	}
+		last_hd(pid, p_fd, status);
 	return (0);
 }
 
@@ -103,7 +107,6 @@ int	redir_in(t_data *d, int cc)
 	i = -1;
 	while (d->cmd[cc].in[++i])
 	{
-		printf("%s\n", d->cmd[cc].in[i]);
 		tmp = ft_split(d->cmd[cc].in[i], ' ');
 		if (ft_strlen(tmp[0]) == 1)
 		{
