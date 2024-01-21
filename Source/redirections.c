@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:49:35 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:55:32 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -64,7 +64,7 @@ void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 	return ;
 }
 
-int	here_doc(t_data *d, char *end, char **strs)
+int	here_doc(t_data *d, char **strs, int cc, int i)
 {
 	int		p_fd[2];
 	int		status;
@@ -76,7 +76,13 @@ int	here_doc(t_data *d, char *end, char **strs)
 	if (pid < 0)
 		return (2);
 	if (pid == 0)
-		get_doc(d, end, p_fd, strs);
+		get_doc(d, strs[1], p_fd, strs);
+	if (d->cmd[cc].in[i + 1] != NULL)
+	{
+		close(p_fd[1]);
+		waitpid(pid, &status, 0);
+		close(p_fd[0]);
+	}
 	else
 	{
 		close(p_fd[1]);
@@ -84,7 +90,6 @@ int	here_doc(t_data *d, char *end, char **strs)
 		close(p_fd[0]);
 		waitpid(pid, &status, 0);
 		g_ret = WEXITSTATUS(status);
-		return (0);
 	}
 	return (0);
 }
@@ -98,6 +103,7 @@ int	redir_in(t_data *d, int cc)
 	i = -1;
 	while (d->cmd[cc].in[++i])
 	{
+		printf("%s\n", d->cmd[cc].in[i]);
 		tmp = ft_split(d->cmd[cc].in[i], ' ');
 		if (ft_strlen(tmp[0]) == 1)
 		{
@@ -112,7 +118,7 @@ int	redir_in(t_data *d, int cc)
 			close(p.f1);
 		}
 		else
-			here_doc(d, tmp[1], tmp);
+			here_doc(d, tmp, cc, i);
 		clean_strs(tmp, 0, 0);
 	}
 	return (0);
