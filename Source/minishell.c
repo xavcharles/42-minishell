@@ -138,7 +138,7 @@ int	shell_loop(t_data *d)
 				clean_data(d);
 			}
 			else
-				printf("Error during parsing\n");
+				g_ret = 2;
 		}
 		free(input);
 		usleep(10);

@@ -20,9 +20,9 @@ int	wipe_data(t_data *data)
 		clean_strs(data->paths, 0, 0);
 	if (data->env)
 		clean_strs(data->env, 0, 0);
-	free(data);
 	close(data->std_in);
 	close(data->std_out);
+	free(data);
 	return (0);
 }
 
@@ -58,9 +58,9 @@ int	init_data(t_data *d, char **env)
 	d->std_out = dup(1);
 	d->std_in = dup(0);
 	if (env_cpy(d, env))
-		return (1);
+		return (g_ret = 2, 1);
 	if (pathfinder(d))
-		return (1);
+		return (g_ret = 2, 1);
 	return (0);
 }
 

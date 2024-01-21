@@ -12,31 +12,47 @@
 
 #include "../minishell.h"
 
-int	exec_2(t_data *d, int cc)
+char	*cmd_with_path(t_data *d, int cc)
 {
 	char	*tmp;
 	char	**path;
 	int		i;
 
 	i = -1;
+	tmp = NULL;
 	path = pathman(d);
 	while (path[++i])
 	{
-		tmp = ft_strjoin(d->paths[i], "/");
-		tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
-		if (!access(tmp, F_OK | X_OK))
+		if (ft_strlen(d->cmd[cc].cmd) == 0)
+			tmp = d->cmd[cc].cmd;
+		else
 		{
-			if (execve(tmp, d->cmd[cc].cmd_arg, d->env) == -1)
-			{
-				free(tmp);
-				if (errno == 13)
-					exit(126);
-				exit(127);
-			}
+			tmp = ft_strjoin(path[i], "/");
+			tmp = gnl_strjoin(tmp, d->cmd[cc].cmd);
 		}
-		free(tmp);
+		if (!access(tmp, F_OK | X_OK))
+			return (clean_strs(path, 0, 0), tmp);
+		if (ft_strlen(tmp) != 0)
+			free(tmp);
 	}
-	abs_exec(d, cc);
+	clean_strs(path, 0, 0);
+	return (d->cmd[cc].cmd);
+}
+
+int	exec_2(t_data *d, int cc)
+{
+	char	*cmd;
+
+	cmd = cmd_with_path(d, cc);
+	if (execve(cmd, d->cmd[cc].cmd_arg, d->env) == -1)
+	{
+		if (cmd != d->cmd[cc].cmd)
+			free(cmd);
+		perror(d->cmd[cc].cmd);
+		if (errno == 13)
+			ft_exit(d, 126);
+		ft_exit(d, 127);
+	}
 	return (ft_exit(d, 127), EXIT_FAILURE);
 }
 
@@ -54,8 +70,11 @@ int	exec_1(t_data *d, int cc)
 			}
 		}
 	}
-	else if (is_builtin(d, cc) == 1)
+	if (is_builtin(d, cc) == 1)
+	{
+		dprintf(2, "cmd = %s\n", d->cmd[cc].cmd);
 		exec_builtin(d, cc);
+	}
 	else
 		exec_2(d, cc);
 	return (ft_exit(d, 2), 1);
