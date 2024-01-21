@@ -126,8 +126,8 @@ int	cmd_exec(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count)
 	{
-		if (d->cmd->cmd == NULL)
-			return (2);
+		// if (d->cmd->cmd == NULL)
+		// 	return (2);
 		if (d->cmd[i].in)
 			redir_in(d, i);
 		if (d->cmd[i].out)
