@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 17:29:04 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:51:27 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int	simple_exec(t_data *d, int cc)
 	return (0);
 }
 
-
 int	cmd_exec(t_data *d)
 {
 	int	i;
@@ -113,12 +112,15 @@ int	cmd_exec(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count)
 	{
-		if (d->cmd->cmd == NULL)
-			return (2);
 		if (d->cmd[i].in)
 			redir_in(d, i);
 		if (d->cmd[i].out)
 			redir_out(d, i);
+		if (d->cmd->cmd == NULL)
+		{
+			reset_std(d, i);
+			continue ;
+		}
 		if (is_builtin(d, i) == 2)
 			exec_builtin(d, i);
 		if (d->cmd[i].next_op)
@@ -127,9 +129,7 @@ int	cmd_exec(t_data *d)
 			simple_exec(d, i);
 		if (!isatty(0) && !isatty(1))
 			print();
-		dup2(d->std_out, 1);
-		if (!d->cmd[i].next_op)
-			dup2(d->std_in, 0);
+		reset_std(d, i);
 	}
 	return (0);
 }

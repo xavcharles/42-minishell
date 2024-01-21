@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 17:30:51 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:50:43 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
 void	print(void);
+void	reset_std(t_data *d, int i);
 
 #endif

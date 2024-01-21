@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 17:29:42 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 17:30:11 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/21 17:51:14 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -23,4 +23,11 @@ void	print(void)
 		buf[ret] = '\0';
 		write(1, buf, ret);
 	}
+}
+
+void	reset_std(t_data *d, int i)
+{
+	dup2(d->std_out, 1);
+	if (!d->cmd[i].next_op)
+		dup2(d->std_in, 0);
 }
