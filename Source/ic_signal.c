@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ic_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:30:14 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 17:30:15 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:55:50 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	cc_hd_handler(int sig)
 static void	bs_handler(int sig)
 {
 	write(1, "\n", 1);
-	printf("Quit (core dumped)\n");
+	ft_dprintf(2, "Quit (core dumped)\n");
 	g_ret = 131;
 	(void)sig;
 }

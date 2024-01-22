@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 17:34:48 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 22:28:28 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:39:48 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <string.h>
+# include <stdarg.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 16
@@ -44,6 +46,13 @@ int		ft_lstsize(t_list *lst);
 int		is_line(char *buffer, int l);
 int		wd_count(char const *s, char c);
 int		ft_nbsize(int n);
+int		ft_dprintf(int fd, const char *s, ...);
+void	ft_putnbr_base_u(int fd, unsigned int nb, char *base, int *cpt);
+void	ft_putnbr_base_l(int fd, long nbr, char *base, int *cpt);
+void	ft_printpoint(int fd, va_list args, int *cpt);
+void	check_arg(int fd, char c, va_list args, int *cpt);
+void	ft_cptputstr(int fd, va_list args, int *cpt);
+void	ft_putnbr_base_p(int fd, long long nbr, char *base, int *cpt);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);

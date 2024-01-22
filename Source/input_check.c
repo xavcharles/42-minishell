@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:55:10 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 02:54:27 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:56:47 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	check_morethan(char *str, int *i)
 		(*i)++;
 	if (!str[*i])
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_dprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return (1);
 	}
 	if (sign_after_sign(str + *i, &n))
@@ -77,7 +77,7 @@ int	check_lessthan(char *str, int *i)
 		(*i)++;
 	if (!str[*i])
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_dprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return (1);
 	}
 	if (sign_after_sign(str + *i, &n))

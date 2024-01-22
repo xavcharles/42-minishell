@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 03:12:49 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:11:19 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	add_to_env(t_data *d, char *str, int i)
 		d->env[i] = ft_strdup(str);
 	if (!d->env[i])
 	{
-		return (printf("Minishell: failed to malloc in env_cpy\n"));
+		return (ft_dprintf(2, "Minishell: failed to malloc in env_cpy\n"));
 	}
 	return (0);
 }
@@ -86,7 +86,7 @@ int	env_cpy(t_data *data, char **env)
 	else
 		data->env = malloc(sizeof(char **) * (strs_len(env) + 2));
 	if (!data->env)
-		return (printf("Minishell: failed to malloc in env_cpy\n"));
+		return (ft_dprintf(2, "Minishell: failed to malloc in env_cpy\n"));
 	while (env[i])
 	{
 		if (add_to_env(data, env[i], i))

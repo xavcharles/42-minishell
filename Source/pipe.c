@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:23:50 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/18 17:39:07 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:44:05 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*
 int	fd_manager(t_pipe p, t_data *d, int cc)
 {
 	(void) cc;
@@ -46,3 +47,4 @@ int	ft_pipe(t_data *d, int cc)
 	}
 	return (0);
 }
+*/

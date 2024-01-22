@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 22:53:11 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:57:50 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	pathfinder(t_data *d)
 		{
 			d->paths = ft_split(*strs, ':');
 			if (!d->paths)
-				return (printf
-					("Minishell: failed to malloc in pathfinder function\n"));
+				return (ft_dprintf
+					(2, "Minishell: failed to malloc in pathfinder function\n"));
 			return (0);
 		}
 		strs++;
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
-		return (printf("Minishell: failed to malloc data structure\n"));
+		return (ft_dprintf(2, "Minishell: failed to malloc data structure\n"));
 	if (init_data(data, env))
 		return ((wipe_data(data)), 1);
 	(void) av;

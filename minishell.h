@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 03:03:42 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:02:16 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_ccmd
 	char	**cmd_arg;
 	// char	**in;
 	// char	**out;
+	char	**all;
 	char	*next_op;
 	char	*prev_op;
-	char	**all;
 }	t_ccmd;
 
 typedef struct s_pipe

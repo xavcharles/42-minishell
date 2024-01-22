@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 17:04:21 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:54:44 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_export(t_data *d, int cc)
 			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
 		if (!d->env)
 			return (ft_exit(d, 1, -1),
-				printf("Failed to malloc env after export\n"));
+				ft_dprintf(2, "Failed to malloc env after export\n"));
 		clean_strs(tmp, 0, 0);
 	}
 	return (ft_exit(d, 0, -1), 0);
@@ -85,7 +85,7 @@ char	**ft_subtab(char **tab, char *s)
 
 	n_tab = malloc(sizeof(char *) * strs_len(tab));
 	if (!n_tab)
-		return (printf("malloc error in subtab\n"), NULL);
+		return (ft_dprintf(2, "malloc error in subtab\n"), NULL);
 	i = -1;
 	j = 0;
 	while (tab[++i])
@@ -94,7 +94,7 @@ char	**ft_subtab(char **tab, char *s)
 		{
 			n_tab[i - j] = ft_strdup(tab[i]);
 			if (!n_tab[i - j])
-				return (printf("malloc error in subtab\n"), NULL);
+				return (ft_dprintf(2, "malloc error in subtab\n"), NULL);
 		}
 		else
 			j++;

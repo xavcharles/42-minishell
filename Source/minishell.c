@@ -35,7 +35,7 @@ int	ca_parse(t_data *d, char *input)
 	d->sep_count = sep_count(input, "|&");
 	d->seps = rev_ms_split(input, "&|");
 	if (!d->seps && d->sep_count)
-		return (printf("Minishell: Failed Malloc in ca_parse\n"), 1);
+		return (ft_dprintf(2, "Minishell: Failed Malloc in ca_parse\n"), 1);
 	d->cmds = ms_split(input, "&|");
 	if (!d->cmds)
 		return (clean_data(d), 1);
@@ -77,7 +77,7 @@ int	shell_loop2(t_data *d, char *input)
 		signal(SIGINT, SIG_IGN);
 		if (!init_heredoc(d))
 			if (cmd_exec(d))
-				printf("Error during execution\n");
+				ft_dprintf(2, "Error during execution\n");
 		clean_data(d);
 	}
 	else
@@ -105,6 +105,5 @@ int	shell_loop(t_data *d)
 	}
 	free(input);
 	rl_clear_history();
-	printf("exitted\n");
 	return (0);
 }

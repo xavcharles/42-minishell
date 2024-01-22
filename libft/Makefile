@@ -35,7 +35,10 @@ OBJECTS = ft_isalpha.o \
 			ft_strnstr.o \
 			ft_toupper.o \
 			get_next_line.o \
-			get_next_line_utils.o
+			get_next_line_utils.o \
+			ft_printf.o \
+			ft_putnbrbase_p.o \
+			ft_cptputstr.o \
 
 INCLUDES = .libft.h
 

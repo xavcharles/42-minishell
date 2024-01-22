@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   par_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 18:12:43 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:10:43 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_inp(t_data *d, int cc, int i)
 {
 	if (ft_isdigit(d->cmd[cc].cmd_arg[i][0])
 		|| !ft_isalpha(d->cmd[cc].cmd_arg[i][0]))
-		return (printf("export: '%s' : not a valid identifier\n",
+		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
 				d->cmd[cc].cmd_arg[i]), 1);
 	return (0);
 }
@@ -63,7 +63,7 @@ int	par_export(t_data *d, int cc)
 			{
 				d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
 				if (!d->env)
-					return (printf("Failed to malloc env after export\n"), 1);
+					return (ft_dprintf(2, "Failed to malloc env after export\n"), 1);
 			}
 			clean_strs(tmp, 0, 0);
 		}

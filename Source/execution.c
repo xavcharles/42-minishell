@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 03:52:47 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 12:59:15 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	cmd_exec(t_data *d)
 	{
 		waitpid(d->allpids[i], &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			printf("Quit (Core Dumped)\n");
+			ft_dprintf(2, "Quit (Core Dumped)\n");
 		g_ret = WEXITSTATUS(status);
 	}
 	return (0);
