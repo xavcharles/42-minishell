@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 17:51:11 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:26:12 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		exec_1(t_data *d, int cc);
 int		cmd_exec(t_data *d);
 int		redir_out(t_data *d, int cc);
 int		ft_pipe(t_data *d, int cc);
-int		print_env(t_data *d);
+int		print_env(t_data *d, int cc);
 int		ft_export(t_data *d, int cc);
 int		ft_unset(t_data *d, int cc);
 int		ft_echo(t_data *d, int cc);
@@ -149,7 +149,6 @@ int		redir_all(t_data *d, int cc);
 void	redirect_all(int i, int pipe[2], t_data *d);
 char	*cmd_with_path(t_data *d, int cc);
 int		m_get_pwd(t_data *d);
-// here_doc.c
 int		init_heredoc(t_data *d);
 int		break_doc_loop(char *end, char *str);
 void	clean_heredoc(t_data *d);
@@ -160,5 +159,6 @@ int		break_doc_loop(char *end, char *str);
 void	clean_heredoc(t_data *d);
 void	history_restore(void);
 int		add_to_history(char *input);
+int		print_history(t_data *d, int cc);
 
 #endif

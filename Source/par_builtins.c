@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:57:22 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:00:20 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ int	par_ex_sub(t_data *d, int cc, int i)
 
 int	check_inp(t_data *d, int cc, int i)
 {
+	int	j;
+
+	j = -1;
+	while (d->cmd[cc].cmd_arg[i][++j] != '=')
+	{
+		if (!ft_isalnum(d->cmd[cc].cmd_arg[i][j]))
+			return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
+					d->cmd[cc].cmd_arg[i]), 1);
+	}
 	if (ft_isdigit(d->cmd[cc].cmd_arg[i][0])
 		|| !ft_isalpha(d->cmd[cc].cmd_arg[i][0]))
 		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",

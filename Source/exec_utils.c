@@ -6,17 +6,19 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:53:43 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:26:30 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	print_env(t_data *d)
+int	print_env(t_data *d, int cc)
 {
 	int	i;
 
 	i = -1;
+	if (d->cmd[cc].cmd_arg[1])
+		return (ft_dprintf(2, "no arg pleas\n"), 1);
 	while (d->env[++i] != NULL)
 	{
 		if (ft_strchr(d->env[i], '='))
@@ -44,6 +46,8 @@ int	is_builtin(t_data *d, int cc)
 		return (1);
 	else if (!ft_strcmp(cmd, "echo"))
 		return (1);
+	else if (!ft_strcmp(cmd, "history"))
+		return (1);
 	else if (!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
@@ -61,11 +65,13 @@ int	exec_builtin(t_data *d, int cc)
 	else if (!ft_strcmp(cmd, "unset"))
 		return (par_unset(d, cc));
 	else if (!ft_strcmp(cmd, "env"))
-		return (print_env(d));
+		return (print_env(d, cc));
 	else if (!ft_strcmp(cmd, "pwd"))
 		return (pwd_builtin(d, cc));
 	else if (!ft_strcmp(cmd, "echo"))
 		return (ft_echo(d, cc));
+	else if (!ft_strcmp(cmd, "history"))
+		return (print_history(d, cc));
 	else if (!ft_strcmp(cmd, "exit"))
 		return (ft_exit(d, 0, cc), 1);
 	return (0);

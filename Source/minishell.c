@@ -96,7 +96,10 @@ int	shell_loop(t_data *d)
 		if (!input)
 			break ;
 		if (ft_strlen(input) && !ft_strcmp(input, "exit"))
+		{
+			add_to_history(input);
 			break ;
+		}
 		if (ft_strlen(input))
 			shell_loop2(d, input);
 		free(input);
