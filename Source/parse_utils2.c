@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:27:38 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 18:27:39 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 00:46:03 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void	init_zero(t_data *d)
 	{
 		d->cmd[i].cmd = NULL;
 		d->cmd[i].cmd_arg = NULL;
-		d->cmd[i].in = NULL;
-		d->cmd[i].out = NULL;
+		d->cmd[i].all = NULL;
 		i++;
 	}
 }
@@ -83,4 +82,7 @@ void	data_zero(t_data *d)
 	d->input = NULL;
 	d->cmd_count = 0;
 	d->sep_count = 0;
+	d->prev = 0;
+	d->hd = NULL;
+	d->nb_heredoc = 0;
 }

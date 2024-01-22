@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:55:10 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:55:33 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:01:50 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	check_morethan(char *str, int *i)
 		(*i)++;
 	if (!str[*i])
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_dprintf
+			(2, "minishell: syntax error near unexpected token `newline'\n");
 		return (1);
 	}
 	if (sign_after_sign(str + *i, &n))
@@ -77,10 +78,11 @@ int	check_lessthan(char *str, int *i)
 		(*i)++;
 	if (!str[*i])
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_dprintf
+			(2, "minishell: syntax error near unexpected token `newline'\n");
 		return (1);
 	}
-	if (sign_after_sign(str, i))
+	if (sign_after_sign(str + *i, &n))
 	{
 		*i += n;
 		return (1);
@@ -94,25 +96,15 @@ int	input_check2(char *str, int *i)
 	if (*str == '(' || *str == ')' || *str == '[' || *str == ']')
 		return (print_stxerr(*str, 0), 1);
 	else if (*str == '<')
-	{
-		if (check_lessthan(str, i))
-			return (1);
-	}
+		return (check_lessthan(str, i));
 	else if (*str == '>')
-	{
-		if (check_morethan(str, i))
-			return (1);
-	}
+		return (check_morethan(str, i));
 	else if (*str == '&')
-	{
-		if (check_esp(str, i))
-			return (1);
-	}
+		return (check_esp(str, i));
 	else if (*str == '|')
-	{
-		if (check_pipe(str, i))
-			return (1);
-	}
+		return (check_pipe(str, i));
+	else if (*str == ';')
+		return (check_bis(str, i));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 18:35:27 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:33:13 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ca_parse(t_data *d, char *input)
 	d->sep_count = sep_count(input, "|&");
 	d->seps = rev_ms_split(input, "&|");
 	if (!d->seps && d->sep_count)
-		return (printf("Minishell: Failed Malloc in ca_parse\n"), 1);
+		return (ft_dprintf(2, "Minishell: Failed Malloc in ca_parse\n"), 1);
 	d->cmds = ms_split(input, "&|");
 	if (!d->cmds)
 		return (clean_data(d), 1);
@@ -77,8 +77,9 @@ int	shell_loop2(t_data *d, char *input)
 	if (!ca_parse(d, input))
 	{
 		signal(SIGINT, SIG_IGN);
-		if (cmd_exec(d))
-			printf("Error during execution\n");
+		if (!init_heredoc(d))
+			if (cmd_exec(d))
+				ft_dprintf(2, "Error during execution\n");
 		clean_data(d);
 	}
 	else
@@ -88,19 +89,16 @@ int	shell_loop2(t_data *d, char *input)
 
 int	shell_loop(t_data *d)
 {
-	char		*prompt;
 	char		*input;
 
 	while (1)
 	{
-		prompt = prompt_pwd(d);
 		ic_sigs(1);
 		signal(SIGQUIT, SIG_IGN);
-		input = readline(prompt);
-		free(prompt);
+		input = readline("> ");
 		if (!input)
 			break ;
-		if (!ft_strncmp(input, "exit", 4) && ft_strlen(input) == 4)
+		if (ft_strlen(input) && !ft_strcmp(input, "exit"))
 			break ;
 		if (ft_strlen(input))
 			shell_loop2(d, input);
@@ -109,6 +107,5 @@ int	shell_loop(t_data *d)
 	}
 	free(input);
 	rl_clear_history();
-	printf("exitted\n");
 	return (0);
 }

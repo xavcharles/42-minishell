@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   changedir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/21 18:40:53 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:35:57 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,19 @@ int	update_oldpwd(t_data *d)
 int	cd_builtin(t_data *d, int cc)
 {
 	char	*dir;
+	int		i;
 
+	i = -1;
 	dir = d->cmd[cc].cmd_arg[1];
-	if (d->cmd[cc].cmd_arg[2] != NULL)
-		return (printf("cd: string not in pwd: %s\n", d->cmd[cc].cmd_arg[1]), g_ret = 1, 0);
+	if (!dir)
+	{
+		while (d->env[++i])
+			if (!ft_strncmp(d->env[i], "HOME", 4))
+				break ;
+		if (!d->env[i])
+			return (ft_putstr_fd("HOME not set\n", 2), EXIT_FAILURE);
+		return (chdir(d->env[i] + 5), EXIT_SUCCESS);
+	}
 	if (chdir(dir) == 0)
 	{
 		update_oldpwd(d);

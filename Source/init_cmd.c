@@ -3,52 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   init_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:29:30 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 17:42:11 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:35:16 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	init_clean(char **strs, char *in, char *out)
+void	init_clean(char **strs, char *all)
 {
 	if (strs)
 		clean_strs(strs, 0, 0);
-	if (in)
-		free(in);
-	if (out)
-		free(out);
+	if (all)
+		free(all);
 }
 
-int	set_in_out(t_ccmd *ccmd, char **in, char **out)
+int	set_in_out(t_ccmd *ccmd, char **all)
 {
-	if (*in)
+	if (*all)
 	{
-		ccmd->in = ms_split(*in, "\t");
-		if (!ccmd->in)
-			return (printf("Minishell: Failed Malloc in set_in_out\n"));
-		free(*in);
-	}
-	if (*out)
-	{
-		ccmd->out = ms_split(*out, "\t");
-		if (!ccmd->out)
-		{
-			if (*in)
-			{
-				printf("Minishell: Failed Malloc in set_in_out\n");
-				return (free(*in), 1);
-			}
-			return (printf("Minishell: Failed Malloc in set_in_out\n"));
-		}
-		free(*out);
+		ccmd->all = ms_split(*all, "\t");
+		if (!ccmd->all)
+			return (free(*all),
+				ft_dprintf(2, "Minishell: Failed Malloc in set_in_out\n"));
+		free(*all);
 	}
 	return (0);
 }
 
-int	loop_cmd(t_ccmd *ccmd, char **strs, char **in, char **out)
+int	loop_cmd(t_ccmd *ccmd, char **strs, char **all)
 {
 	int		j;
 	char	*cmd_arg;
@@ -57,7 +42,7 @@ int	loop_cmd(t_ccmd *ccmd, char **strs, char **in, char **out)
 	cmd_arg = NULL;
 	while (strs[++j])
 	{
-		if (loop_2(strs[j], &cmd_arg, in, out))
+		if (loop_2(strs[j], &cmd_arg, all))
 		{
 			if (cmd_arg)
 				free(cmd_arg);
@@ -80,25 +65,23 @@ int	loop_cmd(t_ccmd *ccmd, char **strs, char **in, char **out)
 int	init_ccmd(t_data *d, t_ccmd *ccmd)
 {
 	int		i;
-	char	*in;
-	char	*out;
 	char	**strs;
+	char	*all;
 
 	init_zero(d);
 	i = -1;
 	while (d->cmds[++i])
 	{
 		if (input_check(d))
-			return (printf("Minishell: Incorrect synthax\n"));
+			return (ft_dprintf(2, "Minishell: Incorrect synthax\n"));
 		strs = ms_split(d->cmds[i], "\t ");
 		if (!strs)
-			return (printf("Minishell: Failed Malloc in init_ccmd\n"));
-		in = NULL;
-		out = NULL;
-		if (loop_cmd(ccmd + i, strs, &in, &out))
-			return (init_clean(strs, in, out), 1);
-		if (set_in_out(ccmd + i, &in, &out))
-			return (init_clean(strs, in, out), 1);
+			return (ft_dprintf(2, "Minishell: Failed Malloc in init_ccmd\n"));
+		all = NULL;
+		if (loop_cmd(ccmd + i, strs, &all))
+			return (init_clean(strs, all), 1);
+		if (set_in_out(ccmd + i, &all))
+			return (init_clean(strs, all), 1);
 		clean_strs(strs, 0, 0);
 	}
 	return (0);

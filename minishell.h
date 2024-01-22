@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/21 17:50:43 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:58:53 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@
 # include <unistd.h>
 # include <errno.h>
 
+typedef struct t_here
+{
+	int		fd[2];
+	char	*delim;
+}	t_here;
+
 typedef struct s_ccmd
 {
 	char	*cmd;
 	char	**cmd_arg;
-	char	**in;
-	char	**out;
+	char	**all;
 	char	*next_op;
 	char	*prev_op;
 }	t_ccmd;
@@ -57,6 +62,10 @@ typedef struct s_data
 	int		std_out;
 	int		std_in;
 	t_pipe	*p;
+	int		prev;
+	pid_t	allpids[1024];
+	t_here	*hd;
+	int		nb_heredoc;
 }	t_data;
 
 extern int	g_ret;
@@ -96,7 +105,7 @@ int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
 int		check_first(char *input);
 int		check_firstbis(char *input);
-void	ft_exit(t_data *d, int n);
+void	ft_exit(t_data *d, int n, int cc);
 int		is_builtin(t_data *d, int cc);
 int		strs_len(char **strs);
 int		find_var(char **env, char *var);
@@ -119,8 +128,8 @@ size_t	ft_trslen(const char *s);
 int		dollar_replace2(t_data *d, char **s, int op, int start);
 int		find_match(t_data *d, int *i, char **tmp, char *str);
 char	*recreate_str(t_data *d, int start, char **s, char **tmp);
-int		loop_2(char *str, char **cmd_arg, char **in, char **out);
-int		fill_justthesign(char *str, char **in, char **out, int *i);
+int		loop_2(char *str, char **cmd_arg, char **all);
+int		fill_justthesign(char *str, char **all, int *i);
 int		ministrlen(char **strs);
 char	*minijoin(char **strs);
 int		dollar_loop(t_data *d, t_ccmd *ccmd, char **rep, int *k);
@@ -134,5 +143,13 @@ int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
 void	print(void);
 void	reset_std(t_data *d, int i);
+int		check_bis(char *str, int *i);
+int		redir_all(t_data *d, int cc);
+void	redirect_all(int i, int pipe[2], t_data *d);
+char	*cmd_with_path(t_data *d, int cc);
+// here_doc.c
+int		init_heredoc(t_data *d);
+int		break_doc_loop(char *end, char *str);
+void	clean_heredoc(t_data *d);
 
 #endif

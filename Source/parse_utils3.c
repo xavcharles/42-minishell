@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:27:48 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 18:27:49 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:11:00 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char	**check_if_unclosed(char **strs, int inquote)
 {
 	if (inquote == 1)
 	{
-		printf("Error : unclosed quote\n");
+		ft_dprintf(2, "Error : unclosed quote\n");
 		clean_strs(strs, 0, 0);
 		return (NULL);
 	}
