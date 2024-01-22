@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 19:49:02 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:07:23 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	update_oldpwd(t_data *d)
 	return (0);
 }
 
-int	sub_cd(t_data *d, int cc)
+int	sub_cd(t_data *d, int cc, char *dir)
 {
 	(void) cc;
 	if (find_var(d->env, "OLDPWD"))
@@ -56,6 +56,8 @@ int	sub_cd(t_data *d, int cc)
 	m_get_pwd(d);
 	if (find_var(d->env, "PWD"))
 		update_pwd(d);
+	if (dir && dir != d->cmd[cc].cmd_arg[1])
+		free(dir);
 	return (EXIT_SUCCESS);
 }
 
@@ -83,7 +85,7 @@ int	cd_builtin(t_data *d, int cc)
 		free(tmp);
 	}
 	if (chdir(dir) == 0)
-		return (sub_cd(d, cc), free(dir), 0);
+		return (sub_cd(d, cc, dir), 0);
 	perror(dir);
 	return (g_ret = 1, EXIT_FAILURE);
 }

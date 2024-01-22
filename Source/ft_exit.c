@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 19:57:22 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:02:36 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exit_synthax(t_data *d, int cc, unsigned int *n, char fc)
 				break ;
 			}
 		}
-		change_n(d->cmd[cc].cmd_arg[i], &n, fc);
+		change_n(d->cmd[cc].cmd_arg[i], n, fc);
 	}
 	return (0);
 }
