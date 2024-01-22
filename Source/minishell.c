@@ -71,13 +71,16 @@ char	*prompt_pwd(t_data *d)
 
 int	shell_loop2(t_data *d, char *input)
 {
-	add_history(input);
+	add_to_history(input);
 	if (!ca_parse(d, input))
 	{
 		signal(SIGINT, SIG_IGN);
 		if (!init_heredoc(d))
+		{
+			ic_sigs(1);
 			if (cmd_exec(d))
 				ft_dprintf(2, "Error during execution\n");
+		}
 		clean_data(d);
 	}
 	else
@@ -105,5 +108,5 @@ int	shell_loop(t_data *d)
 	}
 	free(input);
 	rl_clear_history();
-	return (0);
+	return (g_ret);
 }

@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 13:02:16 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:24:36 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ typedef struct s_ccmd
 {
 	char	*cmd;
 	char	**cmd_arg;
-	// char	**in;
-	// char	**out;
 	char	**all;
 	char	*next_op;
 	char	*prev_op;
@@ -143,14 +141,12 @@ void	rev_ms_split_if(char const *s, int *i, int *in_quote);
 char	**pathman(t_data *d);
 int		abs_exec(t_data *d, int cc);
 void	data_zero(t_data *d);
-int	check_bis(char *str, int *i);
-int redir_all(t_data *d, int cc);
-
-
-// here_doc.c
-int	init_heredoc(t_data *d);
-int	break_doc_loop(char *end, char *str);
+int		check_bis(char *str, int *i);
+int		redir_all(t_data *d, int cc);
+int		init_heredoc(t_data *d);
+int		break_doc_loop(char *end, char *str);
 void	clean_heredoc(t_data *d);
-
+void	history_restore(void);
+int 	add_to_history(char *input);
 
 #endif

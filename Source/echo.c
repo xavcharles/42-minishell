@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:25:22 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 03:55:37 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:02:39 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ int	ft_echo(t_data *d, int cc)
 	i = tiret_n(&d->cmd[cc].cmd_arg[1]);
 	if (d->cmd[cc].cmd_arg[i])
 	{
-		if (ft_strlen(d->cmd[cc].cmd) == 0)
-			return (ft_exit(d, 127, -1), 1);
 		while (d->cmd[cc].cmd_arg[i])
 		{
 			if (d->cmd[cc].cmd_arg[i][0] == '\''
@@ -78,5 +76,5 @@ int	ft_echo(t_data *d, int cc)
 		if (ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 			write(1, "\n", 1);
 	}
-	return (0);
+	return ((g_ret = 0), 0);
 }

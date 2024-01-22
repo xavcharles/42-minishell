@@ -29,6 +29,7 @@ SRC = Source/main.c \
 		Source/input_check2.c \
 		Source/builtin_utils.c \
 		Source/here_doc.c \
+		Source/ft_history.c \
 		
 NAME = minishell
 

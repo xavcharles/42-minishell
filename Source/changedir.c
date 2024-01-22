@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 03:48:22 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:20:32 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,16 @@ int	cd_builtin(t_data *d, int cc)
 				break ;
 		if (!d->env[i])
 			return (ft_putstr_fd("HOME not set\n", 2), EXIT_FAILURE);
-		return (chdir(d->env[i] + 5), EXIT_SUCCESS);
+		chdir(d->env[i] + 5);
+		return ((g_ret = 0), EXIT_SUCCESS);
 	}
 	if (chdir(dir) == 0)
 	{
 		update_oldpwd(d);
 		update_pwd(d, cc);
-		return (EXIT_SUCCESS);
+		return ((g_ret = 0), EXIT_SUCCESS);
 	}
 	g_ret = 1;
 	perror(dir);
-	return (EXIT_FAILURE);
+	return ((g_ret = 1), EXIT_FAILURE);
 }

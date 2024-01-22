@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 12:59:15 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:35:44 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	cmd_exec(t_data *d)
 		return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 0);
 	}
 	d->prev = -1;
+	ic_sigs(4);
 	while (++i < d->cmd_count && i < 1024)
 	{
 		if (pipe(p.end) == -1)
@@ -115,7 +116,7 @@ int	cmd_exec(t_data *d)
 			if (is_builtin(d, i))
 			{
 				if (exec_builtin(d, i))
-					ft_exit(d, 127, -1);
+					ft_exit(d, 1, -1);
 				ft_exit(d, 0, -1);
 			}
 			exec_2(d, i);
@@ -133,9 +134,10 @@ int	cmd_exec(t_data *d)
 	i = -1;
 	while (++i < d->cmd_count)
 	{
+		// dprintf(2, "gret = %d\n", g_ret);
 		waitpid(d->allpids[i], &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			ft_dprintf(2, "Quit (Core Dumped)\n");
+		// if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		// 	ft_dprintf(2, "Quit (Core Dumped)\n");
 		g_ret = WEXITSTATUS(status);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:09:06 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 12:40:48 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:36:51 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,13 @@ void	check_arg(int fd, char c, va_list args, int *cpt)
 	else if (c == 'u')
 		ft_putnbr_base_u(fd, va_arg(args, unsigned int), "0123456789", cpt);
 	else if (c == 'x')
-		ft_putnbr_base_u(fd, va_arg(args, unsigned int), "0123456789abcdef", cpt);
+		ft_putnbr_base_u(fd, va_arg(args, unsigned int),
+			"0123456789abcdef", cpt);
 	else if (c == 'X')
-		ft_putnbr_base_u(fd, va_arg(args, unsigned int), "0123456789ABCDEF", cpt);
+		ft_putnbr_base_u(fd, va_arg(args, unsigned int),
+			"0123456789ABCDEF", cpt);
 	else if (c == '%')
-	{
-		ft_putchar_fd('%', fd);
-		*cpt += 1;
-	}
+		(ft_putchar_fd('%', fd), *cpt += 1);
 }
 
 int	ft_dprintf(int fd, const char *s, ...)

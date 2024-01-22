@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 12:53:53 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:22:49 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	exit_synthax(t_data *d, int cc, int *n, char first_char)
 	}
 	return (0);
 }
+
 void	ft_exit(t_data *d, int n, int cc)
 {
 	char	first_char;
@@ -52,6 +53,8 @@ void	ft_exit(t_data *d, int n, int cc)
 	if (d)
 	{
 		clean_data(d);
+		close(d->std_in);
+		close(d->std_out);
 		if (d->paths)
 			clean_strs(d->paths, 0, 0);
 		if (d->env)

@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 13:11:19 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:20:29 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ int	pwd_builtin(t_data *d, int cc)
 			write(1, tmp[1], ft_strlen(tmp[1]));
 			write(1, "\n", 1);
 			clean_strs(tmp, 0, 0);
-			return (EXIT_SUCCESS);
+			return ((g_ret = 0), EXIT_SUCCESS);
 		}
 	}
-	return (EXIT_FAILURE);
+	return ((g_ret = 1), EXIT_FAILURE);
 }
