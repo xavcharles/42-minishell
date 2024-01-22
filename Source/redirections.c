@@ -6,27 +6,11 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:04 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:55:23 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	break_doc_loop(char *end, char *str)
-{
-	if (!str && g_ret != 130)
-	{
-		printf("minishell: warning: here-document delimited by end-of-file ");
-		printf("(wanted `%s')\n", end);
-		return (1);
-	}
-	if (g_ret == 130 || str == NULL || ft_strcmp(str, end) == 0)
-	{
-		free(str);
-		return (1);
-	}
-	return (0);
-}
 
 // void	get_doc(t_data *d, char *end, int *p_fd, char **strs)
 // {
@@ -86,9 +70,12 @@ int	break_doc_loop(char *end, char *str)
 // 		last_hd(pid, p_fd, status);
 // 	return (0);
 // }
-int		get_pipe(t_data *d, char *delim)
+
+int	get_pipe(t_data *d, char *delim)
 {
-	int j = 0;
+	int	j;
+
+	j = 0;
 	while (j < d->nb_heredoc)
 	{
 		if (!ft_strcmp(d->hd[j].delim, delim))
@@ -98,11 +85,11 @@ int		get_pipe(t_data *d, char *delim)
 	return (-1);
 }
 
-int redir_all(t_data *d, int cc)
+int	redir_all(t_data *d, int cc)
 {
 	char	**tmp;
 	int		i;
-	int 	fd;
+	int		fd;
 
 	i = -1;
 	if (!d->cmd[cc].all)
@@ -113,11 +100,11 @@ int redir_all(t_data *d, int cc)
 		if (!tmp[1])
 			return (clean_strs(tmp, 0, 0), perror("file not found\n"), 1);
 		if (!ft_strcmp(tmp[0], ">"))
-			fd = open(tmp[1], O_CREAT | O_TRUNC | O_RDWR, 0666); 
+			fd = open(tmp[1], O_CREAT | O_TRUNC | O_RDWR, 0666);
 		if (!ft_strcmp(tmp[0], ">>"))
-			fd = open(tmp[1], O_CREAT | O_APPEND | O_RDWR, 0666); 
+			fd = open(tmp[1], O_CREAT | O_APPEND | O_RDWR, 0666);
 		if (!ft_strcmp(tmp[0], "<"))
-			fd = open(tmp[1], O_RDONLY); 
+			fd = open(tmp[1], O_RDONLY);
 		if (!ft_strcmp(tmp[0], "<<"))
 			fd = get_pipe(d, tmp[1]);
 		if (fd < 0)
@@ -131,4 +118,3 @@ int redir_all(t_data *d, int cc)
 	}
 	return (0);
 }
-

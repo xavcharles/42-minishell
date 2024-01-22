@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 16:16:41 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:22:01 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	print_env(t_data *d)
@@ -21,7 +22,7 @@ int	print_env(t_data *d)
 		if (ft_strchr(d->env[i], '='))
 			printf("%s\n", d->env[i]);
 	}
-	return (ft_exit(d, 0, -1), 0);
+	return (0);
 }
 
 int	is_builtin(t_data *d, int cc)
@@ -31,19 +32,19 @@ int	is_builtin(t_data *d, int cc)
 	cmd = d->cmd[cc].cmd;
 	if (!cmd || ft_strlen(cmd) == 0)
 		return (0);
-	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
-		return (2);
-	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
-		return (2);
-	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
-		return (2);
-	else if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
+	if (!ft_strcmp(cmd, "cd"))
 		return (1);
-	else if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "export"))
 		return (1);
-	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "unset"))
 		return (1);
-	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "env"))
+		return (1);
+	else if (!ft_strcmp(cmd, "pwd"))
+		return (1);
+	else if (!ft_strcmp(cmd, "echo"))
+		return (1);
+	else if (!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
 }
@@ -53,19 +54,19 @@ int	exec_builtin(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
-	if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+	if (!ft_strcmp(cmd, "cd"))
 		return (cd_builtin(d, cc));
-	else if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "export"))
 		return (par_export(d, cc));
-	else if (!ft_strncmp(cmd, "unset", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "unset"))
 		return (par_unset(d, cc));
-	else if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "env"))
 		return (print_env(d));
-	else if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "pwd"))
 		return (pwd_builtin(d, cc));
-	else if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "echo"))
 		return (ft_echo(d, cc));
-	else if (!ft_strncmp(cmd, "exit", ft_strlen(cmd)))
+	else if (!ft_strcmp(cmd, "exit"))
 		return (ft_exit(d, 0, cc), 0);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sep_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:54:42 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:54:45 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 02:54:30 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ int	check_firstbis(char *input)
 
 int	check_bis(char *str, int *i)
 {
-	int	n;
-
 	*i = 0;
-	n = 0;
 	while (str[*i] && str[*i] == ';' && *i < 2)
 		(*i)++;
 	if (*i == 2)
@@ -104,10 +101,7 @@ int	check_pipe(char *str, int *i)
 
 int	check_esp(char *str, int *i)
 {
-	int	n;
-
 	*i = 0;
-	n = 0;
 	while (str[*i] && str[*i] == '&' && *i < 2)
 		(*i)++;
 	if (*i == 2)

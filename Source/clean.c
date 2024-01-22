@@ -6,11 +6,30 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:31:25 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:12 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 02:54:23 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	clean_heredoc(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	if (d->hd)
+	{
+		while (i < d->nb_heredoc)
+		{
+			if (d->hd[i].delim)
+				free(d->hd[i].delim);
+			close(d->hd[i].fd[0]);
+			close(d->hd[i].fd[1]);
+			i++;
+		}
+		free(d->hd);
+	}
+}
 
 void	clean_strs(char **strs1, char **strs2, char **strs3)
 {

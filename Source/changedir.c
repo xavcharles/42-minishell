@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   changedir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:21 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 15:07:28 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:48:22 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	cd_builtin(t_data *d, int cc)
 {
 	char	*dir;
 	int		i;
-	
+
 	i = -1;
 	dir = d->cmd[cc].cmd_arg[1];
 	if (!dir)

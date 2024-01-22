@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:25:22 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/17 14:48:37 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:55:37 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	tiret_n(char **tab)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	while (tab[i])
 	{
@@ -78,5 +78,5 @@ int	ft_echo(t_data *d, int cc)
 		if (ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 			write(1, "\n", 1);
 	}
-	return (ft_exit(d, 0, -1), 0);
+	return (0);
 }

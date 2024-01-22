@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:09 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:52:47 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*cmd_with_path(t_data *d, int cc)
 	return (d->cmd[cc].cmd);
 }
 
-int	exec_2(t_data *d, int cc)
+void	exec_2(t_data *d, int cc)
 {
 	char	*cmd;
 
@@ -53,55 +53,6 @@ int	exec_2(t_data *d, int cc)
 			ft_exit(d, 126, -1);
 		ft_exit(d, 127, -1);
 	}
-	return (ft_exit(d, 127, -1), EXIT_FAILURE);
-}
-
-int	exec_1(t_data *d, int cc)
-{
-	if (!ft_strncmp(d->cmd[cc].cmd, "./minishell",
-			ft_strlen(d->cmd[cc].cmd)))
-	{
-		if (!access(d->cmd[cc].cmd, F_OK | X_OK))
-		{
-			if (execve(d->cmd[cc].cmd, d->cmd[cc].cmd_arg, d->env) == -1)
-			{
-				perror(d->cmd[cc].cmd);
-				return (ft_exit(d, EXIT_FAILURE, -1), 1);
-			}
-		}
-	}
-	if (is_builtin(d, cc) > 0)
-	{
-		exec_builtin(d, cc);
-	}
-	else
-		exec_2(d, cc);
-	return (ft_exit(d, 127, -1), 1);
-}
-
-int	simple_exec(t_data *d, int cc)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		close(d->std_in);
-		close(d->std_out);
-		exec_1(d, cc);
-	}
-	else
-	{
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		if (is_builtin(d, d->cmd_count - 1) == 2)
-			exec_builtin(d, d->cmd_count - 1);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			printf("Quit (Core Dumped)\n");
-		g_ret = WEXITSTATUS(status);
-	}
-	return (0);
 }
 
 void	print(void)
@@ -117,6 +68,7 @@ void	print(void)
 		write(1, buf, ret);
 	}
 }
+
 void	redirect_all(int i, int pipe[2], t_data *d)
 {
 	if (i != 0)
@@ -128,22 +80,19 @@ void	redirect_all(int i, int pipe[2], t_data *d)
 		dup2(pipe[1], 1);
 	close(pipe[0]);
 	close(pipe[1]);
-	if (d->cmd[0].all && redir_all(d, 0))
+	if (d->cmd[i].all && redir_all(d, i))
 		ft_exit(d, 1, -1);
 }
 
 int	cmd_exec(t_data *d)
 {
-	int	i;
-	t_pipe p;
+	int		i;
+	int		status;
+	t_pipe	p;
 
 	i = -1;
 	if (d->cmd_count == 1 && is_builtin(d, 0))
 	{
-		// if (d->cmd[0].in && redir_in(d, 0))
-			// return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
-		// if (d->cmd[0].out && redir_out(d, 0))
-			// return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
 		if (d->cmd[0].all && redir_all(d, 0))
 			return ((dup2(d->std_out, 1), dup2(d->std_in, 0)), 1);
 		if (exec_builtin(d, 0))
@@ -163,12 +112,13 @@ int	cmd_exec(t_data *d)
 			redirect_all(i, p.end, d);
 			if (!d->cmd->cmd)
 				ft_exit(d, 0, -1);
-			if (is_builtin(d, i)) 
+			if (is_builtin(d, i))
 			{
-				exec_builtin(d, i);
+				if (exec_builtin(d, i))
+					ft_exit(d, 127, -1);
 				ft_exit(d, 0, -1);
 			}
-			exec_1(d, i);
+			exec_2(d, i);
 			ft_exit(d, 127, -1);
 		}
 		else
@@ -182,6 +132,11 @@ int	cmd_exec(t_data *d)
 	close(p.end[0]);
 	i = -1;
 	while (++i < d->cmd_count)
-		waitpid(d->allpids[i], NULL, 0);
+	{
+		waitpid(d->allpids[i], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			printf("Quit (Core Dumped)\n");
+		g_ret = WEXITSTATUS(status);
+	}
 	return (0);
 }

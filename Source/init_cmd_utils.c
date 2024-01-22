@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:29:54 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:08 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 02:54:25 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	add_tmp(char *tmp, char **cmd_arg, char **all)
 {
 	if (!tmp)
 		return (1);
-	if (*all && ((*all)[ft_strlen(*all) - 1] == '<' || (*all)[ft_strlen(*all) - 1] == '>'))
+	if (*all && ((*all)[ft_strlen(*all) - 1] == '<'
+		|| (*all)[ft_strlen(*all) - 1] == '>'))
 	{
-		fprintf(stderr, "all = #%s#\n", *all);
 		*all = join_w_tab(*all, tmp);
 		if (!*all)
 			return (free(tmp), 1);
@@ -56,7 +56,7 @@ int	fill_argsinout(char *str, char **cmd_arg, char **all)
 		}
 		i++;
 	}
-	tmp = ft_substr(str, 0, i); 
+	tmp = ft_substr(str, 0, i);
 	if (add_tmp(tmp, cmd_arg, all))
 		return (-1);
 	return (i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:55:10 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:55:33 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 02:54:27 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,25 +94,15 @@ int	input_check2(char *str, int *i)
 	if (*str == '(' || *str == ')' || *str == '[' || *str == ']')
 		return (print_stxerr(*str, 0), 1);
 	else if (*str == '<')
-	{
-		if (check_lessthan(str, i))
-			return (1);
-	}
+		return (check_lessthan(str, i));
 	else if (*str == '>')
-	{
-		if (check_morethan(str, i))
-			return (1);
-	}
+		return (check_morethan(str, i));
 	else if (*str == '&')
-	{
-		if (check_esp(str, i))
-			return (1);
-	}
+		return (check_esp(str, i));
 	else if (*str == '|')
-	{
-		if (check_pipe(str, i))
-			return (1);
-	}
+		return (check_pipe(str, i));
+	else if (*str == ';')
+		return (check_bis(str, i));
 	return (0);
 }
 

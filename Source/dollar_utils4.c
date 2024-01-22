@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 20:00:07 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:11 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 03:51:14 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,6 @@ int	dollar_in(t_data *d, t_ccmd *cmd)
 
 int	dollar_inout(t_data *d, t_ccmd *cmd)
 {
-
-	// if (cmd->all)
-	// {
-	// 	i = -1;
-	// 	while (cmd->all[++i])
-	// 	{
-	// 		j = -1;
-	// 		while (cmd->all[i][++j])
-	// 		{
-	// 			if (dollar_loop(d, cmd, cmd->all + i, &j))
-	// 				return (1);
-	// 		}
-	// 	}
-	// }
 	if (cmd->all)
 	{
 		if (dollar_in(d, cmd))
