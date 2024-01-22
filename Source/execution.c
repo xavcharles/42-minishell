@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 13:57:57 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:34:44 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	cmd_exec(t_data *d)
 
 	i = -1;
 	if (d->cmd_count == 1 && is_builtin(d, 0))
-		cmd_exec_sb(d);
+		return (cmd_exec_sb(d));
 	d->prev = -1;
 	while (++i < d->cmd_count && i < 1024)
 		cmd_exec_1(d, &p, i);

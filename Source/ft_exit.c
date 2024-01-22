@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 16:35:14 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:38:03 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	ft_exit(t_data *d, int n, int cc)
 			clean_strs(d->env, 0, 0);
 		if (d->input)
 			free(d->input);
+		if (d->pwd)
+			free(d->pwd);
 		rl_clear_history();
 		free(d);
 	}
