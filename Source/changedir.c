@@ -17,7 +17,7 @@ char	*sub_dir(char *s)
 	int		i;
 	char	*rs;
 
-	i = ft_strlen(s) - 2;
+	i = ft_strlen(s) - 1;
 	while (s[i])
 	{
 		if (s[i] == '/')
@@ -38,12 +38,10 @@ int	update_pwd2(t_data *d, int cc, int i)
 	char	*s;
 
 	tmp = ft_split(d->env[i], '=');
-	free(tmp[1]);
 	free(d->env[i]);
 	s = ft_strjoin(tmp[0], "=");
-	free(tmp[0]);
 	d->env[i] = ft_strjoin(s, d->cmd[cc].cmd_arg[1]);
-	free(tmp);
+	clean_strs(tmp, 0, 0);
 	free(s);
 	return (0);
 }
@@ -52,9 +50,11 @@ int	update_pwd(t_data *d, int cc)
 {
 	int		i;
 	char	*s;
+	char	*st;
 
 	i = -1;
 	s = NULL;
+	st = NULL;
 	while (d->env[++i])
 		if (!ft_strncmp(d->env[i], "PWD", 3))
 			break ;
@@ -65,11 +65,13 @@ int	update_pwd(t_data *d, int cc)
 		update_pwd2(d, cc, i);
 	else
 	{
+		st = ft_strtrim(d->cmd[cc].cmd_arg[1], "/");
 		s = ft_strjoin(d->env[i], "/");
 		free(d->env[i]);
-		d->env[i] = ft_strjoin(s, d->cmd[cc].cmd_arg[1]);
+		d->env[i] = ft_strjoin(s, st);
 	}
 	free(s);
+	free(st);
 	return (1);
 }
 
@@ -92,9 +94,7 @@ int	update_oldpwd(t_data *d)
 	s[0] = ft_strjoin("OLDPWD", "=");
 	free(d->env[i]);
 	d->env[i] = ft_strjoin(s[0], s[1]);
-	free(s[0]);
-	free(s[1]);
-	free(s);
+	clean_strs(s, 0, 0);
 	return (0);
 }
 
@@ -103,6 +103,8 @@ int	cd_builtin(t_data *d, int cc)
 	char	*dir;
 
 	dir = d->cmd[cc].cmd_arg[1];
+	if (d->cmd[cc].cmd_arg[2] != NULL)
+		return (printf("cd: string not in pwd: %s\n", d->cmd[cc].cmd_arg[1]), g_ret = 1, 0);
 	if (chdir(dir) == 0)
 	{
 		update_oldpwd(d);

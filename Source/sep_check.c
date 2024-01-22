@@ -61,10 +61,7 @@ int	check_firstbis(char *input)
 
 int	check_bis(char *str, int *i)
 {
-	int	n;
-
 	*i = 0;
-	n = 0;
 	while (str[*i] && str[*i] == ';' && *i < 2)
 		(*i)++;
 	if (*i == 2)
@@ -104,10 +101,7 @@ int	check_pipe(char *str, int *i)
 
 int	check_esp(char *str, int *i)
 {
-	int	n;
-
 	*i = 0;
-	n = 0;
 	while (str[*i] && str[*i] == '&' && *i < 2)
 		(*i)++;
 	if (*i == 2)
