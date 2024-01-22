@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 12:57:50 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:21:04 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	wipe_data(t_data *data)
 		clean_strs(data->paths, 0, 0);
 	if (data->env)
 		clean_strs(data->env, 0, 0);
+	if (data->pwd)
+		free(data->pwd);
 	close(data->std_in);
 	close(data->std_out);
 	free(data);
@@ -64,6 +66,7 @@ int	init_data(t_data *d, char **env)
 		return (g_ret = 2, 1);
 	if (pathfinder(d))
 		return (g_ret = 2, 1);
+	m_get_pwd(d);
 	return (0);
 }
 

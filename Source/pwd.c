@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:24:51 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 13:11:19 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:23:40 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,21 +106,7 @@ int	env_cpy(t_data *data, char **env)
 
 int	pwd_builtin(t_data *d, int cc)
 {
-	int		i;
-	char	**tmp;
-
-	i = -1;
 	(void) cc;
-	while (d->env[++i])
-	{
-		if (!ft_strncmp(d->env[i], "PWD", 3))
-		{
-			tmp = ft_split(d->env[i], '=');
-			write(1, tmp[1], ft_strlen(tmp[1]));
-			write(1, "\n", 1);
-			clean_strs(tmp, 0, 0);
-			return (EXIT_SUCCESS);
-		}
-	}
-	return (EXIT_FAILURE);
+	printf("%s\n", d->pwd);
+	return (0);
 }

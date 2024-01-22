@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 13:33:13 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:31:37 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,16 @@ int	ca_parse(t_data *d, char *input)
 	return (0);
 }
 
-char	*prompt_pwd(t_data *d)
+int	m_get_pwd(t_data *d)
 {
+	char	s[1064];
+	char	*tmp;
 	int		i;
-	char	**s;
-	char	*ret;
 
-	i = -1;
-	ret = NULL;
-	while (d->env[++i])
-		if (!ft_strncmp(d->env[i], "PWD", 3))
-			break ;
-	s = ft_split(d->env[i], '=');
-	free(s[0]);
-	if (s[1] != NULL)
-		ret = ft_strjoin(s[1], "$> ");
-	free(s[1]);
-	free(s);
-	return (ret);
+	tmp = getcwd(s, 1064);
+	i = ft_strlen(tmp);
+	d->pwd = ft_strdup(tmp);
+	return (0);
 }
 
 int	shell_loop2(t_data *d, char *input)
