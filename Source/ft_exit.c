@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 20:02:36 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:13:30 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,8 @@ void	ft_exit(t_data *d, unsigned int n, int cc)
 
 	first_char = 0;
 	if (cc >= 0 && d->cmd[cc].cmd_arg[1])
-	{
 		if (exit_synthax(d, cc, &n, first_char))
 			return ;
-	}
 	if (d)
 	{
 		clean_data(d);
@@ -73,5 +71,7 @@ void	ft_exit(t_data *d, unsigned int n, int cc)
 		rl_clear_history();
 		free(d);
 	}
-	(printf("exit\n"), exit(n));
+	if (cc >= 0)
+		printf("exit\n");
+	exit(n);
 }

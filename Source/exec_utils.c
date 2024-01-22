@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 19:15:22 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:28:49 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ int	is_builtin(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
-	if (!cmd || ft_strlen(cmd) == 0)
+	if (!cmd)
+		return (1);
+	else if (ft_strlen(cmd) == 0)
 		return (0);
 	if (!ft_strcmp(cmd, "cd"))
 		return (1);
@@ -58,6 +60,8 @@ int	exec_builtin(t_data *d, int cc)
 	char	*cmd;
 
 	cmd = d->cmd[cc].cmd;
+	if (!cmd)
+		return (1);
 	if (!ft_strcmp(cmd, "cd"))
 		return (cd_builtin(d, cc));
 	else if (!ft_strcmp(cmd, "export"))

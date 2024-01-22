@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:30:36 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 00:46:10 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:34:03 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	do_dollar(t_data *d, t_ccmd *ccmd, char **rep, int *k)
 			return (1);
 	if (ccmd->cmd_arg[0] == *rep)
 	{
+		if (!ft_strcmp(ccmd->cmd_arg[0], ""))
+			return (ccmd->cmd = NULL, *k = start, 0);
 		ccmd->cmd = ft_strdup(ccmd->cmd_arg[0]);
 		if (!ccmd->cmd)
 			return (1);
