@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 17:24:36 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:53:47 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int		init_heredoc(t_data *d);
 int		break_doc_loop(char *end, char *str);
 void	clean_heredoc(t_data *d);
 void	history_restore(void);
-int 	add_to_history(char *input);
+int		add_to_history(char *input);
+int		print_history(t_data *d, int cc);
 
 #endif

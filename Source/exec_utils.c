@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 15:27:04 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:51:23 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	is_builtin(t_data *d, int cc)
 		return (1);
 	else if (!ft_strcmp(cmd, "echo"))
 		return (1);
+	else if (!ft_strcmp(cmd, "history"))
+		return (1);
 	else if (!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
@@ -66,6 +68,8 @@ int	exec_builtin(t_data *d, int cc)
 		return (pwd_builtin(d, cc));
 	else if (!ft_strcmp(cmd, "echo"))
 		return (ft_echo(d, cc));
+	else if (!ft_strcmp(cmd, "history"))
+		return (print_history(d, cc));
 	else if (!ft_strcmp(cmd, "exit"))
 		return (ft_exit(d, 0, cc), 1);
 	return (0);
