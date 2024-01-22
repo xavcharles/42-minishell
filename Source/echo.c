@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:25:22 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 15:02:39 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:37:01 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ int	ft_echo(t_data *d, int cc)
 		if (ft_strncmp(d->cmd[cc].cmd_arg[1], "-n", 2))
 			write(1, "\n", 1);
 	}
+	else if (!d->cmd[cc].cmd_arg[1])
+		write(1, "\n", 1);
 	return ((g_ret = 0), 0);
 }
