@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:54:49 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:05:48 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ int	cmd_exec(t_data *d)
 	while (++i < d->cmd_count)
 	{
 		waitpid(d->allpids[i], &status, 0);
-		g_ret = WEXITSTATUS(status);
+		if (WIFEXITED(status))
+			g_ret = WEXITSTATUS(status);
 	}
 	return (0);
 }

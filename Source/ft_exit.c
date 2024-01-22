@@ -6,41 +6,48 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:54:57 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:57:22 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	exit_synthax(t_data *d, int cc, int *n, char first_char)
+void	change_n(char *arg, unsigned int *n, char first_char)
+{
+	if (!first_char || (first_char == '-' && *n != 2))
+		*n = ft_atoi(arg);
+}
+
+int	exit_synthax(t_data *d, int cc, unsigned int *n, char fc)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (d->cmd[cc].cmd_arg[++i] && !first_char)
+	while (d->cmd[cc].cmd_arg[++i] && !fc)
 	{
 		j = -1;
 		if (i == 2)
 			return (ft_dprintf(2, "minishell: exit: too many arguments\n"), 1);
 		while (d->cmd[cc].cmd_arg[i][++j])
 		{
-			if (!ft_isdigit(d->cmd[cc].cmd_arg[i][j]) && !first_char)
+			if (!ft_isdigit(d->cmd[cc].cmd_arg[i][j]) && (!fc || fc == '-'))
 			{	
-				first_char = d->cmd[cc].cmd_arg[i][j];
+				fc = d->cmd[cc].cmd_arg[i][j];
+				if (fc == '-' && j == 0)
+					continue ;
 				ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
 					d->cmd[cc].cmd_arg[i]);
 				*n = 2;
 				break ;
 			}
 		}
-		if (!first_char)
-			*n = ft_atoi(d->cmd[cc].cmd_arg[i]);
+		change_n(d->cmd[cc].cmd_arg[i], &n, fc);
 	}
 	return (0);
 }
 
-void	ft_exit(t_data *d, int n, int cc)
+void	ft_exit(t_data *d, unsigned int n, int cc)
 {
 	char	first_char;
 
@@ -66,5 +73,5 @@ void	ft_exit(t_data *d, int n, int cc)
 		rl_clear_history();
 		free(d);
 	}
-	exit(n);
+	(printf("exit\n"), exit(n));
 }

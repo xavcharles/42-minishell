@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 18:26:30 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:15:22 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ char	**pathman(t_data *d)
 	while (d->env[++i])
 		if (ft_strncmp(d->env[i], "PATH", 4) == 0)
 			break ;
-	ret = ft_split(d->env[i], ':');
+	if (!d->env[i])
+		return (NULL);
+	ret = ft_split(d->env[i] + 5, ':');
 	return (ret);
 }
 

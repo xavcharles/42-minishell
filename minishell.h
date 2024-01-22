@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:44:12 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 18:26:12 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:44:23 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		check_pipe(char *str, int *i);
 void	init_zero(t_data *d);
 int		check_first(char *input);
 int		check_firstbis(char *input);
-void	ft_exit(t_data *d, int n, int cc);
+void	ft_exit(t_data *d, unsigned int n, int cc);
 int		is_builtin(t_data *d, int cc);
 int		strs_len(char **strs);
 int		find_var(char **env, char *var);

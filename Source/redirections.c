@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 18:09:53 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:58:00 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	redir_all(t_data *d, int cc)
 	while (d->cmd[cc].all[++i])
 	{
 		tmp = ft_split(d->cmd[cc].all[i], ' ');
-		if (!tmp)
-			return (1);
+		if (!tmp || !tmp[0] || !tmp[1])
+			return (clean_strs(tmp, 0, 0), ft_dprintf(2, "ambigous redir\n"), 1);
 		if (!ft_strcmp(tmp[0], ">"))
 			fd = open(tmp[1], O_CREAT | O_TRUNC | O_RDWR, 0666);
 		else if (!ft_strcmp(tmp[0], ">>"))
