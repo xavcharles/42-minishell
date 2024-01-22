@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:38:03 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:54:57 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	ft_exit(t_data *d, int n, int cc)
 	if (d)
 	{
 		clean_data(d);
+		close(d->std_in);
+		close(d->std_out);
 		if (d->paths)
 			clean_strs(d->paths, 0, 0);
 		if (d->env)

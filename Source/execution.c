@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:25:06 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:34:44 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:54:49 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	cmd_exec(t_data *d)
 	if (d->cmd_count == 1 && is_builtin(d, 0))
 		return (cmd_exec_sb(d));
 	d->prev = -1;
+	ic_sigs(4);
 	while (++i < d->cmd_count && i < 1024)
 		cmd_exec_1(d, &p, i);
 	close(p.end[0]);
@@ -88,8 +89,6 @@ int	cmd_exec(t_data *d)
 	while (++i < d->cmd_count)
 	{
 		waitpid(d->allpids[i], &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			ft_dprintf(2, "Quit (Core Dumped)\n");
 		g_ret = WEXITSTATUS(status);
 	}
 	return (0);

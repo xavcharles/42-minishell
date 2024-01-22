@@ -6,7 +6,7 @@
 /*   By: xacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:40:29 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 17:31:37 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:14:46 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	m_get_pwd(t_data *d)
 	char	*tmp;
 	int		i;
 
+	if (d->pwd)
+		free(d->pwd);
 	tmp = getcwd(s, 1064);
 	i = ft_strlen(tmp);
 	d->pwd = ft_strdup(tmp);
@@ -65,13 +67,16 @@ int	m_get_pwd(t_data *d)
 
 int	shell_loop2(t_data *d, char *input)
 {
-	add_history(input);
+	add_to_history(input);
 	if (!ca_parse(d, input))
 	{
 		signal(SIGINT, SIG_IGN);
 		if (!init_heredoc(d))
+		{
+			ic_sigs(1);
 			if (cmd_exec(d))
 				ft_dprintf(2, "Error during execution\n");
+		}
 		clean_data(d);
 	}
 	else
@@ -99,5 +104,5 @@ int	shell_loop(t_data *d)
 	}
 	free(input);
 	rl_clear_history();
-	return (0);
+	return (g_ret);
 }

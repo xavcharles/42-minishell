@@ -30,6 +30,7 @@ SRC = Source/main.c \
 		Source/builtin_utils.c \
 		Source/here_doc.c \
 		Source/exec_utils3.c \
+		Source/ft_history.c \
 		
 NAME = minishell
 

@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 17:21:04 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:15:07 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	init_data(t_data *d, char **env)
 	d->prev = 0;
 	d->hd = NULL;
 	d->nb_heredoc = 0;
+	d->pwd = NULL;
 	if (env_cpy(d, env))
 		return (g_ret = 2, 1);
 	if (pathfinder(d))
@@ -78,7 +79,8 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
-		return (ft_dprintf(2, "Minishell: failed to malloc data structure\n"));
+		return (ft_dprintf(2,
+				"Minishell: failed to malloc data structure\n"), 1);
 	if (init_data(data, env))
 		return ((wipe_data(data)), 1);
 	(void) av;
@@ -87,6 +89,7 @@ int	main(int ac, char **av, char **env)
 		free(data);
 		return (0);
 	}
+	history_restore();
 	shell_loop(data);
 	wipe_data(data);
 	return (0);

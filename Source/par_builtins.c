@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 15:31:09 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:57:22 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int	par_export(t_data *d, int cc)
 			{
 				d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
 				if (!d->env)
-					return (ft_dprintf
-						(2, "Failed to malloc env after export\n"), 1);
+					return (ft_dprintf(2,
+							"Failed to malloc env after export\n"), 1);
 			}
 			clean_strs(tmp, 0, 0);
 		}
 	}
-	return (0);
+	return ((g_ret = 0), 0);
 }
 
 int	par_unset(t_data *d, int cc)
@@ -94,5 +94,5 @@ int	par_unset(t_data *d, int cc)
 			}
 		}
 	}
-	return (0);
+	return ((g_ret = 0), 0);
 }

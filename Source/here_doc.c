@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 21:58:27 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 14:02:11 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:55:57 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	break_doc_loop(char *end, char *str)
 {
 	if (!str && g_ret != 130)
 	{
-		ft_dprintf
-			(2, "minishell: warning: here-document delimited by end-of-file ");
+		ft_dprintf(2,
+			"minishell: warning: here-document delimited by end-of-file ");
 		ft_dprintf(2, "(wanted `%s')\n", end);
 		return (1);
 	}
@@ -113,6 +113,7 @@ int	init_heredoc(t_data *d)
 	d->hd = malloc(sizeof(t_here) * d->nb_heredoc);
 	if (!d->hd || delim_heredoc(d))
 		return (1);
+	ic_sigs(2);
 	pid = fork();
 	i = 0;
 	if (pid == 0)

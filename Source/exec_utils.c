@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 13:36:19 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:53:43 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	print_env(t_data *d)
 		if (ft_strchr(d->env[i], '='))
 			printf("%s\n", d->env[i]);
 	}
-	return (0);
+	return ((g_ret = 0), 0);
 }
 
 int	is_builtin(t_data *d, int cc)
@@ -67,7 +67,7 @@ int	exec_builtin(t_data *d, int cc)
 	else if (!ft_strcmp(cmd, "echo"))
 		return (ft_echo(d, cc));
 	else if (!ft_strcmp(cmd, "exit"))
-		return (ft_exit(d, 0, cc), 0);
+		return (ft_exit(d, 0, cc), 1);
 	return (0);
 }
 
