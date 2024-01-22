@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 19:11:28 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:15:32 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ int	check_inp(t_data *d, int cc, int i)
 	j = -1;
 	while (d->cmd[cc].cmd_arg[i][++j] != '=')
 	{
-		if (!ft_isalnum(d->cmd[cc].cmd_arg[i][j]))
+		if (!ft_isalnum(d->cmd[cc].cmd_arg[i][j])
+			&& !is_charset(d->cmd[cc].cmd_arg[i][j], "_"))
 			return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
 					d->cmd[cc].cmd_arg[i]), 1);
 	}
-	if (ft_isdigit(d->cmd[cc].cmd_arg[i][0])
+	if ((ft_isdigit(d->cmd[cc].cmd_arg[i][0])
 		|| !ft_isalpha(d->cmd[cc].cmd_arg[i][0]))
+		&& !is_charset(d->cmd[cc].cmd_arg[i][j], "_"))
 		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
 				d->cmd[cc].cmd_arg[i]), 1);
 	return (0);
