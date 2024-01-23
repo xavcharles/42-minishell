@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/23 00:35:44 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 01:45:37 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	// if (isatty(STDIN_FILENO) == 0)
-	// 	return (1);
+	if (isatty(STDIN_FILENO) == 0)
+		return (1);
 	data = ft_calloc(sizeof(t_data), 1);
 	if (data == NULL)
 		return (ft_dprintf(2,
