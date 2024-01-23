@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/23 01:13:35 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:22:23 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	par_ex_sub(t_data *d, int cc, int i)
 
 int	check_inp(t_data *d, int cc, int i)
 {
-	int	j;
+	int		j;
 	char	*arg;
 
 	j = -1;
@@ -46,12 +46,23 @@ int	check_inp(t_data *d, int cc, int i)
 	{
 		if (!ft_isalnum(arg[j])
 			&& !is_charset(arg[j], "_"))
-			return (ft_dprintf(2, "export: '%s' : not a valid identifier\n", arg), 1);
+			return (ft_dprintf
+				(2, "export: '%s' : not a valid identifier\n", arg), 1);
 	}
 	if ((ft_isdigit(arg[0])
-		|| !ft_isalpha(arg[0]))
+			|| !ft_isalpha(arg[0]))
 		&& !is_charset(arg[0], "_"))
-		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n", arg), 1);
+		return (ft_dprintf
+			(2, "export: '%s' : not a valid identifier\n", arg), 1);
+	return (0);
+}
+
+int	export_sub3(t_data *d, int cc, int i, char **tmp)
+{
+	d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
+	if (!d->env)
+		return (clean_strs(tmp, 0, 0), ft_dprintf(2,
+				"Failed to malloc env after export\n"), 1);
 	return (0);
 }
 
@@ -61,6 +72,8 @@ int	par_export(t_data *d, int cc)
 	char	**tmp;
 
 	i = 0;
+	if (d->cmd[cc].cmd_arg[1] == NULL)
+		export_print(d);
 	while (d->cmd[cc].cmd_arg[++i])
 	{	
 		if (check_inp(d, cc, i))
@@ -70,15 +83,12 @@ int	par_export(t_data *d, int cc)
 			tmp = ft_split(d->cmd[cc].cmd_arg[i], '=');
 			if (find_var(d->env, tmp[0]))
 				par_ex_sub(d, cc, i);
-			else
-			{
-				d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
-				if (!d->env)
-					return (clean_strs(tmp, 0, 0), ft_dprintf(2,
-							"Failed to malloc env after export\n"), 1);
-			}
+			else if (export_sub3(d, cc, i, tmp))
+				return (1);
 			clean_strs(tmp, 0, 0);
 		}
+		else
+			d->env = ft_tabjoin(d->env, d->cmd[cc].cmd_arg[i]);
 	}
 	return ((g_ret = 0), 0);
 }

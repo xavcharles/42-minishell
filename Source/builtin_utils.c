@@ -6,7 +6,7 @@
 /*   By: maderuel <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 15:30:54 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/20 15:32:35 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:21:06 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../minishell.h"
@@ -35,4 +35,17 @@ char	**ft_tabjoin(char **tab, char *s)
 	n_tab[j] = ft_strdup(s);
 	n_tab[j + 1] = NULL;
 	return (n_tab);
+}
+
+int	export_print(t_data *d)
+{
+	int	i;
+
+	i = 0;
+	while (d->env[i] != NULL)
+	{
+		printf("%s\n", d->env[i]);
+		i++;
+	}
+	return (0);
 }
