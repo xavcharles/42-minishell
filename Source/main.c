@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 13:43:02 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/23 01:45:37 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 09:53:58 by maderuel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
+	if (av[1])
+		return (ft_dprintf(2, "Minishell take no arg pleas\n"), 1);
 	if (isatty(STDIN_FILENO) == 0)
 		return (1);
 	data = ft_calloc(sizeof(t_data), 1);
