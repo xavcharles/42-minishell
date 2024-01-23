@@ -100,7 +100,6 @@ int	shell_loop(t_data *d)
 		if (ft_strlen(input))
 			shell_loop2(d, input);
 		free(input);
-		usleep(10);
 	}
 	free(input);
 	rl_clear_history();

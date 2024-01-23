@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 17:12:24 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 18:17:50 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/23 01:48:49 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	print_history(t_data *d, int cc)
 	char	*str;
 
 	if (d->cmd[cc].cmd_arg[1])
-		return (dprintf(2, "Just history please ;)\n"), 1);
+		return (ft_dprintf(2, "Just history please ;)\n"), 1);
 	fd = open("/tmp/mini_hist", O_RDONLY);
 	if (fd == -1)
 		return (1);
