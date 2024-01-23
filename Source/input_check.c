@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 16:55:10 by xacharle          #+#    #+#             */
-/*   Updated: 2024/01/22 17:56:46 by maderuel         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:37:36 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	input_check(t_data *d)
 	while (*str)
 	{
 		i = 1;
-		if (!is_charset(*str, "()[]\"'&|><"))
+		if (!is_charset(*str, "()[]\"'&|><;"))
 			str++;
 		else
 		{

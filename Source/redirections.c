@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:28:49 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 19:58:00 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 01:36:26 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	redir_all(t_data *d, int cc)
 		else if (!ft_strcmp(tmp[0], "<<"))
 			fd = get_pipe(d, tmp[1]);
 		if (fd < 0)
-			return (clean_strs(tmp, 0, 0), perror("file not found\n"), 1);
+			return (perror(tmp[1]), clean_strs(tmp, 0, 0), g_ret = 1, 1);
 		dup_if_out(fd, tmp[0], tmp);
 	}
 	return (0);

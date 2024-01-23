@@ -55,12 +55,10 @@ int	m_get_pwd(t_data *d)
 {
 	char	s[1064];
 	char	*tmp;
-	int		i;
 
 	if (d->pwd)
 		free(d->pwd);
 	tmp = getcwd(s, 1064);
-	i = ft_strlen(tmp);
 	d->pwd = ft_strdup(tmp);
 	return (0);
 }
@@ -74,8 +72,7 @@ int	shell_loop2(t_data *d, char *input)
 		if (!init_heredoc(d))
 		{
 			ic_sigs(1);
-			if (cmd_exec(d))
-				ft_dprintf(2, "Error during execution\n");
+			cmd_exec(d);
 		}
 		clean_data(d);
 	}

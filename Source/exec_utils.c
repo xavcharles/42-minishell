@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:51:52 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 20:28:49 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 00:31:48 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	exec_builtin(t_data *d, int cc)
 	else if (!ft_strcmp(cmd, "history"))
 		return (print_history(d, cc));
 	else if (!ft_strcmp(cmd, "exit"))
-		return (ft_exit(d, 0, cc), 1);
+		return (ft_exit(d, g_ret, cc), 1);
 	return (0);
 }
 

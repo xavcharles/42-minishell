@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 17:15:47 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 21:15:32 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 01:13:35 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ int	par_ex_sub(t_data *d, int cc, int i)
 int	check_inp(t_data *d, int cc, int i)
 {
 	int	j;
+	char	*arg;
 
 	j = -1;
-	while (d->cmd[cc].cmd_arg[i][++j] != '=')
+	arg = d->cmd[cc].cmd_arg[i];
+	while (arg[++j] && arg[j] != '=')
 	{
-		if (!ft_isalnum(d->cmd[cc].cmd_arg[i][j])
-			&& !is_charset(d->cmd[cc].cmd_arg[i][j], "_"))
-			return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
-					d->cmd[cc].cmd_arg[i]), 1);
+		if (!ft_isalnum(arg[j])
+			&& !is_charset(arg[j], "_"))
+			return (ft_dprintf(2, "export: '%s' : not a valid identifier\n", arg), 1);
 	}
-	if ((ft_isdigit(d->cmd[cc].cmd_arg[i][0])
-		|| !ft_isalpha(d->cmd[cc].cmd_arg[i][0]))
-		&& !is_charset(d->cmd[cc].cmd_arg[i][j], "_"))
-		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n",
-				d->cmd[cc].cmd_arg[i]), 1);
+	if ((ft_isdigit(arg[0])
+		|| !ft_isalpha(arg[0]))
+		&& !is_charset(arg[0], "_"))
+		return (ft_dprintf(2, "export: '%s' : not a valid identifier\n", arg), 1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: xacharle <xacharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:30:39 by maderuel          #+#    #+#             */
-/*   Updated: 2024/01/22 20:13:30 by xacharle         ###   ########.fr       */
+/*   Updated: 2024/01/23 01:29:24 by xacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	change_n(char *arg, unsigned int *n, char first_char)
 {
-	if (!first_char || (first_char == '-' && *n != 2))
+	if (!first_char || (is_charset(first_char, "+-") && *n != 2))
 		*n = ft_atoi(arg);
 }
 
@@ -31,10 +31,10 @@ int	exit_synthax(t_data *d, int cc, unsigned int *n, char fc)
 			return (ft_dprintf(2, "minishell: exit: too many arguments\n"), 1);
 		while (d->cmd[cc].cmd_arg[i][++j])
 		{
-			if (!ft_isdigit(d->cmd[cc].cmd_arg[i][j]) && (!fc || fc == '-'))
+			if (!ft_isdigit(d->cmd[cc].cmd_arg[i][j]) && (is_charset(fc, "+-")))
 			{	
 				fc = d->cmd[cc].cmd_arg[i][j];
-				if (fc == '-' && j == 0)
+				if (is_charset(fc, "+-") && j == 0)
 					continue ;
 				ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
 					d->cmd[cc].cmd_arg[i]);
@@ -54,21 +54,21 @@ void	ft_exit(t_data *d, unsigned int n, int cc)
 	first_char = 0;
 	if (cc >= 0 && d->cmd[cc].cmd_arg[1])
 		if (exit_synthax(d, cc, &n, first_char))
+		{
+			g_ret = 1;
 			return ;
+		}
 	if (d)
 	{
 		clean_data(d);
-		close(d->std_in);
-		close(d->std_out);
-		if (d->paths)
-			clean_strs(d->paths, 0, 0);
-		if (d->env)
-			clean_strs(d->env, 0, 0);
-		if (d->input)
-			free(d->input);
+		clean_strs(d->paths, d->env, 0);
 		if (d->pwd)
 			free(d->pwd);
+		if (d->input)
+			free(d->input);
 		rl_clear_history();
+		close(d->std_in);
+		close(d->std_out);
 		free(d);
 	}
 	if (cc >= 0)
